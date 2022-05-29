@@ -80,6 +80,6 @@ const BurgerIngredients = (props) => {
     );
 };
 
-BurgerIngredients.propTypes = {ingredients: PropTypes.arrayOf(ingredientPropTypes)};
+BurgerIngredients.propTypes = {ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired};
 
 export default BurgerIngredients;

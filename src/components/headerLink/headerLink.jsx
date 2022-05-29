@@ -1,5 +1,6 @@
 import React from 'react';
 import headerLink from "./headerLink.module.css"
+import PropTypes from "prop-types";
 
 const HeaderLink = (props) => {
     return (
@@ -7,6 +8,10 @@ const HeaderLink = (props) => {
             {props.children}
         </a>
     );
+};
+
+HeaderLink.propTypes = {
+    children: PropTypes.node.isRequired
 };
 
 export default HeaderLink;

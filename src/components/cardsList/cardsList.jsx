@@ -1,6 +1,8 @@
 import React from 'react';
 import Card from "../card/card";
 import cardListStyle from "./cardList.module.css"
+import PropTypes from "prop-types";
+import ingredientPropTypes from "../../utils/propTypesConfig";
 
 //пробрасываем ссылку на заголовок внутрь компонента (для скрола)
 const CardsList = React.forwardRef((props, ref) => {
@@ -16,5 +18,10 @@ const CardsList = React.forwardRef((props, ref) => {
         </div>
     );
 })
+
+CardsList.propTypes = {
+    title: PropTypes.string.isRequired,
+    ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired
+};
 
 export default CardsList;

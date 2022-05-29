@@ -55,13 +55,13 @@ const BurgerConstructor = ({ingredients}) => {
                 />
             </div>
             <div className={`${burgerConstructorStyles.commit} pr-4 pt-6`}>
-                <Price value="610" isLarge={true}/>
+                <Price value={610} isLarge={true}/>
                 <Button type="primary" size="large">Оформить заказ</Button>
             </div>
         </div>
     );
 };
 
-BurgerConstructor.propTypes = {ingredients: PropTypes.arrayOf(ingredientPropTypes)};
+BurgerConstructor.propTypes = {ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired};
 
 export default BurgerConstructor;
