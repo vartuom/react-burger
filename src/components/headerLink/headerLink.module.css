@@ -1,0 +1,7 @@
+.link {
+    display: flex;
+    flex-direction: row;
+    gap: calc(var(--offset-base-size)*2);
+    cursor: pointer;
+    justify-self: end;
+}

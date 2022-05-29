@@ -1,0 +1,15 @@
+.app {
+  background-color: var(--background-alt);
+  width: 100%;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: repeat(2, 600px);
+  column-gap: calc(var(--offset-base-size)*10);
+  justify-content: center;
+}
+
+.title {
+  grid-column: 1/-1;
+}
