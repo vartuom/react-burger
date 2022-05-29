@@ -2,6 +2,8 @@ import React from 'react';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from "./BurgerIngredients.module.css";
 import CardsList from "../cardsList/cardsList";
+import ingredientPropTypes from "../../utils/propTypesConfig";
+import PropTypes from "prop-types";
 
 const BurgerIngredients = (props) => {
     const [currentTab, setCurrentTab] = React.useState('one');
@@ -33,7 +35,7 @@ const BurgerIngredients = (props) => {
     const sortedIngredients = React.useMemo(() => {
         /*
             массивы и объекты нужно объявлять через const,
-            ак как Вы не меняете их ссылку в коде, а меняете внутренности.
+            так как Вы не меняете их ссылку в коде, а меняете внутренности.
         */
         const buns = [];
         const mains = [];
@@ -77,5 +79,7 @@ const BurgerIngredients = (props) => {
         </section>
     );
 };
+
+BurgerIngredients.propTypes = {ingredients: PropTypes.arrayOf(ingredientPropTypes)};
 
 export default BurgerIngredients;

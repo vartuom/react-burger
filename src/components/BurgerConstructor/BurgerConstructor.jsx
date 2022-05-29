@@ -4,6 +4,8 @@ import burgerConstructorStyles from "./burgerConstructor.module.css";
 import {DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Price from "../price/price";
+import ingredientPropTypes from "../../utils/propTypesConfig";
+import PropTypes from "prop-types";
 
 const BurgerConstructor = ({ingredients}) => {
 
@@ -59,5 +61,7 @@ const BurgerConstructor = ({ingredients}) => {
         </div>
     );
 };
+
+BurgerConstructor.propTypes = {ingredients: PropTypes.arrayOf(ingredientPropTypes)};
 
 export default BurgerConstructor;
