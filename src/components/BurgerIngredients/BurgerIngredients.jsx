@@ -31,9 +31,13 @@ const BurgerIngredients = (props) => {
 
     //сортируем ингридиенты по типам
     const sortedIngredients = React.useMemo(() => {
-        let buns = [];
-        let mains = [];
-        let sauces = [];
+        /*
+            массивы и объекты нужно объявлять через const,
+            ак как Вы не меняете их ссылку в коде, а меняете внутренности.
+        */
+        const buns = [];
+        const mains = [];
+        const sauces = [];
         ingredients.forEach((ingredient) => {
             switch (ingredient.type) {
                 case 'bun':
@@ -54,18 +58,16 @@ const BurgerIngredients = (props) => {
 
     return (
         <section className={burgerIngredientsStyles.ingredients}>
-            <div>
-                <div style={{ display: 'flex'}}>
-                    <Tab value="buns" active={currentTab === 'buns'} onClick={setCurrentTab}>
-                        Булки
-                    </Tab>
-                    <Tab value="sauces" active={currentTab === 'sauces'} onClick={setCurrentTab}>
-                        Соусы
-                    </Tab>
-                    <Tab value="mains" active={currentTab === 'mains'} onClick={setCurrentTab}>
-                        Начинки
-                    </Tab>
-                </div>
+            <div className={burgerIngredientsStyles.tabs}>
+                <Tab value="buns" active={currentTab === 'buns'} onClick={setCurrentTab}>
+                    Булки
+                </Tab>
+                <Tab value="sauces" active={currentTab === 'sauces'} onClick={setCurrentTab}>
+                    Соусы
+                </Tab>
+                <Tab value="mains" active={currentTab === 'mains'} onClick={setCurrentTab}>
+                    Начинки
+                </Tab>
             </div>
             <div className={burgerIngredientsStyles.list}>
                 <CardsList ingredients={sortedIngredients.buns} title="Булки" ref={bunsListRef}/>

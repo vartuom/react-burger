@@ -21,7 +21,7 @@ const BurgerConstructor = ({ingredients}) => {
     }, [ingredients])
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height:"min-content", paddingLeft: '16px'}}>
+        <div className={burgerConstructorStyles.constructor}>
             <div className={`${burgerConstructorStyles.buns} pl-8 pt-1`}>
                 <ConstructorElement
                     type="top"

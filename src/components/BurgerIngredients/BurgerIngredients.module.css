@@ -3,6 +3,10 @@
     margin: 0 auto;
 }
 
+.tabs {
+    display: flex;
+}
+
 .list {
     overflow-y: scroll;
     height: 720px;

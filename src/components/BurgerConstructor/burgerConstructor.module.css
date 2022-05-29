@@ -1,3 +1,10 @@
+.constructor {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--offset-base-size)*4);
+    height: min-content;
+    padding-left: calc(var(--offset-base-size)*4);
+}
 .ingredientsList {
     list-style: none;
     padding: 0;
