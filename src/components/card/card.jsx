@@ -2,7 +2,7 @@ import React from 'react';
 import Price from "../price/price";
 import cardStyle from "./card.module.css"
 import {Counter} from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
+import ingredientPropTypes from "../../utils/propTypesConfig";
 
 const Card = ({ingredient}) => {
     return (
@@ -15,7 +15,9 @@ const Card = ({ingredient}) => {
     );
 };
 
-Card.propTypes = {
+Card.propTypes = {ingredient: ingredientPropTypes};
+
+/*Card.propTypes = {
     ingredient: PropTypes.shape({
         _id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
@@ -30,6 +32,6 @@ Card.propTypes = {
         image_large: PropTypes.string.isRequired,
         __v: PropTypes.number.isRequired
     }),
-};
+};*/
 
 export default Card;
