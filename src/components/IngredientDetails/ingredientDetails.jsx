@@ -4,7 +4,7 @@ import ingredientDetailsStyles from "./ingredientDetails.module.css"
 const IngredientDetails = ({ingredient}) => {
     return (
         <div className={ingredientDetailsStyles.container}>
-            <img className={ingredientDetailsStyles.preview} src={ingredient.image}/>
+            <img className={ingredientDetailsStyles.preview} src={ingredient.image} alt=""/>
             <p className="text text_type_main-medium pt-4 pb-8">{ingredient.name}</p>
             <ul className={ingredientDetailsStyles.nutritionList}>
                 <li className={ingredientDetailsStyles.nutritionItem}>
