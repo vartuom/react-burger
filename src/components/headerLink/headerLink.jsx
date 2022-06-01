@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 const HeaderLink = (props) => {
     return (
-        <a className={`${headerLink.link} pl-5 pr-5 pt-4 pb-4`}>
+        <a className={`${headerLink.link} pl-5 pr-5 pt-4 pb-4`} href="">
             {props.children}
         </a>
     );
