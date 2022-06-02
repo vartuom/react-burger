@@ -5,9 +5,8 @@ import CardsList from "../cardsList/cardsList";
 import ingredientPropTypes from "../../utils/propTypesConfig";
 import PropTypes from "prop-types";
 
-const BurgerIngredients = (props) => {
+const BurgerIngredients = ({ingredients}) => {
     const [currentTab, setCurrentTab] = React.useState('one');
-    const [ingredients, setIngredients] = React.useState(props.ingredients);
 
     //указатели на заголовки списков ингредиентов
     const bunsListRef = React.useRef(null);

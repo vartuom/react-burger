@@ -1,5 +1,4 @@
 import React from 'react';
-import {data} from "../../utils/data";
 import appStyles from './app.module.css';
 import AppHeader from "../appHeader/appHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
@@ -8,23 +7,13 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 function App() {
 
     const [ingredientsState, setIngredientsState] = React.useState({
-        isLoading: false,
+        isLoaded: false,
         hasError: false,
         data: []
     });
 
+    //загрузка данных с сервера
     React.useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetch(`https://norma.nomoreparties.space/api/ingredients`);
-            const actualData = await res.json();
-            setIngredientsState({...ingredientsState, data: actualData.data})
-            console.log(actualData.data)
-            console.log(ingredientsState)
-        }
-        fetchData();
-    }, [])
-
-/*    React.useEffect(() => {
         const fetchData = async () => {
             try {
                 const res = await fetch(`https://norma.nomoreparties.space/api/ingredients`);
@@ -35,25 +24,27 @@ function App() {
                 if (!actualData.success) {
                     throw new Error(`Ошибка сервера}`);
                 }
-                setIngredientsState({...ingredientsState, data: actualData.data})
-                console.log(actualData.data)
-                console.log(ingredientsState)
+                setIngredientsState({...ingredientsState, isLoaded: true, data: actualData.data})
             } catch(err) {
                 setIngredientsState({...ingredientsState, hasError: true})
             } finally {
-                setIngredientsState({...ingredientsState, isLoading: false})
+                //
             }
         }
         fetchData()
-    }, [])*/
+    }, [])
 
     return (
         <div className={appStyles.app}>
             <AppHeader/>
             <main className={`${appStyles.main} pt-1 pb-10`}>
                 <h1 className={`${appStyles.title} text text_type_main-large pt-10 pb-5`}>Соберите бургер</h1>
-                <BurgerIngredients ingredients={data}/>
-                <BurgerConstructor ingredients={data}/>
+                {ingredientsState.isLoaded &&
+                    <>
+                        <BurgerIngredients ingredients={ingredientsState.data}/>
+                        <BurgerConstructor ingredients={ingredientsState.data}/>
+                    </>
+                }
             </main>
         </div>
     );
