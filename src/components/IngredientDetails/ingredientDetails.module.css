@@ -15,6 +15,7 @@
     gap: calc(var(--offset-base-size)*5);
     list-style: none;
     color: var(--text-inactive-color);
+    padding: 0;
 }
 
 .nutritionItem {

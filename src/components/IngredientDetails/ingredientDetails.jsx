@@ -1,11 +1,13 @@
 import React from 'react';
 import ingredientDetailsStyles from "./ingredientDetails.module.css"
+import PropTypes from "prop-types";
+import ingredientPropTypes from "../../utils/propTypesConfig";
 
 const IngredientDetails = ({ingredient}) => {
     return (
-        <div className={ingredientDetailsStyles.container}>
+        <div className={`${ingredientDetailsStyles.container} pb-15`}>
             <img className={ingredientDetailsStyles.preview} src={ingredient.image} alt=""/>
-            <p className="text text_type_main-medium pt-4 pb-8">{ingredient.name}</p>
+            <p className="text text_type_main-medium pb-8">{ingredient.name}</p>
             <ul className={ingredientDetailsStyles.nutritionList}>
                 <li className={ingredientDetailsStyles.nutritionItem}>
                     <p className="text text_type_main-small">Калории, ккал</p>
@@ -27,5 +29,7 @@ const IngredientDetails = ({ingredient}) => {
         </div>
     );
 };
+
+IngredientDetails.propTypes = {ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired};
 
 export default IngredientDetails;

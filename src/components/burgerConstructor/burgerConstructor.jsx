@@ -6,8 +6,27 @@ import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Price from "../price/price";
 import ingredientPropTypes from "../../utils/propTypesConfig";
 import PropTypes from "prop-types";
+import Modal from "../modal/modal";
+import OrderDetails from "../orderDetails/orderDetails";
 
 const BurgerConstructor = ({ingredients}) => {
+
+    //состояние модального окна с деталями заказа
+    const [isDetailsOpened, setIsDetailsOpened] =
+        React.useState({
+            isOpened: false,
+            orderNumber: null
+        });
+
+    //закрытие модального окна кликом оверлей
+    const closeDetailsModal = () => {
+        setIsDetailsOpened({...isDetailsOpened, isOpened: false});
+    }
+
+    //обработка клика на кнопку Оформить
+    const openDetailsModal = (ingredient) => {
+        setIsDetailsOpened({isOpened: true, ingredient: ingredient});
+    }
 
     //отделяем булки от всего остального
     const burgerComponents = React.useMemo(() => {
@@ -56,8 +75,13 @@ const BurgerConstructor = ({ingredients}) => {
             </div>
             <div className={`${burgerConstructorStyles.commit} pr-4 pt-6`}>
                 <Price value={610} isLarge={true}/>
-                <Button type="primary" size="large">Оформить заказ</Button>
+                <Button type="primary" size="large" onClick={openDetailsModal}>Оформить заказ</Button>
             </div>
+            {isDetailsOpened.isOpened &&
+                <Modal title="" handleCloseAction={closeDetailsModal}>
+                    <OrderDetails orderNumber="034536"/>
+                </Modal>
+            }
         </div>
     );
 };

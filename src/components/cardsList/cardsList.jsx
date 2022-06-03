@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from "../card/card";
-import cardListStyle from "./cardList.module.css"
+import cardListStyle from "./cardsList.module.css"
 import PropTypes from "prop-types";
 import ingredientPropTypes from "../../utils/propTypesConfig";
 import Modal from "../modal/modal";
@@ -36,7 +36,7 @@ const CardsList = React.forwardRef((props, ref) => {
                 )}
             </ul>
             {isDetailsOpened.isOpened &&
-                <Modal handleCloseAction={closeDetailsModal}>
+                <Modal title="Детали ингредиента" handleCloseAction={closeDetailsModal}>
                     <IngredientDetails ingredient={isDetailsOpened.ingredient}/>
                 </Modal>
             }

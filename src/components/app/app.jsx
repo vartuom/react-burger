@@ -1,12 +1,15 @@
 import React from 'react';
 import appStyles from './app.module.css';
 import AppHeader from "../appHeader/appHeader";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import BurgerIngredients from "../burgerIngredients/burgerIngredients";
+import BurgerConstructor from "../burgerConstructor/burgerConstructor";
+import apiUrl from "../../utils/constants";
 
 function App() {
 
     const [ingredientsState, setIngredientsState] = React.useState({
+        //"isLoaded: false" не дает зарендерится компонентам,
+        // использующим данные с сервера, до получения данных
         isLoaded: false,
         hasError: false,
         data: []
@@ -16,7 +19,7 @@ function App() {
     React.useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch(`https://norma.nomoreparties.space/api/ingredients`);
+                const res = await fetch(apiUrl);
                 if (!res.ok) {
                     throw new Error(`Ошибка HTTP: статус ${res.status}`);
                 }
@@ -26,6 +29,7 @@ function App() {
                 }
                 setIngredientsState({...ingredientsState, isLoaded: true, data: actualData.data})
             } catch(err) {
+                console.log(`При получении данных произошла ошибка => ${err}`);
                 setIngredientsState({...ingredientsState, hasError: true})
             } finally {
                 //
