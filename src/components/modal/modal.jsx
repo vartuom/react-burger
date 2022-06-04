@@ -14,7 +14,6 @@ const Modal = ({children, title, handleCloseAction}) => {
 
         //снятие слушателя при размонтировании компонента
         return () => {
-            // console.log("Я удалился"); //TODO for debug
             document.removeEventListener('keydown', handleCloseAction);
         };
     }, []);
