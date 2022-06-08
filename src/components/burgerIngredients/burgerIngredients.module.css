@@ -1,0 +1,28 @@
+.ingredients {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.tabs {
+    display: flex;
+}
+
+.list {
+    overflow-y: scroll;
+    height: 720px;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--offset-base-variable)*14);
+}
+
+.list::-webkit-scrollbar-track {
+    background-color: #2F2F37;
+}
+
+.list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.list::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+}
