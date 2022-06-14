@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from "./burgerConstructor.module.css";
 import {DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -8,8 +8,11 @@ import ingredientPropTypes from "../../utils/propTypesConfig";
 import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import OrderDetails from "../orderDetails/orderDetails";
+import {ConstructorContext} from "../../services/constructorContext";
 
-const BurgerConstructor = ({ingredients}) => {
+const BurgerConstructor = () => {
+
+    const ingredients = useContext(ConstructorContext);
 
     //состояние модального окна с деталями заказа
     const [isDetailsOpened, setIsDetailsOpened] =

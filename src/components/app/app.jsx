@@ -4,6 +4,7 @@ import AppHeader from "../appHeader/appHeader";
 import BurgerIngredients from "../burgerIngredients/burgerIngredients";
 import BurgerConstructor from "../burgerConstructor/burgerConstructor";
 import apiUrl from "../../utils/constants";
+import {ConstructorContext} from "../../services/constructorContext";
 
 function App() {
 
@@ -46,7 +47,9 @@ function App() {
                 {ingredientsState.isLoaded &&
                     <>
                         <BurgerIngredients ingredients={ingredientsState.data}/>
-                        <BurgerConstructor ingredients={ingredientsState.data}/>
+                        <ConstructorContext.Provider value={ingredientsState.data}>
+                            <BurgerConstructor ingredients={ingredientsState.data}/>
+                        </ConstructorContext.Provider>
                     </>
                 }
             </main>
