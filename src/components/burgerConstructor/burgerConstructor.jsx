@@ -37,11 +37,15 @@ const BurgerConstructor = () => {
         const buns = ingredients.find(function (ingredient) {
             return ingredient.type === "bun";
         });
-        //убираем булки из массива ингридиентов
+        //убираем булки из массива ингредиентов
         const slices = ingredients.filter(function (ingredient) {
             return ingredient.type !== "bun";
         });
-        return {buns, slices};
+        //сумма стоимости всех ингредиентов + двух булок
+        const totalPrice = slices.reduce((prevVal, slice) => {
+            return prevVal + slice.price;
+        }, 0) + buns.price*2;
+        return {buns, slices, totalPrice};
     }, [ingredients])
 
     return (
@@ -77,7 +81,7 @@ const BurgerConstructor = () => {
                 />
             </div>
             <div className={`${burgerConstructorStyles.commit} pr-4 pt-6`}>
-                <Price value={610} isLarge={true}/>
+                <Price value={burgerComponents.totalPrice} isLarge={true}/>
                 <Button type="primary" size="large" onClick={openDetailsModal}>Оформить заказ</Button>
             </div>
             {isDetailsOpened.isOpened &&
