@@ -1,6 +1,5 @@
 import React from 'react';
 import ingredientDetailsStyles from "./ingredientDetails.module.css"
-import PropTypes from "prop-types";
 import ingredientPropTypes from "../../utils/propTypesConfig";
 
 const IngredientDetails = ({ingredient}) => {
@@ -30,6 +29,6 @@ const IngredientDetails = ({ingredient}) => {
     );
 };
 
-IngredientDetails.propTypes = {ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired};
+IngredientDetails.propTypes = {ingredient: ingredientPropTypes};
 
 export default IngredientDetails;
