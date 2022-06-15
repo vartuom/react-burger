@@ -3,14 +3,13 @@ import appStyles from './app.module.css';
 import AppHeader from "../appHeader/appHeader";
 import BurgerIngredients from "../burgerIngredients/burgerIngredients";
 import BurgerConstructor from "../burgerConstructor/burgerConstructor";
-import apiUrl from "../../utils/constants";
 import {ConstructorContext} from "../../services/constructorContext";
+import {apiUrl} from "../../utils/constants";
 
 function App() {
 
     const [ingredientsState, setIngredientsState] = React.useState({
-        //"isLoaded: false" не дает зарендерится компонентам,
-        // использующим данные с сервера, до получения данных
+        //"isLoaded: false" не дает зарендерится до получения данных компонентам, использующим данные с сервера
         isLoaded: false,
         hasError: false,
         data: []

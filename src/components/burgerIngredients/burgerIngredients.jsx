@@ -4,6 +4,7 @@ import burgerIngredientsStyles from "./burgerIngredients.module.css";
 import CardsList from "../cardsList/cardsList";
 import ingredientPropTypes from "../../utils/propTypesConfig";
 import PropTypes from "prop-types";
+import apiUrl from "../../utils/constants";
 
 const BurgerIngredients = ({ingredients}) => {
     const [currentTab, setCurrentTab] = React.useState('one');
@@ -35,6 +36,7 @@ const BurgerIngredients = ({ingredients}) => {
         /*
             массивы и объекты нужно объявлять через const,
             так как Вы не меняете их ссылку в коде, а меняете внутренности.
+            (от ревьювера)
         */
         const buns = [];
         const mains = [];
@@ -56,6 +58,7 @@ const BurgerIngredients = ({ingredients}) => {
         })
         return {buns, mains, sauces}
     }, [ingredients])
+
 
     return (
         <section className={burgerIngredientsStyles.ingredients}>
