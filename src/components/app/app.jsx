@@ -4,7 +4,8 @@ import AppHeader from "../appHeader/appHeader";
 import BurgerIngredients from "../burgerIngredients/burgerIngredients";
 import BurgerConstructor from "../burgerConstructor/burgerConstructor";
 import {ConstructorContext} from "../../services/constructorContext";
-import {apiUrl} from "../../utils/constants";
+import {apiUrl, baseUrl} from "../../utils/constants";
+import {checkResponse} from "../../utils/api";
 
 function App() {
 
@@ -17,23 +18,17 @@ function App() {
 
     //загрузка данных с сервера
     React.useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await fetch(apiUrl);
-                if (!res.ok) {
-                    throw new Error(`Ошибка HTTP: статус ${res.status}`);
-                }
-                const actualData = await res.json();
-                if (!actualData.success) {
-                    throw new Error(`Ошибка сервера}`);
-                }
-                setIngredientsState({...ingredientsState, isLoaded: true, data: actualData.data})
-            } catch(err) {
-                console.log(`При получении данных произошла ошибка => ${err}`);
-                setIngredientsState({...ingredientsState, hasError: true})
-            } finally {
-                //
-            }
+
+        const fetchData = () => {
+            fetch(`${baseUrl}/ingredients`)
+                .then(checkResponse)
+                .then((actualData) => {
+                    setIngredientsState({...ingredientsState, isLoaded: true, data: actualData.data})
+                })
+                .catch((err) => {
+                    console.log(`При получении данных произошла ошибка => ${err}`);
+                    setIngredientsState({...ingredientsState, hasError: true})
+                })
         }
         fetchData()
     }, [])

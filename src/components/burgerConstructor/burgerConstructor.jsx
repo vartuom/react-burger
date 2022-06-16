@@ -9,7 +9,8 @@ import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import OrderDetails from "../orderDetails/orderDetails";
 import {ConstructorContext} from "../../services/constructorContext";
-import {ordersUrl} from "../../utils/constants";
+import {baseUrl, ordersUrl} from "../../utils/constants";
+import {checkResponse} from "../../utils/api";
 
 const BurgerConstructor = () => {
 
@@ -55,14 +56,13 @@ const BurgerConstructor = () => {
         //сумма стоимости всех ингредиентов + двух булок
         const totalPrice = fakeBurger.reduce((prevVal, slice) => {
             return prevVal + slice.price;
-        }, 0) ;
+        }, 0);
         return {buns, slices, fakeBurger, totalPrice};
     }, [ingredients])
 
     //обработка нажатия кнопки "Оформить заказ"
-    const postOrder = async () => {
-        try {
-            const res = await fetch(ordersUrl, {
+    const postOrder = () => {
+        fetch(`${baseUrl}/orders`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,21 +71,14 @@ const BurgerConstructor = () => {
                     //раскладываем бургер на компоненты и выбираем id компонентов
                     ingredients: burgerComponents.fakeBurger.map((component) => component._id)
                 })
-            });
-            if (!res.ok) {
-                throw new Error(`Ошибка HTTP: статус ${res.status}`);
             }
-            const actualData = await res.json();
-            if (!actualData.success) {
-                throw new Error(`Ошибка сервера}`);
-            }
-            //если все ОК открываем модальное окно и передаем номер заказа в стейт
-            setIsDetailsOpened({isOpened: true, orderNumber: actualData.order.number});
-        } catch(err) {
-            console.log(`При получении данных произошла ошибка => ${err}`);
-        } finally {
-            //
-        }
+        )
+            .then(checkResponse)
+            .then((actualData) => {
+                //если все ОК открываем модальное окно и передаем номер заказа в стейт
+                setIsDetailsOpened({isOpened: true, orderNumber: actualData.order.number})
+            })
+            .catch((err) => console.log(`При получении данных произошла ошибка => ${err}`))
     }
 
     return (
@@ -102,7 +95,7 @@ const BurgerConstructor = () => {
             <ul className={burgerConstructorStyles.ingredientsList}>
                 {burgerComponents.slices.map((slice, index) =>
                     <li className={burgerConstructorStyles.ingredientsRow} key={index}>
-                        <DragIcon type="primary" />
+                        <DragIcon type="primary"/>
                         <ConstructorElement
                             text={slice.name}
                             price={slice.price}
