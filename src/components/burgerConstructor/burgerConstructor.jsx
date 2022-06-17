@@ -4,12 +4,10 @@ import burgerConstructorStyles from "./burgerConstructor.module.css";
 import {DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Price from "../price/price";
-import ingredientPropTypes from "../../utils/propTypesConfig";
-import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import OrderDetails from "../orderDetails/orderDetails";
 import {ConstructorContext} from "../../services/constructorContext";
-import {baseUrl, ordersUrl} from "../../utils/constants";
+import {baseUrl} from "../../utils/constants";
 import {checkResponse} from "../../utils/api";
 
 const BurgerConstructor = () => {
@@ -27,11 +25,6 @@ const BurgerConstructor = () => {
     //закрытие модального окна кликом на оверлей
     const closeDetailsModal = () => {
         setIsDetailsOpened({...isDetailsOpened, isOpened: false});
-    }
-
-    //обработка клика на кнопку Оформить
-    const openDetailsModal = (ingredient) => {
-        setIsDetailsOpened({isOpened: true, ingredient: ingredient});
     }
 
     //генерация случайного набора ингредиентов - затычка на время до реализции перетаскивания
@@ -125,7 +118,5 @@ const BurgerConstructor = () => {
         </div>
     );
 };
-
-BurgerConstructor.propTypes = {ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired};
 
 export default BurgerConstructor;

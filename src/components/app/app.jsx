@@ -4,7 +4,7 @@ import AppHeader from "../appHeader/appHeader";
 import BurgerIngredients from "../burgerIngredients/burgerIngredients";
 import BurgerConstructor from "../burgerConstructor/burgerConstructor";
 import {ConstructorContext} from "../../services/constructorContext";
-import {apiUrl, baseUrl} from "../../utils/constants";
+import {baseUrl} from "../../utils/constants";
 import {checkResponse} from "../../utils/api";
 
 function App() {
@@ -18,7 +18,6 @@ function App() {
 
     //загрузка данных с сервера
     React.useEffect(() => {
-
         const fetchData = () => {
             fetch(`${baseUrl}/ingredients`)
                 .then(checkResponse)
@@ -42,7 +41,7 @@ function App() {
                     <>
                         <BurgerIngredients ingredients={ingredientsState.data}/>
                         <ConstructorContext.Provider value={ingredientsState.data}>
-                            <BurgerConstructor ingredients={ingredientsState.data}/>
+                            <BurgerConstructor />
                         </ConstructorContext.Provider>
                     </>
                 }
