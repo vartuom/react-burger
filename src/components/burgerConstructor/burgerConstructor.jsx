@@ -6,14 +6,14 @@ import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Price from "../price/price";
 import Modal from "../modal/modal";
 import OrderDetails from "../orderDetails/orderDetails";
-import {ConstructorContext} from "../../services/constructorContext";
 import {baseUrl} from "../../utils/constants";
 import {checkResponse} from "../../utils/api";
+import {BurgerContext} from "../../services/burgerContext";
 
 const BurgerConstructor = () => {
 
     //до реализации логики сборки бургера в контексте лежат все возможные ингредиенты по 1 штуке
-    const ingredients = useContext(ConstructorContext);
+    const ingredients = useContext(BurgerContext);
 
     //состояние модального окна с деталями заказа
     const [isDetailsOpened, setIsDetailsOpened] =

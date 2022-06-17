@@ -2,10 +2,10 @@ import React from 'react';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from "./burgerIngredients.module.css";
 import CardsList from "../cardsList/cardsList";
-import {ConstructorContext} from "../../services/constructorContext";
+import {BurgerContext} from "../../services/burgerContext";
 
 const BurgerIngredients = () => {
-    const ingredients = React.useContext(ConstructorContext);
+    const ingredients = React.useContext(BurgerContext);
 
     const [currentTab, setCurrentTab] = React.useState('one');
 

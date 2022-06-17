@@ -3,9 +3,9 @@ import appStyles from './app.module.css';
 import AppHeader from "../appHeader/appHeader";
 import BurgerIngredients from "../burgerIngredients/burgerIngredients";
 import BurgerConstructor from "../burgerConstructor/burgerConstructor";
-import {ConstructorContext} from "../../services/constructorContext";
 import {baseUrl} from "../../utils/constants";
 import {checkResponse} from "../../utils/api";
+import {BurgerContext} from "../../services/burgerContext";
 
 function App() {
 
@@ -39,10 +39,10 @@ function App() {
                 <h1 className={`${appStyles.title} text text_type_main-large pt-10 pb-5`}>Соберите бургер</h1>
                 {ingredientsState.isLoaded &&
                     <>
-                        <ConstructorContext.Provider value={ingredientsState.data}>
+                        <BurgerContext.Provider value={ingredientsState.data}>
                             <BurgerIngredients/>
                             <BurgerConstructor/>
-                        </ConstructorContext.Provider>
+                        </BurgerContext.Provider>
                     </>
                 }
             </main>
