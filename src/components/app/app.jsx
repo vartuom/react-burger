@@ -39,9 +39,9 @@ function App() {
                 <h1 className={`${appStyles.title} text text_type_main-large pt-10 pb-5`}>Соберите бургер</h1>
                 {ingredientsState.isLoaded &&
                     <>
-                        <BurgerIngredients ingredients={ingredientsState.data}/>
                         <ConstructorContext.Provider value={ingredientsState.data}>
-                            <BurgerConstructor />
+                            <BurgerIngredients/>
+                            <BurgerConstructor/>
                         </ConstructorContext.Provider>
                     </>
                 }

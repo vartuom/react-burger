@@ -2,11 +2,11 @@ import React from 'react';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from "./burgerIngredients.module.css";
 import CardsList from "../cardsList/cardsList";
-import ingredientPropTypes from "../../utils/propTypesConfig";
-import PropTypes from "prop-types";
-import apiUrl from "../../utils/constants";
+import {ConstructorContext} from "../../services/constructorContext";
 
-const BurgerIngredients = ({ingredients}) => {
+const BurgerIngredients = () => {
+    const ingredients = React.useContext(ConstructorContext);
+
     const [currentTab, setCurrentTab] = React.useState('one');
 
     //указатели на заголовки списков ингредиентов
@@ -81,7 +81,5 @@ const BurgerIngredients = ({ingredients}) => {
         </section>
     );
 };
-
-BurgerIngredients.propTypes = {ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired};
 
 export default BurgerIngredients;
