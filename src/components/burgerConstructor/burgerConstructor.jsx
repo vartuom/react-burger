@@ -1,15 +1,19 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from "./burgerConstructor.module.css";
 import {DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Price from "../price/price";
-import ingredientPropTypes from "../../utils/propTypesConfig";
-import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import OrderDetails from "../orderDetails/orderDetails";
+import {baseUrl} from "../../utils/constants";
+import {checkResponse} from "../../utils/api";
+import {BurgerContext} from "../../services/burgerContext";
 
-const BurgerConstructor = ({ingredients}) => {
+const BurgerConstructor = () => {
+
+    //до реализации логики сборки бургера в контексте лежат все возможные ингредиенты по 1 штуке
+    const ingredients = useContext(BurgerContext);
 
     //состояние модального окна с деталями заказа
     const [isDetailsOpened, setIsDetailsOpened] =
@@ -18,28 +22,57 @@ const BurgerConstructor = ({ingredients}) => {
             orderNumber: null
         });
 
-    //закрытие модального окна кликом оверлей
+    //закрытие модального окна кликом на оверлей
     const closeDetailsModal = () => {
         setIsDetailsOpened({...isDetailsOpened, isOpened: false});
     }
 
-    //обработка клика на кнопку Оформить
-    const openDetailsModal = (ingredient) => {
-        setIsDetailsOpened({isOpened: true, ingredient: ingredient});
+    //генерация случайного набора ингредиентов - затычка на время до реализции перетаскивания
+    const randIngredients = (arr) => {
+        return arr.filter(el => {
+            return (Math.random() > 0.5)
+        })
     }
 
-    //отделяем булки от всего остального
+    //сборка бургера
     const burgerComponents = React.useMemo(() => {
         //кладем булки в отдельную переменную
         const buns = ingredients.find(function (ingredient) {
             return ingredient.type === "bun";
         });
-        //убираем булки из массива ингридиентов
-        const slices = ingredients.filter(function (ingredient) {
+        //убираем все булки и случайные ингредиенты из массива ингредиентов
+        const slices = randIngredients(ingredients.filter(function (ingredient) {
             return ingredient.type !== "bun";
-        });
-        return {buns, slices};
+        }));
+        //собираем бургер обратно
+        const fakeBurger = slices.concat(buns);
+        //сумма стоимости всех ингредиентов + двух булок
+        const totalPrice = fakeBurger.reduce((prevVal, slice) => {
+            return prevVal + slice.price;
+        }, 0);
+        return {buns, slices, fakeBurger, totalPrice};
     }, [ingredients])
+
+    //обработка нажатия кнопки "Оформить заказ"
+    const postOrder = () => {
+        fetch(`${baseUrl}/orders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    //раскладываем бургер на компоненты и выбираем id компонентов
+                    ingredients: burgerComponents.fakeBurger.map((component) => component._id)
+                })
+            }
+        )
+            .then(checkResponse)
+            .then((actualData) => {
+                //если все ОК открываем модальное окно и передаем номер заказа в стейт
+                setIsDetailsOpened({isOpened: true, orderNumber: actualData.order.number})
+            })
+            .catch((err) => console.log(`При получении данных произошла ошибка => ${err}`))
+    }
 
     return (
         <div className={burgerConstructorStyles.constructor}>
@@ -55,7 +88,7 @@ const BurgerConstructor = ({ingredients}) => {
             <ul className={burgerConstructorStyles.ingredientsList}>
                 {burgerComponents.slices.map((slice, index) =>
                     <li className={burgerConstructorStyles.ingredientsRow} key={index}>
-                        <DragIcon type="primary" />
+                        <DragIcon type="primary"/>
                         <ConstructorElement
                             text={slice.name}
                             price={slice.price}
@@ -74,18 +107,16 @@ const BurgerConstructor = ({ingredients}) => {
                 />
             </div>
             <div className={`${burgerConstructorStyles.commit} pr-4 pt-6`}>
-                <Price value={610} isLarge={true}/>
-                <Button type="primary" size="large" onClick={openDetailsModal}>Оформить заказ</Button>
+                <Price value={burgerComponents.totalPrice} isLarge={true}/>
+                <Button type="primary" size="large" onClick={postOrder}>Оформить заказ</Button>
             </div>
             {isDetailsOpened.isOpened &&
                 <Modal title="" handleCloseAction={closeDetailsModal}>
-                    <OrderDetails orderNumber="034536"/>
+                    <OrderDetails orderNumber={isDetailsOpened.orderNumber}/>
                 </Modal>
             }
         </div>
     );
 };
-
-BurgerConstructor.propTypes = {ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired};
 
 export default BurgerConstructor;

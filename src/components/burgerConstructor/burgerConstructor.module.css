@@ -13,7 +13,7 @@
     flex-direction: column;
     gap: calc(var(--offset-base-size)*4);
     overflow-y: scroll;
-    height: 464px;
+    max-height: 464px;
     box-sizing: content-box;
 }
 

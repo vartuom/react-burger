@@ -2,10 +2,11 @@ import React from 'react';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from "./burgerIngredients.module.css";
 import CardsList from "../cardsList/cardsList";
-import ingredientPropTypes from "../../utils/propTypesConfig";
-import PropTypes from "prop-types";
+import {BurgerContext} from "../../services/burgerContext";
 
-const BurgerIngredients = ({ingredients}) => {
+const BurgerIngredients = () => {
+    const ingredients = React.useContext(BurgerContext);
+
     const [currentTab, setCurrentTab] = React.useState('one');
 
     //указатели на заголовки списков ингредиентов
@@ -35,6 +36,7 @@ const BurgerIngredients = ({ingredients}) => {
         /*
             массивы и объекты нужно объявлять через const,
             так как Вы не меняете их ссылку в коде, а меняете внутренности.
+            (от ревьювера)
         */
         const buns = [];
         const mains = [];
@@ -57,6 +59,7 @@ const BurgerIngredients = ({ingredients}) => {
         return {buns, mains, sauces}
     }, [ingredients])
 
+
     return (
         <section className={burgerIngredientsStyles.ingredients}>
             <div className={burgerIngredientsStyles.tabs}>
@@ -78,7 +81,5 @@ const BurgerIngredients = ({ingredients}) => {
         </section>
     );
 };
-
-BurgerIngredients.propTypes = {ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired};
 
 export default BurgerIngredients;
