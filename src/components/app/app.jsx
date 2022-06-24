@@ -3,21 +3,31 @@ import appStyles from './app.module.css';
 import AppHeader from "../appHeader/appHeader";
 import BurgerIngredients from "../burgerIngredients/burgerIngredients";
 import BurgerConstructor from "../burgerConstructor/burgerConstructor";
-import {baseUrl} from "../../utils/constants";
-import {checkResponse} from "../../utils/api";
 import {BurgerContext} from "../../services/burgerContext";
+import {useEffect} from "react";
+import {useSelector, useDispatch} from "react-redux";
+import {getIngredients} from "../../services/actions/ingredients";
 
 function App() {
 
-    const [ingredientsState, setIngredientsState] = React.useState({
-        //"isLoaded: false" не дает зарендерится до получения данных компонентам, использующим данные с сервера
-        isLoaded: false,
-        hasError: false,
-        data: []
-    });
-
     //загрузка данных с сервера
-    React.useEffect(() => {
+    const {ingredients, ingredientsRequest, ingredientsFailed, isLoaded} = useSelector(store => ({
+        ingredients: store.ingredients.data,
+        ingredientsRequest: store.ingredients.ingredientsRequest,
+        ingredientsFailed: store.ingredients.ingredientsFailed,
+        isLoaded: store.ingredients.isLoaded
+    }))
+
+    const dispatch = useDispatch();
+
+    useEffect(()=> {
+        // Отправляем экшен-функцию
+        dispatch(getIngredients())
+    }, [])
+
+
+
+/*    React.useEffect(() => {
         const fetchData = () => {
             fetch(`${baseUrl}/ingredients`)
                 .then(checkResponse)
@@ -30,16 +40,16 @@ function App() {
                 })
         }
         fetchData()
-    }, [])
+    }, [])*/
 
     return (
         <div className={appStyles.app}>
             <AppHeader/>
             <main className={`${appStyles.main} pt-1 pb-10`}>
                 <h1 className={`${appStyles.title} text text_type_main-large pt-10 pb-5`}>Соберите бургер</h1>
-                {ingredientsState.isLoaded &&
+                {isLoaded &&
                     <>
-                        <BurgerContext.Provider value={ingredientsState.data}>
+                        <BurgerContext.Provider value={ingredients}>
                             <BurgerIngredients/>
                             <BurgerConstructor/>
                         </BurgerContext.Provider>
