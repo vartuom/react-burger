@@ -5,9 +5,8 @@ import {
 } from "../actions/ingredients";
 
 const initialState = {
-    ingredientsRequest: false,
+    ingredientsRequest: true,
     ingredientsFailed: false,
-    isLoaded: false,
     data: []
 }
 
@@ -20,7 +19,7 @@ export const ingredientsReducer = (state = initialState, action) => {
                 ingredientsRequest: true,
                 // Сбрасываем статус наличия ошибок от предыдущего запроса
                 // на случай, если он был и завершился с ошибкой
-                ingredientsFailed: false,
+                ingredientsFailed: false
             };
         }
         case GET_INGREDIENTS_SUCCESS: {
@@ -29,8 +28,7 @@ export const ingredientsReducer = (state = initialState, action) => {
                 // Запрос выполнился успешно, помещаем полученные данные в хранилище
                 data: action.ingredients,
                 // Запрос закончил своё выполнение
-                ingredientsRequest: false,
-                isLoaded: true
+                ingredientsRequest: false
             };
         }
         case GET_INGREDIENTS_FAILED: {

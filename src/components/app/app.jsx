@@ -7,15 +7,17 @@ import {BurgerContext} from "../../services/burgerContext";
 import {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {getIngredients} from "../../services/actions/ingredients";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 
 function App() {
 
     //загрузка данных с сервера
-    const {ingredients, ingredientsRequest, ingredientsFailed, isLoaded} = useSelector(store => ({
+    const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector(store => ({
         ingredients: store.ingredients.data,
         ingredientsRequest: store.ingredients.ingredientsRequest,
-        ingredientsFailed: store.ingredients.ingredientsFailed,
-        isLoaded: store.ingredients.isLoaded
+        ingredientsFailed: store.ingredients.ingredientsFailed
     }))
 
     const dispatch = useDispatch();
@@ -25,35 +27,18 @@ function App() {
         dispatch(getIngredients())
     }, [])
 
-
-
-/*    React.useEffect(() => {
-        const fetchData = () => {
-            fetch(`${baseUrl}/ingredients`)
-                .then(checkResponse)
-                .then((actualData) => {
-                    setIngredientsState({...ingredientsState, isLoaded: true, data: actualData.data})
-                })
-                .catch((err) => {
-                    console.log(`При получении данных произошла ошибка => ${err}`);
-                    setIngredientsState({...ingredientsState, hasError: true})
-                })
-        }
-        fetchData()
-    }, [])*/
-
     return (
         <div className={appStyles.app}>
             <AppHeader/>
             <main className={`${appStyles.main} pt-1 pb-10`}>
                 <h1 className={`${appStyles.title} text text_type_main-large pt-10 pb-5`}>Соберите бургер</h1>
-                {isLoaded &&
-                    <>
+                {!ingredientsRequest &&
+                    <DndProvider backend={HTML5Backend}>
                         <BurgerContext.Provider value={ingredients}>
                             <BurgerIngredients/>
                             <BurgerConstructor/>
                         </BurgerContext.Provider>
-                    </>
+                    </DndProvider>
                 }
             </main>
         </div>
