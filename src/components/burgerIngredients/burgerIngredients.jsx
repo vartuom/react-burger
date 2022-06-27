@@ -2,11 +2,16 @@ import React from 'react';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from "./burgerIngredients.module.css";
 import CardsList from "../cardsList/cardsList";
-import {BurgerContext} from "../../services/burgerContext";
+import {useSelector} from "react-redux";
 
 const BurgerIngredients = () => {
-    const ingredients = React.useContext(BurgerContext);
 
+    //принимаем список всех ингредиентов
+    const {ingredients} = useSelector(store => ({
+        ingredients: store.ingredients.data
+    }))
+
+    //стейт закладок с ингредиентами
     const [currentTab, setCurrentTab] = React.useState('one');
 
     //указатели на заголовки списков ингредиентов
@@ -31,7 +36,7 @@ const BurgerIngredients = () => {
         }
     }, [currentTab])
 
-    //сортируем ингридиенты по типам
+    //сортируем ингредиенты по типам
     const sortedIngredients = React.useMemo(() => {
         /*
             массивы и объекты нужно объявлять через const,
@@ -73,6 +78,7 @@ const BurgerIngredients = () => {
                     Начинки
                 </Tab>
             </div>
+            {/* пробрасываем рефы на табы внутрь списков */}
             <div className={burgerIngredientsStyles.list}>
                 <CardsList ingredients={sortedIngredients.buns} title="Булки" ref={bunsListRef}/>
                 <CardsList ingredients={sortedIngredients.sauces} title="Соусы" ref={saucesListRef}/>
