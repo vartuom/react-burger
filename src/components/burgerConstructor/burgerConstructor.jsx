@@ -8,8 +8,9 @@ import Modal from "../modal/modal";
 import OrderDetails from "../orderDetails/orderDetails";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrop} from "react-dnd";
-import {ADD_INGREDIENT, REMOVE_INGREDIENT} from "../../services/actions/burgerConstructor";
+import {ADD_INGREDIENT, MOVE_INGREDIENT, REMOVE_INGREDIENT} from "../../services/actions/burgerConstructor";
 import {CLOSE_DETAILS_MODAL, post} from "../../services/actions/order";
+import DragSource from "../dragSource/dragSource";
 
 const BurgerConstructor = () => {
 
@@ -58,9 +59,21 @@ const BurgerConstructor = () => {
         dispatch(post([...mains, bun, bun]))
     }, [mains, bun])
 
-    const deleteSlice = (index) => {
-
-    }
+    const moveCard = useCallback((dragIndex, hoverIndex) => {
+        dispatch({
+            type: MOVE_INGREDIENT,
+            dragIndex: dragIndex,
+            hoverIndex: hoverIndex
+        })
+        /*setCards((prevCards) =>
+            update(prevCards, {
+                $splice: [
+                    [dragIndex, 1],
+                    [hoverIndex, 0, prevCards[dragIndex]],
+                ],
+            }),
+        )*/
+    }, [])
 
     return (
         <div ref={dropTarget}>
@@ -76,20 +89,8 @@ const BurgerConstructor = () => {
                 </div>
                 <ul ref={dropTarget} className={burgerConstructorStyles.ingredientsList}>
                     {mains.map((slice, index) =>
-                        <li className={burgerConstructorStyles.ingredientsRow} key={index}>
-                            <DragIcon type="primary"/>
-                            <ConstructorElement
-                                text={slice.name}
-                                price={slice.price}
-                                thumbnail={slice.image}
-                                handleClose={() => {
-                                    // удаляем элемент по его индексу в массиве
-                                    dispatch({
-                                        type: REMOVE_INGREDIENT,
-                                        index: index
-                                    })
-                                }}
-                            />
+                        <li key={index} >
+                            <DragSource slice={slice} index={index} moveCard={moveCard}/>
                         </li>
                     )}
                 </ul>
