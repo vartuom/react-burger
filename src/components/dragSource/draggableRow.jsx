@@ -6,29 +6,34 @@ import burgerConstructorStyles from "../burgerConstructor/burgerConstructor.modu
 import {useDrop, useDrag} from "react-dnd";
 import {useRef} from "react";
 
-const DragSource = ({slice, index, moveCard}) => {
+const DraggableRow = ({slice, index, moveIngredient}) => {
     const dispatch = useDispatch();
 
-    // useDrop - the list item is also a drop area
+    // компонент и дроп-айтем и драг-айтем одновременно
     const [{isHover}, dropRef] = useDrop({
         accept: 'constructor',
         hover: (item, monitor) => {
             const dragIndex = item.index
-            debugger
             const hoverIndex = index
-            const hoverBoundingRect = ref.current?.getBoundingClientRect()
+
+            //настройки под место срабатывания перетаскивания
+            /*const hoverBoundingRect = ref.current?.getBoundingClientRect()
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
             const hoverActualY = monitor.getClientOffset().y - hoverBoundingRect.top
-
             // if dragging down, continue only when hover is smaller than middle Y
-            //if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return
+            if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return
             // if dragging up, continue only when hover is bigger than middle Y
-            //if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return
+            if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return*/
+
+            //не таскаем самого себя
             if (dragIndex === hoverIndex) {
                 return
             }
 
-            moveCard(dragIndex, hoverIndex)
+            //двигаем ингредиент
+            moveIngredient(dragIndex, hoverIndex)
+
+            //костыль из документации
             item.index = hoverIndex
         },
         collect: monitor => ({
@@ -44,9 +49,11 @@ const DragSource = ({slice, index, moveCard}) => {
         }),
     })
 
-    const opacity = isDragging ? 1 : 1
+    //const opacity = isDragging ? 0 : 1
+    const opacity = isHover ? 0 : 1
 
     const ref = useRef(null)
+    //вроде как совмещает рефы? хз как это работает
     const dragDropRef = dragRef(dropRef(ref));
 
     return (
@@ -68,4 +75,4 @@ const DragSource = ({slice, index, moveCard}) => {
     );
 };
 
-export default DragSource;
+export default DraggableRow;

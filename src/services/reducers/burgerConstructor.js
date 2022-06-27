@@ -29,50 +29,55 @@ export const constructorReducer = (state = initialState, action) => {
         }
         case MOVE_INGREDIENT: {
             //копируем стейт
+            const updatedMains = state.mains;
+            //получаем по индексам перетаскиваемый элемент и элемент, на который падает ховер
             const dragItem = state.mains[action.dragIndex]
             const hoverItem = state.mains[action.hoverIndex]
-            const updatedMains = state.mains;
+            //меняем элементы местами
             updatedMains[action.dragIndex] = hoverItem
             updatedMains[action.hoverIndex] = dragItem
-            //копируем захваченную карточку
-            const dragCard = state.mains[action.dragIndex];
-            //удаляем карточку из копии стейта
-            //newList.splice(action.dragIndex, 1);
-            //вставляем карточку на позицию элемента над которым перетаскиваемая карточка
             return {
                 ...state,
                 mains: updatedMains
             }
-            /*moveCard = (dragIndex, hoverIndex) => {
-                // list of cards
-                let newcards = this.state.cards;
-
-                // dragCard is card we are dragging
-                let dragCard = newcards[dragIndex];
-
-               // removing this dragCard from array
-                newcards.splice(dragIndex, 1);
-
-                 // insert dragCard at hover position
-                newcards.splice(hoverIndex, 0, dragCard);
-
-                // update State
-                this.setState({
-                  cards: newcards
-                });
-              };
-            }*/
-            /*//копируем стейт
-            const newList = state.mains;
-            //копируем захваченную карточку
-            const dragCard = state.mains[action.dragIndex];
-            //удаляем карточку из копии стейта
-            //newList.splice(action.dragIndex, 1);
-            //вставляем карточку на позицию элемента над которым перетаскиваемая карточка
-            newList.splice(action.hoverIndex, 0, dragCard)*/
         }
         default: {
             return state
         }
     }
 }
+
+
+
+/*moveCard = (dragIndex, hoverIndex) => {
+    // list of cards
+    let newcards = this.state.cards;
+
+    // dragCard is card we are dragging
+    let dragCard = newcards[dragIndex];
+
+   // removing this dragCard from array
+    newcards.splice(dragIndex, 1);
+
+     // insert dragCard at hover position
+    newcards.splice(hoverIndex, 0, dragCard);
+
+    // update State
+    this.setState({
+      cards: newcards
+    });
+  };
+}*/
+/*//копируем стейт
+const newList = state.mains;
+//копируем захваченную карточку
+const dragCard = state.mains[action.dragIndex];
+//удаляем карточку из копии стейта
+//newList.splice(action.dragIndex, 1);
+//вставляем карточку на позицию элемента над которым перетаскиваемая карточка
+newList.splice(action.hoverIndex, 0, dragCard)*/
+
+//копируем захваченную карточку
+//удаляем карточку из копии стейта
+//newList.splice(action.dragIndex, 1);
+//вставляем карточку на позицию элемента над которым перетаскиваемая карточка

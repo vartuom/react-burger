@@ -1,16 +1,15 @@
 import React, {useCallback, useMemo} from 'react';
 import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from "./burgerConstructor.module.css";
-import {DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Price from "../price/price";
 import Modal from "../modal/modal";
 import OrderDetails from "../orderDetails/orderDetails";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrop} from "react-dnd";
-import {ADD_INGREDIENT, MOVE_INGREDIENT, REMOVE_INGREDIENT} from "../../services/actions/burgerConstructor";
+import {ADD_INGREDIENT, MOVE_INGREDIENT} from "../../services/actions/burgerConstructor";
 import {CLOSE_DETAILS_MODAL, post} from "../../services/actions/order";
-import DragSource from "../dragSource/dragSource";
+import DraggableRow from "../dragSource/draggableRow";
 
 const BurgerConstructor = () => {
 
@@ -59,21 +58,13 @@ const BurgerConstructor = () => {
         dispatch(post([...mains, bun, bun]))
     }, [mains, bun])
 
-    const moveCard = useCallback((dragIndex, hoverIndex) => {
+    const moveIngredient = useCallback((dragIndex, hoverIndex) => {
         dispatch({
             type: MOVE_INGREDIENT,
             dragIndex: dragIndex,
             hoverIndex: hoverIndex
         })
-        /*setCards((prevCards) =>
-            update(prevCards, {
-                $splice: [
-                    [dragIndex, 1],
-                    [hoverIndex, 0, prevCards[dragIndex]],
-                ],
-            }),
-        )*/
-    }, [])
+    }, [dispatch])
 
     return (
         <div ref={dropTarget}>
@@ -90,7 +81,7 @@ const BurgerConstructor = () => {
                 <ul ref={dropTarget} className={burgerConstructorStyles.ingredientsList}>
                     {mains.map((slice, index) =>
                         <li key={index} >
-                            <DragSource slice={slice} index={index} moveCard={moveCard}/>
+                            <DraggableRow slice={slice} index={index} moveIngredient={moveIngredient}/>
                         </li>
                     )}
                 </ul>
