@@ -10,7 +10,7 @@ import {CLOSE_INGREDIENT_MODAL, OPEN_INGREDIENT_MODAL} from "../../services/acti
 
 //получаем ссылку на заголовок (для скрола)
 const CardsList = React.forwardRef((props, ref) => {
-    const { ingredients, title } = props;
+    const { ingredients, title, id } = props;
     const dispatch = useDispatch();
 
     //состояние модального окна с описанием ингредиента
@@ -36,8 +36,8 @@ const CardsList = React.forwardRef((props, ref) => {
 
     return (
         <div>
-            <h2 className="text text_type_main-medium pt-10 pb-6" ref={ref}>{title}</h2>
-            <ul className={`${cardListStyle.cardList} pl-4 pr-4`}>
+            <h2 className="text text_type_main-medium pt-10 pb-6" id={id}>{title}</h2>
+            <ul className={`${cardListStyle.cardList} pl-4 pr-4`} ref={ref}>
                 {ingredients.map(ingredient =>
                     <Card ingredient={ingredient} key={ingredient._id} action={openDetailsModal}/>
                 )}
