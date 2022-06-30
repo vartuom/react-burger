@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useDrop} from "react-dnd";
 import {ADD_INGREDIENT, MOVE_INGREDIENT} from "../../services/actions/burgerConstructor";
 import {CLOSE_DETAILS_MODAL, post} from "../../services/actions/order";
-import DraggableRow from "../dragSource/draggableRow";
+import DraggableRow from "../draggableRow/draggableRow";
 
 const BurgerConstructor = () => {
 

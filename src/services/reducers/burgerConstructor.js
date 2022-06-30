@@ -28,17 +28,18 @@ export const constructorReducer = (state = initialState, action) => {
             }
         }
         case MOVE_INGREDIENT: {
-            //копируем стейт
-            const updatedMains = state.mains;
-            //получаем по индексам перетаскиваемый элемент и элемент, на который падает ховер
-            const dragItem = state.mains[action.dragIndex]
-            const hoverItem = state.mains[action.hoverIndex]
-            //меняем элементы местами
-            updatedMains[action.dragIndex] = hoverItem
-            updatedMains[action.hoverIndex] = dragItem
+            //копируем стейт в рабочий массив
+            const updatedList = state.mains;
+            //копируем захваченную карточку
+            const dragCard = state.mains[action.dragIndex];
+            //удаляем карточку из копии стейта
+            updatedList.splice(action.dragIndex, 1);
+            //вставляем карточку на позицию элемента над которым перетаскиваемая карточка
+            updatedList.splice(action.hoverIndex, 0, dragCard)
             return {
                 ...state,
-                mains: updatedMains
+                mains: updatedList
+
             }
         }
         default: {
@@ -81,3 +82,19 @@ newList.splice(action.hoverIndex, 0, dragCard)*/
 //удаляем карточку из копии стейта
 //newList.splice(action.dragIndex, 1);
 //вставляем карточку на позицию элемента над которым перетаскиваемая карточка
+
+/*
+case MOVE_INGREDIENT: {
+    //копируем стейт
+    const updatedMains = state.mains;
+    //получаем по индексам перетаскиваемый элемент и элемент, на который падает ховер
+    const dragItem = state.mains[action.dragIndex]
+    const hoverItem = state.mains[action.hoverIndex]
+    //меняем элементы местами
+    updatedMains[action.dragIndex] = hoverItem
+    updatedMains[action.hoverIndex] = dragItem
+    return {
+        ...state,
+        mains: updatedMains
+    }
+}*/

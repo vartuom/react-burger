@@ -2,7 +2,7 @@ import React from 'react';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {REMOVE_INGREDIENT} from "../../services/actions/burgerConstructor";
 import {useDispatch} from "react-redux";
-import burgerConstructorStyles from "../burgerConstructor/burgerConstructor.module.css";
+import draggableRowStyles from "./draggableRow.module.css";
 import {useDrop, useDrag} from "react-dnd";
 import {useRef} from "react";
 
@@ -17,13 +17,13 @@ const DraggableRow = ({slice, index, moveIngredient}) => {
             const hoverIndex = index
 
             //настройки под место срабатывания перетаскивания
-            /*const hoverBoundingRect = ref.current?.getBoundingClientRect()
+            const hoverBoundingRect = ref.current?.getBoundingClientRect()
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
             const hoverActualY = monitor.getClientOffset().y - hoverBoundingRect.top
             // if dragging down, continue only when hover is smaller than middle Y
             if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return
             // if dragging up, continue only when hover is bigger than middle Y
-            if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return*/
+            if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return
 
             //не таскаем самого себя
             if (dragIndex === hoverIndex) {
@@ -49,15 +49,15 @@ const DraggableRow = ({slice, index, moveIngredient}) => {
         }),
     })
 
-    //const opacity = isDragging ? 0 : 1
-    const opacity = isHover ? 0 : 1
+    const opacity = isDragging ? 0 : 1
+    //const opacity = isHover ? 0 : 1
 
     const ref = useRef(null)
     //вроде как совмещает рефы? хз как это работает
     const dragDropRef = dragRef(dropRef(ref));
 
     return (
-        <div ref={dragDropRef} className={burgerConstructorStyles.ingredientsRow} style={{opacity: opacity}}>
+        <div ref={dragDropRef} className={draggableRowStyles.row} style={{opacity: opacity}}>
             <DragIcon type="primary"/>
             <ConstructorElement
                 text={slice.name}
