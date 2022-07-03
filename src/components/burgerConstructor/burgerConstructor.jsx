@@ -10,6 +10,7 @@ import {useDrop} from "react-dnd";
 import {ADD_INGREDIENT, MOVE_INGREDIENT} from "../../services/actions/burgerConstructor";
 import {CLOSE_DETAILS_MODAL, post} from "../../services/actions/order";
 import DraggableRow from "../draggableRow/draggableRow";
+import { v4 as uuidv4 } from 'uuid';
 
 const BurgerConstructor = () => {
 
@@ -33,7 +34,8 @@ const BurgerConstructor = () => {
         drop({ingredient}) {
             dispatch({
                 type: ADD_INGREDIENT,
-                payload: ingredient
+                //добавляем уникальный идентифкатор (uuid) для объекта ингредиента в конструкторе
+                payload: {...ingredient, uuid: uuidv4()}
             })
         },
     });
@@ -49,15 +51,19 @@ const BurgerConstructor = () => {
     const calcPrice = useMemo(() => {
         return mains.reduce((prevVal, slice) => {
             return prevVal + slice.price;
-        }, 0) + (bun.price ? bun.price * 2 : 0);
+        }, 0)
+            //добавляем цену булок, если они есть в конструкторе
+            + (bun.price ? bun.price * 2 : 0);
     }, [bun, mains])
 
     //обработка нажатия кнопки "Оформить заказ"
     const postOrder = useCallback(() => {
-        //ингредиенты в конструкторе + 2 булки
-        dispatch(post([...mains, bun, bun]))
+        //если в конструкторе нет булок или ингредиентов то не отправляем заказ
+        if (bun.price && mains.length > 0)
+            dispatch(post([...mains, bun, bun]))
     }, [mains, bun])
 
+    //DnD сортировка перетаскиванием
     const moveIngredient = useCallback((dragIndex, hoverIndex) => {
         dispatch({
             type: MOVE_INGREDIENT,
@@ -80,7 +86,7 @@ const BurgerConstructor = () => {
                 </div>
                 <ul ref={dropTarget} className={burgerConstructorStyles.ingredientsList}>
                     {mains.map((slice, index) =>
-                        <li key={index} >
+                        <li key={slice.uuid} >
                             <DraggableRow slice={slice} index={index} moveIngredient={moveIngredient}/>
                         </li>
                     )}

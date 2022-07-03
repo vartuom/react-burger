@@ -1,5 +1,5 @@
 import {
-    GET_INGREDIENTS_FAILED,
+    GET_INGREDIENTS_ERROR,
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS
 } from "../actions/ingredients";
@@ -27,17 +27,15 @@ export const ingredientsReducer = (state = initialState, action) => {
                 ...state,
                 // Запрос выполнился успешно, помещаем полученные данные в хранилище
                 data: action.ingredients,
-                // Запрос закончил своё выполнение
                 ingredientsRequest: false
             };
         }
-        case GET_INGREDIENTS_FAILED: {
+        case GET_INGREDIENTS_ERROR: {
             return {
                 ...state,
                 // Запрос выполнился с ошибкой,
                 // выставляем соответствующие значения в хранилище
                 ingredientsFailed: true,
-                // Запрос закончил своё выполнение
                 ingredientsRequest: false
             };
         }

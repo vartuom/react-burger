@@ -3,7 +3,7 @@ import {checkResponse} from "../../utils/api";
 
 export const POST_ORDER_REQUEST = 'POST_ORDER_REQUEST'
 export const POST_ORDER_SUCCESS = 'POST_ORDER_SUCCESS'
-export const POST_ORDER_FAILED = 'POST_ORDER_FAILED'
+export const POST_ORDER_ERROR = 'POST_ORDER_ERROR'
 export const CLOSE_DETAILS_MODAL = 'CLOSE_DETAILS_MODAL'
 
 export function post(data) {
@@ -30,14 +30,14 @@ export function post(data) {
                     });
                 } else {
                     dispatch({
-                        type: POST_ORDER_FAILED
+                        type: POST_ORDER_ERROR
                     });
                 }
             }).catch(err => {
             // Если сервер не вернул данных, также отправляем экшен об ошибке
             console.log(err);
             dispatch({
-                type: POST_ORDER_FAILED
+                type: POST_ORDER_ERROR
             })
         });
     };

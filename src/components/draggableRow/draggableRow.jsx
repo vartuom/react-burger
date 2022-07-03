@@ -10,7 +10,7 @@ const DraggableRow = ({slice, index, moveIngredient}) => {
     const dispatch = useDispatch();
 
     // компонент и дроп-айтем и драг-айтем одновременно
-    const [{isHover}, dropRef] = useDrop({
+    const [, dropRef] = useDrop({
         accept: 'constructor',
         hover: (item, monitor) => {
             const dragIndex = item.index
@@ -20,9 +20,10 @@ const DraggableRow = ({slice, index, moveIngredient}) => {
             const hoverBoundingRect = ref.current?.getBoundingClientRect()
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
             const hoverActualY = monitor.getClientOffset().y - hoverBoundingRect.top
-            // if dragging down, continue only when hover is smaller than middle Y
+            // если тащим вниз, то ждем момента пока перетаскиваемый элемент
+            // окажется ниже середины лежащего под ним
             if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return
-            // if dragging up, continue only when hover is bigger than middle Y
+            //если тащим вверх
             if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return
 
             //не таскаем самого себя
@@ -32,28 +33,22 @@ const DraggableRow = ({slice, index, moveIngredient}) => {
 
             //двигаем ингредиент
             moveIngredient(dragIndex, hoverIndex)
-
-            //костыль из документации
             item.index = hoverIndex
-        },
-        collect: monitor => ({
-            isHover: monitor.isOver()
-        })
+        }
     })
 
     const [{ isDragging }, dragRef] = useDrag({
         type: 'constructor',
         item: { index },
+        //используем статус перетаскивания для переключения opacity
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
     })
 
     const opacity = isDragging ? 0 : 1
-    //const opacity = isHover ? 0 : 1
 
     const ref = useRef(null)
-    //вроде как совмещает рефы? хз как это работает
     const dragDropRef = dragRef(dropRef(ref));
 
     return (

@@ -3,7 +3,7 @@ import {checkResponse} from "../../utils/api";
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST'
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS'
-export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED'
+export const GET_INGREDIENTS_ERROR = 'GET_INGREDIENTS_ERROR'
 
 export function getIngredients() {
     return async (dispatch) => {
@@ -20,35 +20,15 @@ export function getIngredients() {
                     });
                 } else {
                     dispatch({
-                        type: GET_INGREDIENTS_FAILED
+                        type: GET_INGREDIENTS_ERROR
                     });
                 }
             }).catch(err => {
             // Если сервер не вернул данных, также отправляем экшен об ошибке
             console.log(err);
             dispatch({
-                type: GET_INGREDIENTS_FAILED
+                type: GET_INGREDIENTS_ERROR
             })
         });
     };
 }
-
-/*try {
-           dispatch({
-               type: GET_INGREDIENTS_REQUEST
-           });
-           const response = await fetch(`${baseUrl}/ingrediens`);
-           if (!response.ok) {
-               throw new Error('response')
-           }
-           const actualData = await response.json();
-           dispatch({
-               type: GET_INGREDIENTS_SUCCESS,
-               ingredients: actualData.data
-           })
-       } catch (err) {
-           console.log('error: ', err)
-           dispatch({
-               type: GET_INGREDIENTS_FAILED
-           })
-       }*/

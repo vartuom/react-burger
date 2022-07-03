@@ -1,5 +1,5 @@
 import {
-    POST_ORDER_FAILED,
+    POST_ORDER_ERROR,
     POST_ORDER_SUCCESS,
     POST_ORDER_REQUEST, CLOSE_DETAILS_MODAL
 } from "../actions/order";
@@ -26,7 +26,7 @@ export const orderReducer = (state = initialState, action) => {
                 isOpened: true
             };
         }
-        case POST_ORDER_FAILED: {
+        case POST_ORDER_ERROR: {
             return {
                 ...state
             };

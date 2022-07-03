@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerIngredientsStyles from "./burgerIngredients.module.css";
 import CardsList from "../cardsList/cardsList";
@@ -15,11 +15,7 @@ const BurgerIngredients = () => {
     //стейт закладок с ингредиентами
     const [currentTab, setCurrentTab] = React.useState('buns');
 
-    //указатели на заголовки списков ингредиентов
-  /*  const bunsListRef = React.useRef(null);
-    const mainsListRef = React.useRef(null);
-    const saucesListRef = React.useRef(null);*/
-
+    //хуки для переключения табов при скроле, возвращают true когда объект в поле видимости
     const [bunsListRef, inViewBuns] = useInView({
         threshold: 0.5
     });
@@ -30,7 +26,7 @@ const BurgerIngredients = () => {
         threshold: 0.5
     });
 
-
+    //переключение активного таба при скроле
     useEffect(()=> {
         if (inViewBuns) {
             setCurrentTab('buns')
@@ -41,38 +37,16 @@ const BurgerIngredients = () => {
         }
     }, [inViewBuns, inViewSauces, inViewMains])
 
-    //обработка нажатия на закладки
-    /*React.useEffect(() => {
-        switch (currentTab) {
-            case 'buns':
-                //скрол до заголовка
-                console.log(bunsListRef);
-                bunsListRef.current.scrollIntoView({behavior: "smooth", block: "start"});
-                break;
-            case 'mains':
-                //mainsListRef.current.scrollIntoView({behavior: "smooth", block: "start"});
-                break;
-            case 'sauces':
-                //saucesListRef.current.scrollIntoView({behavior: "smooth", block: "start"});
-                break;
-            default:
-        }
-    }, [currentTab])*/
-
-    const handleTabClick = (subTabId) => {
+    //обработка клика на таб
+    const handleTabClick = useCallback((subTabId) => {
         document.getElementById(subTabId).scrollIntoView({
             behavior: "smooth",
             block: "start"
         });
-    }
+    }, [])
 
     //сортируем ингредиенты по типам
     const sortedIngredients = React.useMemo(() => {
-        /*
-            массивы и объекты нужно объявлять через const,
-            так как Вы не меняете их ссылку в коде, а меняете внутренности.
-            (от ревьювера)
-        */
         const buns = [];
         const mains = [];
         const sauces = [];
