@@ -36,7 +36,8 @@ export const ingredientsReducer = (state = initialState, action) => {
                 // Запрос выполнился с ошибкой,
                 // выставляем соответствующие значения в хранилище
                 ingredientsFailed: true,
-                ingredientsRequest: false
+                ingredientsRequest: false,
+                data: []
             };
         }
         default: {

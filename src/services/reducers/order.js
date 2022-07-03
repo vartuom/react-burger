@@ -28,7 +28,10 @@ export const orderReducer = (state = initialState, action) => {
         }
         case POST_ORDER_ERROR: {
             return {
-                ...state
+                ...state,
+                name: '',
+                orderNumber: 0,
+                data: []
             };
         }
         case CLOSE_DETAILS_MODAL: {
