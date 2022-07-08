@@ -1,120 +1,116 @@
-import React, {useContext} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from "./burgerConstructor.module.css";
-import {DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Price from "../price/price";
 import Modal from "../modal/modal";
 import OrderDetails from "../orderDetails/orderDetails";
-import {baseUrl} from "../../utils/constants";
-import {checkResponse} from "../../utils/api";
-import {BurgerContext} from "../../services/burgerContext";
+import {useDispatch, useSelector} from "react-redux";
+import {useDrop} from "react-dnd";
+import {ADD_INGREDIENT, MOVE_INGREDIENT} from "../../services/actions/burgerConstructor";
+import {CLOSE_DETAILS_MODAL, post} from "../../services/actions/order";
+import DraggableRow from "../draggableRow/draggableRow";
+import { v4 as uuidv4 } from 'uuid';
 
 const BurgerConstructor = () => {
 
-    //до реализации логики сборки бургера в контексте лежат все возможные ингредиенты по 1 штуке
-    const ingredients = useContext(BurgerContext);
+    const dispatch = useDispatch();
 
-    //состояние модального окна с деталями заказа
-    const [isDetailsOpened, setIsDetailsOpened] =
-        React.useState({
-            isOpened: false,
-            orderNumber: null
-        });
+    //следим за булкой и ингредиентами в конструкторе
+    const {bun, mains} = useSelector(store => ({
+        bun: store.burgerConstructor.bun,
+        mains: store.burgerConstructor.mains
+    }))
+
+    //параметры модального окна с номером заказа
+    const {isDetailsOpened, orderNumber} = useSelector(store => ({
+        isDetailsOpened: store.order.isOpened,
+        orderNumber: store.order.orderNumber
+    }))
+
+    //обработка перетаскиваемых объектов в контейнер
+    const [, dropTarget] = useDrop({
+        accept: "ingredient",
+        drop({ingredient}) {
+            dispatch({
+                type: ADD_INGREDIENT,
+                //добавляем уникальный идентифкатор (uuid) для объекта ингредиента в конструкторе
+                payload: {...ingredient, uuid: uuidv4()}
+            })
+        },
+    });
 
     //закрытие модального окна кликом на оверлей
-    const closeDetailsModal = () => {
-        setIsDetailsOpened({...isDetailsOpened, isOpened: false});
-    }
-
-    //генерация случайного набора ингредиентов - затычка на время до реализции перетаскивания
-    const randIngredients = (arr) => {
-        return arr.filter(el => {
-            return (Math.random() > 0.5)
-        })
-    }
-
-    //сборка бургера
-    const burgerComponents = React.useMemo(() => {
-        //кладем булки в отдельную переменную
-        const buns = ingredients.find(function (ingredient) {
-            return ingredient.type === "bun";
+    const closeDetailsModal = useCallback(() => {
+        dispatch({
+            type: CLOSE_DETAILS_MODAL
         });
-        //убираем все булки и случайные ингредиенты из массива ингредиентов
-        const slices = randIngredients(ingredients.filter(function (ingredient) {
-            return ingredient.type !== "bun";
-        }));
-        //собираем бургер обратно
-        const fakeBurger = slices.concat(buns);
-        //сумма стоимости всех ингредиентов + двух булок
-        const totalPrice = fakeBurger.reduce((prevVal, slice) => {
+    }, [])
+
+    //мемоизированное вычисление цены бургера
+    const calcPrice = useMemo(() => {
+        return mains.reduce((prevVal, slice) => {
             return prevVal + slice.price;
-        }, 0);
-        return {buns, slices, fakeBurger, totalPrice};
-    }, [ingredients])
+        }, 0)
+            //добавляем цену булок, если они есть в конструкторе
+            + (bun.price ? bun.price * 2 : 0);
+    }, [bun, mains])
 
     //обработка нажатия кнопки "Оформить заказ"
-    const postOrder = () => {
-        fetch(`${baseUrl}/orders`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    //раскладываем бургер на компоненты и выбираем id компонентов
-                    ingredients: burgerComponents.fakeBurger.map((component) => component._id)
-                })
-            }
-        )
-            .then(checkResponse)
-            .then((actualData) => {
-                //если все ОК открываем модальное окно и передаем номер заказа в стейт
-                setIsDetailsOpened({isOpened: true, orderNumber: actualData.order.number})
-            })
-            .catch((err) => console.log(`При получении данных произошла ошибка => ${err}`))
-    }
+    const postOrder = useCallback(() => {
+        //если в конструкторе нет булок или ингредиентов то не отправляем заказ
+        if (bun.price && mains.length > 0)
+            dispatch(post([...mains, bun, bun]))
+    }, [mains, bun])
+
+    //DnD сортировка перетаскиванием
+    const moveIngredient = useCallback((dragIndex, hoverIndex) => {
+        dispatch({
+            type: MOVE_INGREDIENT,
+            dragIndex: dragIndex,
+            hoverIndex: hoverIndex
+        })
+    }, [dispatch])
 
     return (
-        <div className={burgerConstructorStyles.constructor}>
-            <div className={`${burgerConstructorStyles.buns} pl-8 pt-1`}>
-                <ConstructorElement
-                    type="top"
-                    isLocked={true}
-                    text={`${burgerComponents.buns.name} (верх)`}
-                    price={burgerComponents.buns.price}
-                    thumbnail={burgerComponents.buns.image}
-                />
+        <div ref={dropTarget}>
+            <div className={burgerConstructorStyles.constructor}>
+                <div className={`${burgerConstructorStyles.buns} pl-8 pt-1`}>
+                    {bun.type && <ConstructorElement
+                        type="top"
+                        isLocked={true}
+                        text={`${bun.name} (верх)`}
+                        price={bun.price}
+                        thumbnail={bun.image}
+                    />}
+                </div>
+                <ul ref={dropTarget} className={burgerConstructorStyles.ingredientsList}>
+                    {mains.map((slice, index) =>
+                        <li key={slice.uuid} >
+                            <DraggableRow slice={slice} index={index} moveIngredient={moveIngredient}/>
+                        </li>
+                    )}
+                </ul>
+                <div className={`${burgerConstructorStyles.buns} pl-8`}>
+                    {bun.type && <ConstructorElement
+                        type="bottom"
+                        isLocked={true}
+                        text={`${bun.name} (низ)`}
+                        price={bun.price}
+                        thumbnail={bun.image}
+                    />}
+                </div>
+                <div className={`${burgerConstructorStyles.commit} pr-4 pt-6`}>
+                    {/* Если calc = NaN (еще не вычислялось), то передаем 0 */}
+                    <Price value={calcPrice ? calcPrice : 0} isLarge={true}/>
+                    <Button type="primary" size="large" onClick={postOrder}>Оформить заказ</Button>
+                </div>
+                {isDetailsOpened &&
+                    <Modal title="" handleCloseAction={closeDetailsModal}>
+                        <OrderDetails orderNumber={orderNumber}/>
+                    </Modal>
+                }
             </div>
-            <ul className={burgerConstructorStyles.ingredientsList}>
-                {burgerComponents.slices.map((slice, index) =>
-                    <li className={burgerConstructorStyles.ingredientsRow} key={index}>
-                        <DragIcon type="primary"/>
-                        <ConstructorElement
-                            text={slice.name}
-                            price={slice.price}
-                            thumbnail={slice.image}
-                        />
-                    </li>
-                )}
-            </ul>
-            <div className={`${burgerConstructorStyles.buns} pl-8`}>
-                <ConstructorElement
-                    type="bottom"
-                    isLocked={true}
-                    text={`${burgerComponents.buns.name} (низ)`}
-                    price={burgerComponents.buns.price}
-                    thumbnail={burgerComponents.buns.image}
-                />
-            </div>
-            <div className={`${burgerConstructorStyles.commit} pr-4 pt-6`}>
-                <Price value={burgerComponents.totalPrice} isLarge={true}/>
-                <Button type="primary" size="large" onClick={postOrder}>Оформить заказ</Button>
-            </div>
-            {isDetailsOpened.isOpened &&
-                <Modal title="" handleCloseAction={closeDetailsModal}>
-                    <OrderDetails orderNumber={isDetailsOpened.orderNumber}/>
-                </Modal>
-            }
         </div>
     );
 };

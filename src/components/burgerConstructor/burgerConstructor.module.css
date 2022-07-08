@@ -29,13 +29,6 @@
     background-color: #8585AD;
 }
 
-.ingredientsRow {
-    display: grid;
-    grid-template-columns: min-content 1fr;
-    gap: calc(var(--offset-base-size)*2);
-    align-items: center;
-}
-
 .buns {
     display: flex;
 }
