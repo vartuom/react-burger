@@ -11,6 +11,7 @@ import {ADD_INGREDIENT, MOVE_INGREDIENT} from "../../services/actions/burgerCons
 import {CLOSE_DETAILS_MODAL, post} from "../../services/actions/order";
 import DraggableRow from "../draggableRow/draggableRow";
 import { v4 as uuidv4 } from 'uuid';
+import {addIngredient, moveIngredient} from "../../store/burgerConstructorSlice";
 
 const BurgerConstructor = () => {
 
@@ -32,11 +33,8 @@ const BurgerConstructor = () => {
     const [, dropTarget] = useDrop({
         accept: "ingredient",
         drop({ingredient}) {
-            dispatch({
-                type: ADD_INGREDIENT,
-                //добавляем уникальный идентифкатор (uuid) для объекта ингредиента в конструкторе
-                payload: {...ingredient, uuid: uuidv4()}
-            })
+            //добавляем уникальный идентифкатор (uuid) для объекта ингредиента в конструкторе
+            dispatch(addIngredient({...ingredient, uuid: uuidv4()}))
         },
     });
 
@@ -65,11 +63,9 @@ const BurgerConstructor = () => {
 
     //DnD сортировка перетаскиванием
     const moveIngredient = useCallback((dragIndex, hoverIndex) => {
-        dispatch({
-            type: MOVE_INGREDIENT,
+        dispatch(moveIngredient({
             dragIndex: dragIndex,
-            hoverIndex: hoverIndex
-        })
+            hoverIndex: hoverIndex}))
     }, [dispatch])
 
     return (

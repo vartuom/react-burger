@@ -7,6 +7,7 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../IngredientDetails/ingredientDetails";
 import {useDispatch, useSelector} from "react-redux";
 import {CLOSE_INGREDIENT_MODAL, OPEN_INGREDIENT_MODAL} from "../../services/actions/ingredient";
+import {closeModal, openModal} from "../../store/ingredientSlice";
 
 //получаем ссылку на заголовок (для скрола)
 const CardsList = React.forwardRef((props, ref) => {
@@ -21,17 +22,12 @@ const CardsList = React.forwardRef((props, ref) => {
 
     //закрытие модального окна кликом оверлей
     const closeDetailsModal = () => {
-        dispatch({
-            type: CLOSE_INGREDIENT_MODAL
-        })
+        dispatch(closeModal())
     }
 
     //обработка клика на карточку ингредиента
     const openDetailsModal = (ingredient) => {
-        dispatch({
-            type: OPEN_INGREDIENT_MODAL,
-            payload: ingredient
-        })
+        dispatch(openModal({ingredient}))
     }
 
     return (

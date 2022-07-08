@@ -5,6 +5,7 @@ import {useDispatch} from "react-redux";
 import draggableRowStyles from "./draggableRow.module.css";
 import {useDrop, useDrag} from "react-dnd";
 import {useRef} from "react";
+import {removeIngredient} from "../../store/burgerConstructorSlice";
 
 const DraggableRow = ({slice, index, moveIngredient}) => {
     const dispatch = useDispatch();
@@ -60,10 +61,7 @@ const DraggableRow = ({slice, index, moveIngredient}) => {
                 thumbnail={slice.image}
                 handleClose={() => {
                     // удаляем элемент по его индексу в массиве
-                    dispatch({
-                        type: REMOVE_INGREDIENT,
-                        index: index
-                    })
+                    dispatch(removeIngredient({index}))
                 }}
             />
         </div>
