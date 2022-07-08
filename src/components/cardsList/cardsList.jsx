@@ -6,7 +6,6 @@ import ingredientPropTypes from "../../utils/propTypesConfig";
 import Modal from "../modal/modal";
 import IngredientDetails from "../IngredientDetails/ingredientDetails";
 import {useDispatch, useSelector} from "react-redux";
-import {CLOSE_INGREDIENT_MODAL, OPEN_INGREDIENT_MODAL} from "../../services/actions/ingredient";
 import {closeModal, openModal} from "../../store/ingredientSlice";
 
 //получаем ссылку на заголовок (для скрола)

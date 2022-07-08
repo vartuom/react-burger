@@ -1,6 +1,5 @@
 import React from 'react';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {REMOVE_INGREDIENT} from "../../services/actions/burgerConstructor";
 import {useDispatch} from "react-redux";
 import draggableRowStyles from "./draggableRow.module.css";
 import {useDrop, useDrag} from "react-dnd";
@@ -61,7 +60,7 @@ const DraggableRow = ({slice, index, moveIngredient}) => {
                 thumbnail={slice.image}
                 handleClose={() => {
                     // удаляем элемент по его индексу в массиве
-                    dispatch(removeIngredient({index}))
+                    dispatch(removeIngredient(index))
                 }}
             />
         </div>

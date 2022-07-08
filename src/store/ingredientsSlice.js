@@ -20,7 +20,10 @@ export const fetchIngredients = createAsyncThunk(
 const ingredientsSlice = createSlice({
     name: 'ingredients',
     initialState: {
+        //не даем начать прорисовку компонентов пока не пришли данные с сервера
         ingredientsRequest: true,
+        /*Сбрасываем статус наличия ошибок от предыдущего запроса
+        на случай, если он был и завершился с ошибкой*/
         ingredientsFailed: false,
         data: []
     },

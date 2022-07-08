@@ -15,17 +15,18 @@ const burgerConstructorSlice = createSlice({
             }
         },
         removeIngredient(state, action) {
-            state.mains = [...state.mains.slice(0, action.index), ...state.mains.slice(action.index + 1)]
+            //комбинируем слайсы до и после индекса элемента, который нужно удалить
+            state.mains = [...state.mains.slice(0, action.payload), ...state.mains.slice(action.payload + 1)]
         },
         moveIngredient(state, action) {
             //копируем стейт в рабочий массив
             const updatedList = state.mains;
             //копируем захваченную карточку
-            const dragCard = state.mains[action.dragIndex];
+            const dragCard = state.mains[action.payload.dragIndex];
             //удаляем карточку из копии стейта
-            updatedList.splice(action.dragIndex, 1);
+            updatedList.splice(action.payload.dragIndex, 1);
             //вставляем карточку на позицию элемента над которым перетаскиваемая карточка
-            updatedList.splice(action.hoverIndex, 0, dragCard)
+            updatedList.splice(action.payload.hoverIndex, 0, dragCard)
             //обновляем массив
             state.mains = updatedList
         }
