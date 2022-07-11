@@ -17,7 +17,6 @@ function App() {
 
     //загружаем ингредиенты с сервера при монтировании компонента
     useEffect(() => {
-        console.log(1234);
         dispatch(fetchIngredients())
     }, [dispatch])
 
