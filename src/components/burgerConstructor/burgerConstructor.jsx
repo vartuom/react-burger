@@ -7,10 +7,11 @@ import Modal from "../modal/modal";
 import OrderDetails from "../orderDetails/orderDetails";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrop} from "react-dnd";
-import {ADD_INGREDIENT, MOVE_INGREDIENT} from "../../services/actions/burgerConstructor";
-import {CLOSE_DETAILS_MODAL, post} from "../../services/actions/order";
 import DraggableRow from "../draggableRow/draggableRow";
 import { v4 as uuidv4 } from 'uuid';
+import {addIngredient, moveIngredient} from "../../store/burgerConstructorSlice";
+import {fetchOrder} from "../../store/orderSlice";
+import {closeDetailsModal} from "../../store/orderSlice";
 
 const BurgerConstructor = () => {
 
@@ -32,20 +33,15 @@ const BurgerConstructor = () => {
     const [, dropTarget] = useDrop({
         accept: "ingredient",
         drop({ingredient}) {
-            dispatch({
-                type: ADD_INGREDIENT,
-                //добавляем уникальный идентифкатор (uuid) для объекта ингредиента в конструкторе
-                payload: {...ingredient, uuid: uuidv4()}
-            })
+            //добавляем уникальный идентифкатор (uuid) для объекта ингредиента в конструкторе
+            dispatch(addIngredient({...ingredient, uuid: uuidv4()}))
         },
     });
 
     //закрытие модального окна кликом на оверлей
-    const closeDetailsModal = useCallback(() => {
-        dispatch({
-            type: CLOSE_DETAILS_MODAL
-        });
-    }, [])
+    const closeModal = useCallback(() => {
+        dispatch(closeDetailsModal());
+    }, [dispatch])
 
     //мемоизированное вычисление цены бургера
     const calcPrice = useMemo(() => {
@@ -60,16 +56,14 @@ const BurgerConstructor = () => {
     const postOrder = useCallback(() => {
         //если в конструкторе нет булок или ингредиентов то не отправляем заказ
         if (bun.price && mains.length > 0)
-            dispatch(post([...mains, bun, bun]))
-    }, [mains, bun])
+            dispatch(fetchOrder([...mains, bun, bun]))
+    }, [mains, bun, dispatch])
 
     //DnD сортировка перетаскиванием
-    const moveIngredient = useCallback((dragIndex, hoverIndex) => {
-        dispatch({
-            type: MOVE_INGREDIENT,
+    const moveRow = useCallback((dragIndex, hoverIndex) => {
+        dispatch(moveIngredient({
             dragIndex: dragIndex,
-            hoverIndex: hoverIndex
-        })
+            hoverIndex: hoverIndex}))
     }, [dispatch])
 
     return (
@@ -87,7 +81,7 @@ const BurgerConstructor = () => {
                 <ul ref={dropTarget} className={burgerConstructorStyles.ingredientsList}>
                     {mains.map((slice, index) =>
                         <li key={slice.uuid} >
-                            <DraggableRow slice={slice} index={index} moveIngredient={moveIngredient}/>
+                            <DraggableRow slice={slice} index={index} moveIngredient={moveRow}/>
                         </li>
                     )}
                 </ul>
@@ -106,7 +100,7 @@ const BurgerConstructor = () => {
                     <Button type="primary" size="large" onClick={postOrder}>Оформить заказ</Button>
                 </div>
                 {isDetailsOpened &&
-                    <Modal title="" handleCloseAction={closeDetailsModal}>
+                    <Modal title="" handleCloseAction={closeModal}>
                         <OrderDetails orderNumber={orderNumber}/>
                     </Modal>
                 }
