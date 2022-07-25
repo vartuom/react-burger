@@ -1,15 +1,12 @@
 import React from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './login.module.css'
+import styles from './pages.module.css'
+import {Link} from "react-router-dom";
 
 const Register = () => {
 
-    const [value, setValue] = React.useState('value')
-    const inputRef = React.useRef(null)
-    const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-        alert('Icon Click Callback')
-    }
+    const [emailInputValue, setEmailInputValue] = React.useState('')
+    const emailInputRef = React.useRef(null)
 
     return (
         <section className={styles.formSection}>
@@ -19,11 +16,11 @@ const Register = () => {
                     <Input
                         type={'email'}
                         placeholder={'E-mail'}
-                        value={''}
-                        onChange={e => setValue(e.target.value)}
+                        value={emailInputValue}
+                        onChange={e => setEmailInputValue(e.target.value)}
                         name={'emailInput'}
                         error={false}
-                        ref={inputRef}
+                        ref={emailInputRef}
                         errorText={'Ошибка'}
                         size={'default'}
                     />
@@ -33,7 +30,7 @@ const Register = () => {
                 </Button>
                 <div className={`${styles.formTips} mt-20`}>
                     <p className="text text_type_main-default text_color_inactive">
-                        Вспомнили пароль? Войти
+                        Вспомнили пароль? <Link to={{pathname: '/login'}}>Войти</Link>
                     </p>
                 </div>
             </form>

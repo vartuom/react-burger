@@ -2,3 +2,7 @@
   background-color: var(--background-alt);
   width: 100%;
 }
+
+.app a {
+  text-decoration: none;
+}

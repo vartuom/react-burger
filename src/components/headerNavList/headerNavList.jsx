@@ -3,6 +3,7 @@ import HeaderLink from "../headerLink/headerLink";
 import {BurgerIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ListIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import headerNavStyle from "./headerNav.module.css"
+import {NavLink} from "react-router-dom";
 
 const HeaderNavList = () => {
     return (
@@ -11,13 +12,23 @@ const HeaderNavList = () => {
                 <li>
                     <HeaderLink>
                         <BurgerIcon type="primary" />
-                        <p className="text text_type_main-default">Конструктор</p>
+                        <NavLink
+                            to={{ pathname: `/` }}
+                            className={"text text_type_main-default text_color_inactive"}
+                        >
+                            Конструктор
+                        </NavLink>
                     </HeaderLink>
                 </li>
                 <li>
                     <HeaderLink>
                         <ListIcon type="secondary" />
-                        <p className="text text_type_main-default text_color_inactive">Лента заказов</p>
+                        <NavLink
+                            to={{ pathname: `/` }}
+                            className={"text text_type_main-default text_color_inactive"}
+                        >
+                            <p className="text text_type_main-default text_color_inactive">Лента заказов</p>
+                        </NavLink>
                     </HeaderLink>
                 </li>
             </ul>

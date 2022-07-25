@@ -1,13 +1,21 @@
 import React from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './login.module.css'
+import styles from './pages.module.css'
+import {Link} from "react-router-dom";
 
 const Register = () => {
 
-    const [value, setValue] = React.useState('value')
-    const inputRef = React.useRef(null)
+    const [nameInputValue, setNameInputValue] = React.useState('')
+    const nameInputRef = React.useRef(null)
+
+    const [emailInputValue, setEmailInputValue] = React.useState('')
+    const emailInputRef = React.useRef(null)
+
+    const [passwordInputValue, setPasswordInputValue] = React.useState('')
+    const passwordInputRef = React.useRef(null)
+
     const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
+        setTimeout(() => passwordInputRef.current.focus(), 0)
         alert('Icon Click Callback')
     }
 
@@ -19,35 +27,34 @@ const Register = () => {
                     <Input
                         type={'text'}
                         placeholder={'Имя'}
-                        value={''}
-                        onChange={e => setValue(e.target.value)}
+                        value={nameInputValue}
+                        onChange={e => setNameInputValue(e.target.value)}
                         name={'nameInput'}
                         error={false}
-                        ref={inputRef}
-                        onIconClick={onIconClick}
+                        ref={nameInputRef}
                         errorText={'Ошибка'}
                         size={'default'}
                     />
                     <Input
                         type={'email'}
                         placeholder={'E-mail'}
-                        value={''}
-                        onChange={e => setValue(e.target.value)}
+                        value={emailInputValue}
+                        onChange={e => setEmailInputValue(e.target.value)}
                         name={'emailInput'}
                         error={false}
-                        ref={inputRef}
+                        ref={emailInputRef}
                         errorText={'Ошибка'}
                         size={'default'}
                     />
                     <Input
                         type={'password'}
                         placeholder={'Пароль'}
-                        value={''}
-                        onChange={e => setValue(e.target.value)}
+                        value={passwordInputValue}
+                        onChange={e => setPasswordInputValue(e.target.value)}
                         icon={'ShowIcon'}
                         name={'passwordInput'}
                         error={false}
-                        ref={inputRef}
+                        ref={passwordInputRef}
                         onIconClick={onIconClick}
                         errorText={'Ошибка'}
                         size={'default'}
@@ -58,7 +65,7 @@ const Register = () => {
                 </Button>
                 <div className={`${styles.formTips} mt-20`}>
                     <p className="text text_type_main-default text_color_inactive">
-                        Уже зарегистрированы? Войти
+                        Уже зарегистрированы? <Link to={{pathname: '/login'}}>Войти</Link>
                     </p>
                 </div>
             </form>

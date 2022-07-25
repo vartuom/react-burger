@@ -1,13 +1,18 @@
 import React from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './login.module.css'
+import styles from './pages.module.css'
+import {Link} from "react-router-dom";
 
 const Login = () => {
 
-    const [value, setValue] = React.useState('value')
-    const inputRef = React.useRef(null)
+    const [emailInputValue, setEmailInputValue] = React.useState('')
+    const emailInputRef = React.useRef(null)
+
+    const [passwordInputValue, setPasswordInputValue] = React.useState('')
+    const passwordInputRef = React.useRef(null)
+
     const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
+        setTimeout(() => passwordInputRef.current.focus(), 0)
         alert('Icon Click Callback')
     }
 
@@ -19,23 +24,23 @@ const Login = () => {
                     <Input
                         type={'email'}
                         placeholder={'E-mail'}
-                        value={''}
-                        onChange={e => setValue(e.target.value)}
+                        value={emailInputValue}
+                        onChange={e => setEmailInputValue(e.target.value)}
                         name={'emailInput'}
                         error={false}
-                        ref={inputRef}
+                        ref={emailInputRef}
                         errorText={'Ошибка'}
                         size={'default'}
                     />
                     <Input
                         type={'password'}
                         placeholder={'Пароль'}
-                        value={''}
-                        onChange={e => setValue(e.target.value)}
+                        value={passwordInputValue}
+                        onChange={e => setPasswordInputValue(e.target.value)}
                         icon={'ShowIcon'}
                         name={'passwordInput'}
                         error={false}
-                        ref={inputRef}
+                        ref={passwordInputRef}
                         onIconClick={onIconClick}
                         errorText={'Ошибка'}
                         size={'default'}
@@ -46,10 +51,10 @@ const Login = () => {
                 </Button>
                 <div className={`${styles.formTips} mt-20`}>
                     <p className="text text_type_main-default text_color_inactive">
-                        Вы — новый пользователь? Зарегистрироваться
+                        Вы — новый пользователь? <Link to={{pathname: '/register'}}>Зарегистрироваться</Link>
                     </p>
                     <p className="text text_type_main-default text_color_inactive pt-4">
-                        Забыли пароль? Восстановить пароль
+                        Забыли пароль? <Link to={{pathname: '/forgot-password'}}>Восстановить пароль</Link>
                     </p>
                 </div>
             </form>

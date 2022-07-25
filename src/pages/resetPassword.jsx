@@ -1,13 +1,18 @@
 import React from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './login.module.css'
+import styles from './pages.module.css'
+import {Link} from "react-router-dom";
 
 const Register = () => {
 
-    const [value, setValue] = React.useState('value')
-    const inputRef = React.useRef(null)
+    const [passwordInputValue, setPasswordInputValue] = React.useState('')
+    const passwordInputRef = React.useRef(null)
+
+    const [codeInputValue, setCodeInputValue] = React.useState('')
+    const codeInputRef = React.useRef(null)
+
     const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
+        setTimeout(() => passwordInputRef.current.focus(), 0)
         alert('Icon Click Callback')
     }
 
@@ -18,13 +23,13 @@ const Register = () => {
                 <fieldset className={styles.fieldset}>
                     <Input
                         type={'password'}
-                        placeholder={'Введите новый пароль'}
-                        value={''}
-                        onChange={e => setValue(e.target.value)}
+                        placeholder={'Пароль'}
+                        value={passwordInputValue}
+                        onChange={e => setPasswordInputValue(e.target.value)}
                         icon={'ShowIcon'}
                         name={'passwordInput'}
                         error={false}
-                        ref={inputRef}
+                        ref={passwordInputRef}
                         onIconClick={onIconClick}
                         errorText={'Ошибка'}
                         size={'default'}
@@ -32,12 +37,11 @@ const Register = () => {
                     <Input
                         type={'text'}
                         placeholder={'Введите код из письма'}
-                        value={''}
-                        onChange={e => setValue(e.target.value)}
+                        value={codeInputValue}
+                        onChange={e => setCodeInputValue(e.target.value)}
                         name={'nameInput'}
                         error={false}
-                        ref={inputRef}
-                        onIconClick={onIconClick}
+                        ref={codeInputRef}
                         errorText={'Ошибка'}
                         size={'default'}
                     />
@@ -47,7 +51,7 @@ const Register = () => {
                 </Button>
                 <div className={`${styles.formTips} mt-20`}>
                     <p className="text text_type_main-default text_color_inactive">
-                        Вспомнили пароль? Войти
+                        Вспомнили пароль? <Link to={{pathname: '/login'}}>Войти</Link>
                     </p>
                 </div>
             </form>
