@@ -2,6 +2,7 @@ import React from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './pages.module.css'
 import {Link} from "react-router-dom";
+import {requestPasswordReset} from "../utils/api";
 
 const Register = () => {
 
@@ -25,7 +26,10 @@ const Register = () => {
                         size={'default'}
                     />
                 </fieldset>
-                <Button type="primary" size="medium">
+                <Button type="primary" size="medium" onClick={(e) => {
+                    e.preventDefault();
+                    requestPasswordReset(emailInputValue)
+                }}>
                     Восстановить
                 </Button>
                 <div className={`${styles.formTips} mt-20`}>

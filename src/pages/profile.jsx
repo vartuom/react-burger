@@ -1,11 +1,8 @@
 import React from 'react';
-import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './pages.module.css'
-import {Link} from "react-router-dom";
-import {registerUser} from "../utils/api";
+import styles from './profile.module.css'
+import {Input} from "@ya.praktikum/react-developer-burger-ui-components";
 
-const Register = () => {
-
+const Profile = () => {
     const [nameInputValue, setNameInputValue] = React.useState('')
     const nameInputRef = React.useRef(null)
 
@@ -23,13 +20,22 @@ const Register = () => {
     return (
         <section className={styles.formSection}>
             <form className={styles.form}>
-                <h2 className={`${styles.formTitle} text text_type_main-medium`}>Регистрация</h2>
+                <div>
+                    <ul className={styles.navList}>
+                        <li className={`${styles.navList_item} text text_type_main-medium text_color_inactive`}>Профиль</li>
+                        <li className={`${styles.navList_item} text text_type_main-medium text_color_inactive`}>История заказов</li>
+                        <li className={`${styles.navList_item} text text_type_main-medium text_color_inactive`}>Выход</li>
+                    </ul>
+                    <p className={'text text_type_main-default text_color_inactive pt-20'}>В этом разделе вы можете
+                        изменить свои персональные данные</p>
+                </div>
                 <fieldset className={styles.fieldset}>
                     <Input
                         type={'text'}
                         placeholder={'Имя'}
                         value={nameInputValue}
                         onChange={e => setNameInputValue(e.target.value)}
+                        icon={'EditIcon'}
                         name={'nameInput'}
                         error={false}
                         ref={nameInputRef}
@@ -38,9 +44,10 @@ const Register = () => {
                     />
                     <Input
                         type={'email'}
-                        placeholder={'E-mail'}
+                        placeholder={'Логин'}
                         value={emailInputValue}
                         onChange={e => setEmailInputValue(e.target.value)}
+                        icon={'EditIcon'}
                         name={'emailInput'}
                         error={false}
                         ref={emailInputRef}
@@ -52,7 +59,7 @@ const Register = () => {
                         placeholder={'Пароль'}
                         value={passwordInputValue}
                         onChange={e => setPasswordInputValue(e.target.value)}
-                        icon={'ShowIcon'}
+                        icon={'EditIcon'}
                         name={'passwordInput'}
                         error={false}
                         ref={passwordInputRef}
@@ -61,21 +68,9 @@ const Register = () => {
                         size={'default'}
                     />
                 </fieldset>
-                <Button type="primary" size="medium"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            registerUser(emailInputValue, passwordInputValue, nameInputValue)
-                        }}>
-                    Зарегистрироваться
-                </Button>
-                <div className={`${styles.formTips} mt-20`}>
-                    <p className="text text_type_main-default text_color_inactive">
-                        Уже зарегистрированы? <Link to={{pathname: '/login'}}>Войти</Link>
-                    </p>
-                </div>
             </form>
         </section>
     );
 };
 
-export default Register;
+export default Profile;

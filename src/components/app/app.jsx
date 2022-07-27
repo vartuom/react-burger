@@ -10,6 +10,7 @@ import Register from "../../pages/register";
 import ForgotPassword from "../../pages/forgotPassword";
 import ResetPassword from "../../pages/resetPassword";
 import Main from "../../pages/main";
+import Profile from "../../pages/profile";
 
 
 function App() {
@@ -38,6 +39,9 @@ function App() {
                     </Route>
                     <Route path="/reset-password">
                         <ResetPassword/>
+                    </Route>
+                    <Route path="/profile">
+                        <Profile />
                     </Route>
                     <Route path="/">
                         {!isLoading && <Main/>}

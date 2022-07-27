@@ -1,0 +1,30 @@
+.formSection {
+    composes: formSection from "./pages.module.css";
+    padding-top: 120px;
+    padding-left: 380px;
+    align-items: flex-start;
+}
+
+.form {
+    width: 860px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    column-gap: 60px;
+}
+
+.navList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navList_item {
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+}
+
+.fieldset {
+    composes: fieldset from "./pages.module.css";
+    padding: 0;
+}
