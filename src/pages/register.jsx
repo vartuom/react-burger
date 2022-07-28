@@ -2,9 +2,12 @@ import React from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './pages.module.css'
 import {Link} from "react-router-dom";
-import {registerUser} from "../utils/api";
+import {fetchRegUser} from "../store/userSlice";
+import {useDispatch} from "react-redux";
 
 const Register = () => {
+
+    const dispatch = useDispatch();
 
     const [nameInputValue, setNameInputValue] = React.useState('')
     const nameInputRef = React.useRef(null)
@@ -64,7 +67,11 @@ const Register = () => {
                 <Button type="primary" size="medium"
                         onClick={(e) => {
                             e.preventDefault()
-                            registerUser(emailInputValue, passwordInputValue, nameInputValue)
+                            dispatch(fetchRegUser({
+                                email: emailInputValue,
+                                password: passwordInputValue,
+                                username: nameInputValue
+                            }));
                         }}>
                     Зарегистрироваться
                 </Button>
