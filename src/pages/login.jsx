@@ -1,15 +1,42 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './pages.module.css'
-import {Link} from "react-router-dom";
+import {Link, useHistory, Redirect, useLocation} from "react-router-dom";
+import {fetchLogIn} from "../store/userSlice";
+import {useDispatch, useSelector} from "react-redux";
 
 const Login = () => {
+
+    const dispatch = useDispatch();
+
+    const location = useLocation();
 
     const [emailInputValue, setEmailInputValue] = React.useState('')
     const emailInputRef = React.useRef(null)
 
     const [passwordInputValue, setPasswordInputValue] = React.useState('')
     const passwordInputRef = React.useRef(null)
+
+    const {isLoggedIn, user} = useSelector(store => ({
+        isLoggedIn: store.user.isLoggedIn,
+        user: store.user.user
+    }))
+
+    if (isLoggedIn) {
+        console.log(location);
+        return (
+            <Redirect
+                // Если объект state не является undefined, вернём пользователя назад.
+                to={ location.state?.from || '/' }
+            />
+        );
+    }
+
+    /*useEffect(() => {
+        if (isLoggedIn) {
+            history.replace({ pathname: '/' })
+        }
+    }, [isLoggedIn]);*/
 
     const onIconClick = () => {
         setTimeout(() => passwordInputRef.current.focus(), 0)
@@ -46,7 +73,14 @@ const Login = () => {
                         size={'default'}
                     />
                 </fieldset>
-                <Button type="primary" size="medium">
+                <Button type="primary" size="medium"
+                        onClick={(e) => {
+                            e.preventDefault()
+                            dispatch(fetchLogIn({
+                                email: emailInputValue,
+                                password: passwordInputValue,
+                            }));
+                        }}>
                     Войти
                 </Button>
                 <div className={`${styles.formTips} mt-20`}>

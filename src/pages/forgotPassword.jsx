@@ -1,13 +1,15 @@
 import React from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './pages.module.css'
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {requestPasswordReset} from "../utils/api";
 
 const Register = () => {
 
     const [emailInputValue, setEmailInputValue] = React.useState('')
     const emailInputRef = React.useRef(null)
+
+    const history = useHistory();
 
     return (
         <section className={styles.formSection}>
@@ -29,6 +31,8 @@ const Register = () => {
                 <Button type="primary" size="medium" onClick={(e) => {
                     e.preventDefault();
                     requestPasswordReset(emailInputValue)
+                        .then(history.replace({ pathname: '/reset-password' }))
+                        .catch((err) => console.log(err));
                 }}>
                     Восстановить
                 </Button>

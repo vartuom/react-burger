@@ -1,10 +1,12 @@
 import React from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './pages.module.css'
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {resetUsrPassword} from "../utils/api";
 
 const Register = () => {
+
+    const history = useHistory();
 
     const [passwordInputValue, setPasswordInputValue] = React.useState('')
     const passwordInputRef = React.useRef(null)
@@ -50,6 +52,8 @@ const Register = () => {
                 <Button type="primary" size="medium" onClick={(e) => {
                     e.preventDefault();
                     resetUsrPassword(passwordInputValue, codeInputValue)
+                        .then(history.replace({ pathname: '/login' }))
+                        .catch((err) => console.log(err));
                 }}>
                     Сохранить
                 </Button>

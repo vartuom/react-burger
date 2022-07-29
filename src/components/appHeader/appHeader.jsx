@@ -14,7 +14,7 @@ const AppHeader = () => {
                 <HeaderLink>
                     <ProfileIcon type="secondary" />
                     <NavLink
-                        to={{ pathname: `/login` }}
+                        to={{ pathname: `/profile` }}
                         className={"text text_type_main-default text_color_inactive"}
                         activeClassName={""}
                     >

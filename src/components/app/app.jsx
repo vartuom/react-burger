@@ -11,6 +11,7 @@ import ForgotPassword from "../../pages/forgotPassword";
 import ResetPassword from "../../pages/resetPassword";
 import Main from "../../pages/main";
 import Profile from "../../pages/profile";
+import ProtectedRoute from "../protectedRoute/protectedRoute";
 
 
 function App() {
@@ -28,24 +29,24 @@ function App() {
             <BrowserRouter>
                 <AppHeader/>
                 <Switch>
-                    <Route path="/login">
-                        <Login/>
-                    </Route>
-                    <Route path="/register">
-                        <Register/>
-                    </Route>
-                    <Route path="/forgot-password">
-                        <ForgotPassword/>
-                    </Route>
-                    <Route path="/reset-password">
-                        <ResetPassword/>
-                    </Route>
-                    <Route path="/profile">
-                        <Profile />
-                    </Route>
-                    <Route path="/">
+                    <Route path="/" exact={true}>
                         {!isLoading && <Main/>}
                     </Route>
+                    <Route path="/login" exact={true}>
+                        <Login/>
+                    </Route>
+                    <Route path="/register" exact={true}>
+                        <Register/>
+                    </Route>
+                    <Route path="/forgot-password" exact={true}>
+                        <ForgotPassword/>
+                    </Route>
+                    <Route path="/reset-password" exact={true}>
+                        <ResetPassword/>
+                    </Route>
+                    <ProtectedRoute>
+                        <Profile />
+                    </ProtectedRoute>
                 </Switch>
             </BrowserRouter>
         </div>
