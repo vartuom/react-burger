@@ -8,8 +8,8 @@ import {useDispatch, useSelector} from "react-redux";
 const Login = () => {
 
     const dispatch = useDispatch();
-
     const location = useLocation();
+    const history = useHistory();
 
     const [emailInputValue, setEmailInputValue] = React.useState('')
     const emailInputRef = React.useRef(null)
@@ -22,7 +22,7 @@ const Login = () => {
         user: store.user.user
     }))
 
-    if (isLoggedIn) {
+    /*if (isLoggedIn) {
         console.log(location);
         return (
             <Redirect
@@ -30,13 +30,15 @@ const Login = () => {
                 to={ location.state?.from || '/' }
             />
         );
-    }
+    }*/
 
-    /*useEffect(() => {
+    useEffect(() => {
         if (isLoggedIn) {
-            history.replace({ pathname: '/' })
+            console.log(location);
+            // Если объект state не является undefined, вернём пользователя назад.
+            history.replace({ pathname: location.state?.from.pathname || '/' })
         }
-    }, [isLoggedIn]);*/
+    }, [isLoggedIn]);
 
     const onIconClick = () => {
         setTimeout(() => passwordInputRef.current.focus(), 0)

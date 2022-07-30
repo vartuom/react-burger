@@ -12,6 +12,7 @@ import ResetPassword from "../../pages/resetPassword";
 import Main from "../../pages/main";
 import Profile from "../../pages/profile";
 import ProtectedRoute from "../protectedRoute/protectedRoute";
+import {fetchGetUserData} from "../../store/userSlice";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
     //загружаем ингредиенты с сервера при монтировании компонента
     useEffect(() => {
         dispatch(fetchIngredients())
+        dispatch(fetchGetUserData())
     }, [dispatch])
 
     return (
@@ -35,16 +37,16 @@ function App() {
                     <Route path="/login" exact={true}>
                         <Login/>
                     </Route>
-                    <Route path="/register" exact={true}>
+                    <ProtectedRoute path="/register" exact isAnonOnly={true}>
                         <Register/>
-                    </Route>
-                    <Route path="/forgot-password" exact={true}>
+                    </ProtectedRoute>
+                    <ProtectedRoute path="/forgot-password" exact isAnonOnly={true}>
                         <ForgotPassword/>
-                    </Route>
-                    <Route path="/reset-password" exact={true}>
+                    </ProtectedRoute>
+                    <ProtectedRoute path="/reset-password" exact isAnonOnly={true}>
                         <ResetPassword/>
-                    </Route>
-                    <ProtectedRoute>
+                    </ProtectedRoute>
+                    <ProtectedRoute path="/profile">
                         <Profile />
                     </ProtectedRoute>
                 </Switch>

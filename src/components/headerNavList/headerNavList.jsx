@@ -3,32 +3,22 @@ import HeaderLink from "../headerLink/headerLink";
 import {BurgerIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ListIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import headerNavStyle from "./headerNav.module.css"
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 
 const HeaderNavList = () => {
+
+    const location = useLocation();
     return (
         <nav className={headerNavStyle.nav}>
             <ul className={headerNavStyle.list}>
                 <li>
-                    <HeaderLink>
-                        <BurgerIcon type="primary" />
-                        <NavLink
-                            to={{ pathname: `/` }}
-                            className={"text text_type_main-default text_color_inactive"}
-                        >
-                            Конструктор
-                        </NavLink>
+                    <HeaderLink to={`/`} caption={'Конструктор'}>
+                        <BurgerIcon type={location.pathname === '/' ? 'primary' : 'secondary'}/>
                     </HeaderLink>
                 </li>
                 <li>
-                    <HeaderLink>
-                        <ListIcon type="secondary" />
-                        <NavLink
-                            to={{ pathname: `/` }}
-                            className={"text text_type_main-default text_color_inactive"}
-                        >
-                            <p className="text text_type_main-default text_color_inactive">Лента заказов</p>
-                        </NavLink>
+                    <HeaderLink to={`/login`} caption={'Лента заказов'}>
+                        <ListIcon type={location.pathname === '/list' ? 'primary' : 'secondary'}/>
                     </HeaderLink>
                 </li>
             </ul>

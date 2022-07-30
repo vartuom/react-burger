@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from './profile.module.css'
 import {Input} from "@ya.praktikum/react-developer-burger-ui-components";
+import {fetchGetUserData} from "../store/userSlice";
+import {useDispatch} from "react-redux";
 
 const Profile = () => {
+
+    const dispatch = useDispatch;
+
     const [nameInputValue, setNameInputValue] = React.useState('')
     const nameInputRef = React.useRef(null)
 
@@ -16,6 +21,10 @@ const Profile = () => {
         setTimeout(() => passwordInputRef.current.focus(), 0)
         alert('Icon Click Callback')
     }
+
+    /*useEffect(() => {
+        dispatch(fetchGetUserData())
+    }, [dispatch])*/
 
     return (
         <section className={styles.formSection}>

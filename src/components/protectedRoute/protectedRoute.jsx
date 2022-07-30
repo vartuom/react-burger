@@ -26,7 +26,7 @@ export default function ProtectedRoute({isAnonOnly = false, children, ...rest}) 
         // Получим текущий маршрут, с которого произойдёт переадресация
         // для неавторизованного пользователя
         render={({ location }) =>
-            isLoggedIn ? (
+            isLoggedIn || isAnonOnly ? (
                 children
             ) : (
                 <Redirect

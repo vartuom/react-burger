@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {baseUrl} from "../utils/constants";
-import {setCookie} from "../utils/storage";
+import {getCookie, setCookie} from "../utils/storage";
+import {fetchWithRefresh} from "../utils/api";
 
 export const fetchRegUser = createAsyncThunk(
     'user/fetchRegUser',
@@ -57,6 +58,45 @@ export const fetchLogIn = createAsyncThunk(
     }
 );
 
+export const fetchGetUserData = createAsyncThunk(
+    'user/fetchGetUserData',
+    async function (_, {rejectWithValue}) {
+        try {
+            const userData = await fetchWithRefresh(`${baseUrl}/auth/user`, {
+                headers: {
+                    Authorization: 'Bearer ' + getCookie('accessToken')
+                }
+            });
+            return userData;
+        } catch (err) {
+            return rejectWithValue(err.status);
+        }
+    }
+)
+
+/*export const fetchGetUserData = createAsyncThunk(
+    'user/fetchGetUserData',
+    async function (data, {rejectWithValue}) {
+        try {
+            const response = await fetch(`${baseUrl}/auth/user`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + getCookie('accessToken')
+                }
+            });
+            if (!response.ok) {
+                return rejectWithValue(response.status)
+            }
+            const actualData = await response.json();
+            // enter you logic when the fetch is successful
+            return actualData;
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)*/
+
 const userSlice = createSlice({
     name: 'user',
     initialState: {
@@ -88,7 +128,7 @@ const userSlice = createSlice({
                 state.user.email = action.payload.user.email;
                 state.user.name = action.payload.user.name;
                 const accessToken = action.payload.accessToken.split('Bearer ')[1];
-                setCookie('accessToken', accessToken);
+                setCookie('accessToken', accessToken, {expires: 3});
                 localStorage.setItem('refreshToken', action.payload.refreshToken);
             })
             .addCase(fetchLogIn.rejected, (state, action) => {
@@ -96,6 +136,14 @@ const userSlice = createSlice({
                 state.isLoggedIn = false;
                 state.user.email = '';
                 state.user.name = '';
+            })
+            .addCase(fetchGetUserData.fulfilled, (state, action) => {
+                console.log('Get user OK')
+                state.user.email = action.payload.user.email;
+                state.user.name = action.payload.user.name;
+            })
+            .addCase(fetchGetUserData.rejected, (state, action) => {
+                console.log('Get user rejected ' + action.payload)
             })
 
     }
