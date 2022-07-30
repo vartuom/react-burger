@@ -64,6 +64,7 @@ export const fetchGetUserData = createAsyncThunk(
         try {
             const userData = await fetchWithRefresh(`${baseUrl}/auth/user`, {
                 headers: {
+                    'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + getCookie('accessToken')
                 }
             });
@@ -74,32 +75,34 @@ export const fetchGetUserData = createAsyncThunk(
     }
 )
 
-/*export const fetchGetUserData = createAsyncThunk(
-    'user/fetchGetUserData',
+export const fetchPathUserData = createAsyncThunk(
+    'user/fetchPathUserData',
     async function (data, {rejectWithValue}) {
         try {
-            const response = await fetch(`${baseUrl}/auth/user`, {
-                method: 'GET',
+            const userData = await fetchWithRefresh(`${baseUrl}/auth/user`, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + getCookie('accessToken')
-                }
+                    Authorization: 'Bearer ' + getCookie('accessToken')
+                },
+                body: JSON.stringify({
+                    // your expected POST request payload goes here
+                    email: data.email,
+                    password: data.password,
+                    name: data.name
+                })
             });
-            if (!response.ok) {
-                return rejectWithValue(response.status)
-            }
-            const actualData = await response.json();
-            // enter you logic when the fetch is successful
-            return actualData;
-        } catch (error) {
-            return rejectWithValue(error)
+            return userData;
+        } catch (err) {
+            return rejectWithValue(err.status);
         }
     }
-)*/
+)
 
 const userSlice = createSlice({
     name: 'user',
     initialState: {
+        isAuthPending: true,
         isLoggedIn: false,
         user: {
             email: '',
@@ -110,6 +113,7 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchRegUser.fulfilled, (state, action) => {
+                state.isAuthPending = false;
                 state.isLoggedIn = true;
                 state.user.email = action.payload.user.email;
                 state.user.name = action.payload.user.name;
@@ -117,13 +121,18 @@ const userSlice = createSlice({
                 setCookie('accessToken', accessToken);
                 localStorage.setItem('refreshToken', action.payload.refreshToken);
             })
+            .addCase(fetchRegUser.pending, (state) => {
+                state.isAuthPending = true;
+            })
             .addCase(fetchRegUser.rejected, (state) => {
+                state.isAuthPending = false;
                 state.isLoggedIn = false;
                 state.user.email = '';
                 state.user.name = '';
             })
             .addCase(fetchLogIn.fulfilled, (state, action) => {
                 console.log('login OK' + action.payload)
+                state.isAuthPending = false;
                 state.isLoggedIn = true;
                 state.user.email = action.payload.user.email;
                 state.user.name = action.payload.user.name;
@@ -131,19 +140,40 @@ const userSlice = createSlice({
                 setCookie('accessToken', accessToken, {expires: 3});
                 localStorage.setItem('refreshToken', action.payload.refreshToken);
             })
+            .addCase(fetchLogIn.pending, (state) => {
+                state.isAuthPending = true;
+            })
             .addCase(fetchLogIn.rejected, (state, action) => {
                 console.log('login attempt rejected ' + action.payload)
+                state.isAuthPending = false;
                 state.isLoggedIn = false;
                 state.user.email = '';
                 state.user.name = '';
             })
             .addCase(fetchGetUserData.fulfilled, (state, action) => {
                 console.log('Get user OK')
+                state.isAuthPending = false;
+                state.isLoggedIn = true;
                 state.user.email = action.payload.user.email;
                 state.user.name = action.payload.user.name;
             })
+            .addCase(fetchGetUserData.pending, (state) => {
+                state.isAuthPending = true;
+            })
             .addCase(fetchGetUserData.rejected, (state, action) => {
                 console.log('Get user rejected ' + action.payload)
+                state.isAuthPending = false;
+                state.isLoggedIn = false;
+                state.user.email = '';
+                state.user.name = '';
+            })
+            .addCase(fetchPathUserData.fulfilled, (state, action) => {
+                console.log('PATСH user OK')
+                state.user.email = action.payload.user.email;
+                state.user.name = action.payload.user.name;
+            })
+            .addCase(fetchPathUserData.rejected, (state, action) => {
+                console.log('PATСH user rejected ' + action.payload)
             })
 
     }

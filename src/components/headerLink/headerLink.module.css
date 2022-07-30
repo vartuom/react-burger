@@ -4,4 +4,9 @@
     gap: calc(var(--offset-base-size)*2);
     cursor: pointer;
     justify-self: end;
+    transition: opacity 0.2s linear;
+}
+
+.link:hover {
+    opacity: 0.7;
 }

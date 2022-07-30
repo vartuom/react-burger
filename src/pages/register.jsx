@@ -3,11 +3,16 @@ import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components"
 import styles from './pages.module.css'
 import {Link} from "react-router-dom";
 import {fetchRegUser} from "../store/userSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import PlanetLoader from "../components/planetLoader/planetLoader";
 
 const Register = () => {
 
     const dispatch = useDispatch();
+
+    const {isAuthPending} = useSelector(store => ({
+        isAuthPending: store.user.isAuthPending
+    }))
 
     const [nameInputValue, setNameInputValue] = React.useState('')
     const nameInputRef = React.useRef(null)
@@ -23,7 +28,7 @@ const Register = () => {
         alert('Icon Click Callback')
     }
 
-    return (
+    return isAuthPending ? <PlanetLoader/> : (
         <section className={styles.formSection}>
             <form className={styles.form}>
                 <h2 className={`${styles.formTitle} text text_type_main-medium`}>Регистрация</h2>

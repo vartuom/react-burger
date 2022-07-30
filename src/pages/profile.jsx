@@ -1,12 +1,25 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import styles from './profile.module.css'
 import {Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import {fetchGetUserData} from "../store/userSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
+import {fetchPathUserData} from "../store/userSlice";
+import {useLocation} from "react-router-dom";
 
 const Profile = () => {
 
-    const dispatch = useDispatch;
+    const {userName, userEmail} = useSelector(store => ({
+        userName: store.user.user.name,
+        userEmail: store.user.user.email
+    }))
+
+    useEffect(() => {
+        setNameInputValue(userName)
+        setEmailInputValue(userEmail)
+    }, [userName, userEmail])
+
+    const dispatch = useDispatch();
+    const location = useLocation();
 
     const [nameInputValue, setNameInputValue] = React.useState('')
     const nameInputRef = React.useRef(null)
@@ -22,18 +35,29 @@ const Profile = () => {
         alert('Icon Click Callback')
     }
 
-    /*useEffect(() => {
-        dispatch(fetchGetUserData())
-    }, [dispatch])*/
+    const resetInputValues = useCallback(() => {
+        setNameInputValue(userName)
+        setEmailInputValue(userEmail)
+        setPasswordInputValue('')
+    }, [userName, userEmail])
 
     return (
         <section className={styles.formSection}>
             <form className={styles.form}>
                 <div>
                     <ul className={styles.navList}>
-                        <li className={`${styles.navList_item} text text_type_main-medium text_color_inactive`}>Профиль</li>
-                        <li className={`${styles.navList_item} text text_type_main-medium text_color_inactive`}>История заказов</li>
-                        <li className={`${styles.navList_item} text text_type_main-medium text_color_inactive`}>Выход</li>
+                        <li className={`${styles.navList_item} ${styles.fakeButton}
+                        ${location.pathname === '/profile' ? 'text text_type_main-medium' 
+                            : 'text text_type_main-medium text_color_inactive'}`}>
+                            Профиль
+                        </li>
+                        <li className={`${styles.navList_item} text text_type_main-medium text_color_inactive`}>
+                            История заказов
+                        </li>
+                        <li className={`${styles.navList_item} ${styles.fakeButton} 
+                        text text_type_main-medium text_color_inactive`}>
+                            Выход
+                        </li>
                     </ul>
                     <p className={'text text_type_main-default text_color_inactive pt-20'}>В этом разделе вы можете
                         изменить свои персональные данные</p>
@@ -76,6 +100,18 @@ const Profile = () => {
                         errorText={'Ошибка'}
                         size={'default'}
                     />
+                    <div className={styles.buttonsWrapper}>
+                        <p className={`text text_type_main-default text_color_accent mr-7 ${styles.fakeButton}`}
+                           onClick={resetInputValues}>Отмена</p>
+                        <Button type="primary" size="medium" onClick={(e) => {
+                            e.preventDefault();
+                            dispatch(fetchPathUserData({
+                                email: emailInputValue,
+                                password: passwordInputValue,
+                                name: nameInputValue
+                            }))
+                        }}>Сохранить</Button>
+                    </div>
                 </fieldset>
             </form>
         </section>

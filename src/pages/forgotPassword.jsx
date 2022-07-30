@@ -3,6 +3,8 @@ import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components"
 import styles from './pages.module.css'
 import {Link, useHistory} from "react-router-dom";
 import {requestPasswordReset} from "../utils/api";
+import {useSelector} from "react-redux";
+import PlanetLoader from "../components/planetLoader/planetLoader";
 
 const Register = () => {
 
@@ -11,7 +13,11 @@ const Register = () => {
 
     const history = useHistory();
 
-    return (
+    const {isAuthPending} = useSelector(store => ({
+        isAuthPending: store.user.isAuthPending
+    }))
+
+    return isAuthPending ? <PlanetLoader/> : (
         <section className={styles.formSection}>
             <form className={styles.form}>
                 <h2 className={`${styles.formTitle} text text_type_main-medium`}>Восстановление пароля</h2>

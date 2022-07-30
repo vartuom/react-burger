@@ -4,12 +4,17 @@ import styles from './pages.module.css'
 import {Link, useHistory, Redirect, useLocation} from "react-router-dom";
 import {fetchLogIn} from "../store/userSlice";
 import {useDispatch, useSelector} from "react-redux";
+import PlanetLoader from "../components/planetLoader/planetLoader";
 
 const Login = () => {
 
     const dispatch = useDispatch();
     const location = useLocation();
     const history = useHistory();
+
+    const {isAuthPending} = useSelector(store => ({
+        isAuthPending: store.user.isAuthPending
+    }))
 
     const [emailInputValue, setEmailInputValue] = React.useState('')
     const emailInputRef = React.useRef(null)
@@ -45,7 +50,7 @@ const Login = () => {
         alert('Icon Click Callback')
     }
 
-    return (
+    return isAuthPending ? <PlanetLoader/> : (
         <section className={styles.formSection}>
             <form className={styles.form}>
                 <h2 className={`${styles.formTitle} text text_type_main-medium`}>Вход</h2>

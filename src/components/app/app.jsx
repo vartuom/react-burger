@@ -13,6 +13,7 @@ import Main from "../../pages/main";
 import Profile from "../../pages/profile";
 import ProtectedRoute from "../protectedRoute/protectedRoute";
 import {fetchGetUserData} from "../../store/userSlice";
+import PlanetLoader from "../planetLoader/planetLoader";
 
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
                 <AppHeader/>
                 <Switch>
                     <Route path="/" exact={true}>
-                        {!isLoading && <Main/>}
+                        {isLoading ? <PlanetLoader/> : <Main/>}
                     </Route>
                     <Route path="/login" exact={true}>
                         <Login/>
