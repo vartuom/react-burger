@@ -1,9 +1,34 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ingredientDetailsStyles from "./ingredientDetails.module.css"
 import ingredientPropTypes from "../../utils/propTypesConfig";
+import {useDispatch, useSelector} from "react-redux";
+import {useParams} from "react-router-dom";
+import PlanetLoader from "../planetLoader/planetLoader";
+import {fetchIngredient} from "../../store/ingredientSlice";
 
-const IngredientDetails = ({ingredient}) => {
-    return (
+const IngredientDetails = () => {
+
+    const dispatch = useDispatch();
+    const {id} = useParams();
+
+    const {ingredient, isLoading, isFailed} = useSelector(store => ({
+        ingredient: store.ingredient.data,
+        isLoading: store.ingredient.isLoading,
+        isFailed: store.ingredient.isFailed
+    }))
+
+    useEffect(() => {
+        dispatch(fetchIngredient(id))
+    }, [])
+
+  /* useEffect(() => {
+       setIngredient(ingredientsArr.find((item) => {
+            return item._id === id;
+        }) || 'err')
+    }, [ingredientsArr])*/
+
+
+    return isLoading ? <PlanetLoader/> : isFailed ? 'Ошибка' : (
         <div className={`${ingredientDetailsStyles.container} pb-15`}>
             <img className={ingredientDetailsStyles.preview} src={ingredient.image} alt=""/>
             <p className="text text_type_main-medium pb-8">{ingredient.name}</p>

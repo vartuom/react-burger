@@ -26,7 +26,7 @@ export const fetchRegUser = createAsyncThunk(
             // enter you logic when the fetch is successful
             return actualData;
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(error.status)
         }
     }
 );
@@ -53,7 +53,33 @@ export const fetchLogIn = createAsyncThunk(
             // enter you logic when the fetch is successful
             return actualData;
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(error.status)
+        }
+    }
+);
+
+export const fetchLogOut = createAsyncThunk(
+    'user/fetchLogOut',
+    async function (_, {rejectWithValue}) {
+        try {
+            const response = await fetch(`${baseUrl}/auth/logout`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    // your expected POST request payload goes here
+                    token: localStorage.getItem('refreshToken')
+                })
+            });
+            if (!response.ok) {
+                return rejectWithValue(response.status)
+            }
+            const actualData = await response.json();
+            // enter you logic when the fetch is successful
+            return actualData;
+        } catch (error) {
+            return rejectWithValue(error.status)
         }
     }
 );
@@ -169,11 +195,32 @@ const userSlice = createSlice({
             })
             .addCase(fetchPathUserData.fulfilled, (state, action) => {
                 console.log('PATСH user OK')
+                state.isAuthPending = false;
                 state.user.email = action.payload.user.email;
                 state.user.name = action.payload.user.name;
             })
+            .addCase(fetchPathUserData.pending, (state, action) => {
+                state.isAuthPending = true;
+            })
             .addCase(fetchPathUserData.rejected, (state, action) => {
+                state.isAuthPending = false;
                 console.log('PATСH user rejected ' + action.payload)
+            })
+            .addCase(fetchLogOut.fulfilled, (state, action) => {
+                console.log('loginOut OK' + action.payload)
+                state.isAuthPending = false;
+                state.isLoggedIn = false;
+                state.user.email = '';
+                state.user.name = '';
+                setCookie('accessToken', null, {expires: -1});
+                localStorage.removeItem('refreshToken');
+            })
+            .addCase(fetchLogOut.pending, (state) => {
+                state.isAuthPending = true;
+            })
+            .addCase(fetchLogOut.rejected, (state, action) => {
+                console.log('loginOut attempt rejected ' + action.payload)
+                state.isAuthPending = false;
             })
 
     }

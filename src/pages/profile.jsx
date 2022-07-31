@@ -4,19 +4,30 @@ import {Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {fetchPathUserData} from "../store/userSlice";
-import {useLocation} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
+import {fetchLogOut} from "../store/userSlice";
+import PlanetLoader from "../components/planetLoader/planetLoader";
 
 const Profile = () => {
 
-    const {userName, userEmail} = useSelector(store => ({
+    const {userName, userEmail, isLoggedIn, isAuthPending} = useSelector(store => ({
         userName: store.user.user.name,
-        userEmail: store.user.user.email
+        userEmail: store.user.user.email,
+        isLoggedIn: store.user.isLoggedIn,
+        isAuthPending: store.user.isAuthPending
     }))
 
     useEffect(() => {
         setNameInputValue(userName)
         setEmailInputValue(userEmail)
     }, [userName, userEmail])
+
+    const history = useHistory();
+    useEffect(() => {
+        if (!isLoggedIn) {
+            history.replace({ pathname: '/login' })
+        }
+    }, [isLoggedIn])
 
     const dispatch = useDispatch();
     const location = useLocation();
@@ -41,7 +52,7 @@ const Profile = () => {
         setPasswordInputValue('')
     }, [userName, userEmail])
 
-    return (
+    return isAuthPending ? <PlanetLoader/> : (
         <section className={styles.formSection}>
             <form className={styles.form}>
                 <div>
@@ -54,7 +65,7 @@ const Profile = () => {
                         <li className={`${styles.navList_item} text text_type_main-medium text_color_inactive`}>
                             История заказов
                         </li>
-                        <li className={`${styles.navList_item} ${styles.fakeButton} 
+                        <li onClick={() => dispatch(fetchLogOut())} className={`${styles.navList_item} ${styles.fakeButton}
                         text text_type_main-medium text_color_inactive`}>
                             Выход
                         </li>

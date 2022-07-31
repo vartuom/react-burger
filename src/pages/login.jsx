@@ -27,16 +27,6 @@ const Login = () => {
         user: store.user.user
     }))
 
-    /*if (isLoggedIn) {
-        console.log(location);
-        return (
-            <Redirect
-                // Если объект state не является undefined, вернём пользователя назад.
-                to={ location.state?.from || '/' }
-            />
-        );
-    }*/
-
     useEffect(() => {
         if (isLoggedIn) {
             console.log(location);

@@ -6,3 +6,11 @@
     text-align: center;
     gap: var(--offset-base-size);
 }
+
+.link {
+    color: white;
+}
+
+.link a {
+    text-decoration: none;
+}
