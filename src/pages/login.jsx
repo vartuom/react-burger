@@ -31,7 +31,7 @@ const Login = () => {
         if (isLoggedIn) {
             console.log(location);
             // Если объект state не является undefined, вернём пользователя назад.
-            history.replace({ pathname: location.state?.from.pathname || '/' })
+            history.replace({pathname: location.state?.from.pathname || '/'})
         }
     }, [isLoggedIn]);
 
@@ -42,7 +42,14 @@ const Login = () => {
 
     return isAuthPending ? <PlanetLoader/> : (
         <section className={styles.formSection}>
-            <form className={styles.form}>
+            <form className={styles.form}
+                  onSubmit={(e) => {
+                      e.preventDefault()
+                      dispatch(fetchLogIn({
+                          email: emailInputValue,
+                          password: passwordInputValue,
+                      }));
+                  }}>
                 <h2 className={`${styles.formTitle} text text_type_main-medium`}>Вход</h2>
                 <fieldset className={styles.fieldset}>
                     <Input
@@ -70,14 +77,7 @@ const Login = () => {
                         size={'default'}
                     />
                 </fieldset>
-                <Button type="primary" size="medium"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            dispatch(fetchLogIn({
-                                email: emailInputValue,
-                                password: passwordInputValue,
-                            }));
-                        }}>
+                <Button type="primary" size="medium">
                     Войти
                 </Button>
                 <div className={`${styles.formTips} mt-20`}>
