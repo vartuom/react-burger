@@ -25,7 +25,7 @@ const Profile = () => {
     const history = useHistory();
     useEffect(() => {
         if (!isLoggedIn) {
-            history.replace({ pathname: '/login' })
+            history.replace({pathname: '/login'})
         }
     }, [isLoggedIn])
 
@@ -54,18 +54,26 @@ const Profile = () => {
 
     return isAuthPending ? <PlanetLoader/> : (
         <section className={styles.formSection}>
-            <form className={styles.form}>
+            <form className={styles.form} onSubmit={(e) => {
+                e.preventDefault();
+                dispatch(fetchPathUserData({
+                    email: emailInputValue,
+                    password: passwordInputValue,
+                    name: nameInputValue
+                }))
+            }}>
                 <div>
                     <ul className={styles.navList}>
                         <li className={`${styles.navList_item} ${styles.fakeButton}
-                        ${location.pathname === '/profile' ? 'text text_type_main-medium' 
+                        ${location.pathname === '/profile' ? 'text text_type_main-medium'
                             : 'text text_type_main-medium text_color_inactive'}`}>
                             Профиль
                         </li>
                         <li className={`${styles.navList_item} text text_type_main-medium text_color_inactive`}>
                             История заказов
                         </li>
-                        <li onClick={() => dispatch(fetchLogOut())} className={`${styles.navList_item} ${styles.fakeButton}
+                        <li onClick={() => dispatch(fetchLogOut())}
+                            className={`${styles.navList_item} ${styles.fakeButton}
                         text text_type_main-medium text_color_inactive`}>
                             Выход
                         </li>
@@ -114,14 +122,7 @@ const Profile = () => {
                     <div className={styles.buttonsWrapper}>
                         <p className={`text text_type_main-default text_color_accent mr-7 ${styles.fakeButton}`}
                            onClick={resetInputValues}>Отмена</p>
-                        <Button type="primary" size="medium" onClick={(e) => {
-                            e.preventDefault();
-                            dispatch(fetchPathUserData({
-                                email: emailInputValue,
-                                password: passwordInputValue,
-                                name: nameInputValue
-                            }))
-                        }}>Сохранить</Button>
+                        <Button type="primary" size="medium">Сохранить</Button>
                     </div>
                 </fieldset>
             </form>

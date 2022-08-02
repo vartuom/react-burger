@@ -29,7 +29,14 @@ const Register = () => {
     }
 
     return isAuthPending ? <PlanetLoader/> : (
-        <section className={styles.formSection}>
+        <section className={styles.formSection} onSubmit={(e) => {
+            e.preventDefault()
+            dispatch(fetchRegUser({
+                email: emailInputValue,
+                password: passwordInputValue,
+                username: nameInputValue
+            }));
+        }}>
             <form className={styles.form}>
                 <h2 className={`${styles.formTitle} text text_type_main-medium`}>Регистрация</h2>
                 <fieldset className={styles.fieldset}>
@@ -69,15 +76,7 @@ const Register = () => {
                         size={'default'}
                     />
                 </fieldset>
-                <Button type="primary" size="medium"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            dispatch(fetchRegUser({
-                                email: emailInputValue,
-                                password: passwordInputValue,
-                                username: nameInputValue
-                            }));
-                        }}>
+                <Button type="primary" size="medium">
                     Зарегистрироваться
                 </Button>
                 <div className={`${styles.formTips} mt-20`}>

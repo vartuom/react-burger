@@ -42,14 +42,13 @@ const Login = () => {
 
     return isAuthPending ? <PlanetLoader/> : (
         <section className={styles.formSection}>
-            <form className={styles.form}
-                  onSubmit={(e) => {
-                      e.preventDefault()
-                      dispatch(fetchLogIn({
-                          email: emailInputValue,
-                          password: passwordInputValue,
-                      }));
-                  }}>
+            <form className={styles.form} onSubmit={(e) => {
+                e.preventDefault()
+                dispatch(fetchLogIn({
+                    email: emailInputValue,
+                    password: passwordInputValue,
+                }));
+            }}>
                 <h2 className={`${styles.formTitle} text text_type_main-medium`}>Вход</h2>
                 <fieldset className={styles.fieldset}>
                     <Input

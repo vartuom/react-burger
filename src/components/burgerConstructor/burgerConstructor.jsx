@@ -12,10 +12,16 @@ import { v4 as uuidv4 } from 'uuid';
 import {addIngredient, moveIngredient} from "../../store/burgerConstructorSlice";
 import {fetchOrder} from "../../store/orderSlice";
 import {closeDetailsModal} from "../../store/orderSlice";
+import {useHistory} from "react-router-dom";
 
 const BurgerConstructor = () => {
 
     const dispatch = useDispatch();
+    const history = useHistory();
+
+    const {isLoggedIn} = useSelector(store => ({
+        isLoggedIn: store.user.isLoggedIn
+    }))
 
     //следим за булкой и ингредиентами в конструкторе
     const {bun, mains} = useSelector(store => ({
@@ -54,6 +60,10 @@ const BurgerConstructor = () => {
 
     //обработка нажатия кнопки "Оформить заказ"
     const postOrder = useCallback(() => {
+        if (!isLoggedIn) {
+            history.push({ pathname: '/login' })
+            return
+        }
         //если в конструкторе нет булок или ингредиентов то не отправляем заказ
         if (bun.price && mains.length > 0)
             dispatch(fetchOrder([...mains, bun, bun]))
