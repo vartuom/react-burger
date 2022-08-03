@@ -69,7 +69,11 @@ const Profile = () => {
                             : 'text text_type_main-medium text_color_inactive'}`}>
                             Профиль
                         </li>
-                        <li className={`${styles.navList_item} text text_type_main-medium text_color_inactive`}>
+                        <li className={`${styles.navList_item} ${styles.fakeButton}
+                         text text_type_main-medium text_color_inactive`}
+                            onClick={() => {
+                             history.push('/orders')
+                            }}>
                             История заказов
                         </li>
                         <li onClick={() => dispatch(fetchLogOut())}

@@ -17,6 +17,8 @@ import PlanetLoader from "../planetLoader/planetLoader";
 import Modal from "../modal/modal";
 import IngredientDetails from "../IngredientDetails/ingredientDetails";
 import Ingredient from "../../pages/ingredient";
+import OrderDetails from "../orderDetails/orderDetails";
+import Orders from "../../pages/orders";
 
 
 function App() {
@@ -56,17 +58,27 @@ function App() {
                 <ProtectedRoute path="/profile">
                     <Profile/>
                 </ProtectedRoute>
+                <ProtectedRoute path="/orders">
+                    <Orders/>
+                </ProtectedRoute>
                 <Route path="/ingredients/:id" exact={true}>
                     <Ingredient/>
                 </Route>)
             </Switch>
             {background && (
-                <Route path="/ingredients/:id">
-                    <Modal title={'Детали ингредиента'} backRedirect={background.pathname}>
-                        <IngredientDetails/>
-                    </Modal>
-                </Route>)
-            }
+                <>
+                    <Route path="/ingredients/:id">
+                        <Modal title={'Детали ингредиента'} backRedirect={background.pathname}>
+                            <IngredientDetails/>
+                        </Modal>
+                    </Route>
+                    <Route path="/order">
+                        <Modal title={''} backRedirect={background.pathname}>
+                            <OrderDetails/>
+                        </Modal>
+                    </Route>
+                </>
+            )}
         </div>
     );
 }

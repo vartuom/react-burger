@@ -30,6 +30,8 @@ const orderSlice = createSlice({
     name: 'order',
     initialState: {
         isOpened: false,
+        isFailed: false,
+        isPending: true,
         name: '',
         orderNumber: 0,
         data: []
@@ -39,7 +41,25 @@ const orderSlice = createSlice({
             state.isOpened = false;
         }
     },
-    extraReducers: {
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchOrder.fulfilled, (state, action) => {
+                state.orderNumber = action.payload.order.number;
+                state.name = action.payload.name;
+                state.isPending = false;
+            })
+            .addCase(fetchOrder.pending, (state, action) => {
+                state.isPending = true;
+                state.isFailed = false;
+            })
+            .addCase(fetchOrder.rejected, (state, action) => {
+                state.orderNumber = 0;
+                state.name = '';
+                state.isPending = false;
+                state.isFailed = true;
+            })
+    }
+    /*extraReducers: {
         [fetchOrder.fulfilled]: (state, action) => {
             state.orderNumber = action.payload.order.number;
             state.name = action.payload.name;
@@ -50,7 +70,7 @@ const orderSlice = createSlice({
             state.orderNumber = 0;
             state.data = [];
         }
-    }
+    }*/
 })
 
 export const {closeDetailsModal} = orderSlice.actions;

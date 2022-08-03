@@ -65,8 +65,10 @@ const BurgerConstructor = () => {
             return
         }
         //если в конструкторе нет булок или ингредиентов то не отправляем заказ
-        if (bun.price && mains.length > 0)
-            dispatch(fetchOrder([...mains, bun, bun]))
+        if (bun.price && mains.length > 0) {
+            dispatch(fetchOrder([...mains, bun, bun]));
+            history.push('/order', {background: {pathname: '/'}})
+        }
     }, [mains, bun, dispatch])
 
     //DnD сортировка перетаскиванием
