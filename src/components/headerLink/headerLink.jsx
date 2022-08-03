@@ -1,21 +1,23 @@
 import React, {useCallback} from 'react';
 import headerLink from "./headerLink.module.css"
 import PropTypes from "prop-types";
-import {useHistory, useLocation} from "react-router-dom";
+import {useHistory, useLocation, useRouteMatch} from "react-router-dom";
 
-const HeaderLink = ({children, to, caption}) => {
+const HeaderLink = ({children, to, match, caption}) => {
 
     const history = useHistory();
-    const location = useLocation();
+    const isLinkActive = useRouteMatch(match || to);
+
+    console.log('match '+ match, ' to ' + to)
 
     const onClick = useCallback(() => {
-        history.replace({pathname: to});
+        history.push({pathname: to});
     }, [history, to])
 
     return (
         <div onClick={onClick} className={`${headerLink.link} pl-5 pr-5 pt-4 pb-4`}>
             {children}
-            <p className={location.pathname === to ? 'text text_type_main-default text_color_primary'
+            <p className={isLinkActive ? 'text text_type_main-default text_color_primary'
                     : 'text text_type_main-default text_color_inactive'}>
                 {caption}
             </p>

@@ -21,8 +21,8 @@ const Register = () => {
         <section className={styles.formSection}>
             <form className={styles.form} onSubmit={(e) => {
                 e.preventDefault();
-                requestPasswordReset(emailInputValue)
-                    .then(history.replace({pathname: '/reset-password'}))
+                emailInputValue && requestPasswordReset(emailInputValue)
+                    .then(history.push({pathname: '/reset-password', state: {isForgotPageVisited: true}}))
                     .catch((err) => console.log(err));
             }}>
                 <h2 className={`${styles.formTitle} text text_type_main-medium`}>Восстановление пароля</h2>

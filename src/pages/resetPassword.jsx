@@ -1,14 +1,19 @@
 import React from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './pages.module.css'
-import {Link, useHistory} from "react-router-dom";
+import {Link, useHistory, useLocation} from "react-router-dom";
 import {resetUsrPassword} from "../utils/api";
 import PlanetLoader from "../components/planetLoader/planetLoader";
 import {useSelector} from "react-redux";
 
 const Register = () => {
 
+    const location = useLocation();
     const history = useHistory();
+    console.log(location)
+    if (!location.state?.isForgotPageVisited) {
+        history.replace({pathname: "/forgot-password"})
+    }
 
     const {isAuthPending} = useSelector(store => ({
         isAuthPending: store.user.isAuthPending

@@ -55,8 +55,11 @@ function App() {
                 <ProtectedRoute path="/reset-password" exact isAnonOnly={true}>
                     <ResetPassword/>
                 </ProtectedRoute>
-                <ProtectedRoute path="/profile">
+                <ProtectedRoute path="/profile" exact={true}>
                     <Profile/>
+                </ProtectedRoute>
+                <ProtectedRoute path="/profile/orders">
+                    <Orders/>
                 </ProtectedRoute>
                 <ProtectedRoute path="/orders">
                     <Orders/>

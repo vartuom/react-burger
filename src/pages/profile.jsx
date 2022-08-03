@@ -5,8 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {fetchPathUserData} from "../store/userSlice";
 import {useHistory, useLocation} from "react-router-dom";
-import {fetchLogOut} from "../store/userSlice";
 import PlanetLoader from "../components/planetLoader/planetLoader";
+import ProfileMenu from "../components/profileMenu/profileMenu";
 
 const Profile = () => {
 
@@ -63,25 +63,7 @@ const Profile = () => {
                 }))
             }}>
                 <div>
-                    <ul className={styles.navList}>
-                        <li className={`${styles.navList_item} ${styles.fakeButton}
-                        ${location.pathname === '/profile' ? 'text text_type_main-medium'
-                            : 'text text_type_main-medium text_color_inactive'}`}>
-                            Профиль
-                        </li>
-                        <li className={`${styles.navList_item} ${styles.fakeButton}
-                         text text_type_main-medium text_color_inactive`}
-                            onClick={() => {
-                             history.push('/orders')
-                            }}>
-                            История заказов
-                        </li>
-                        <li onClick={() => dispatch(fetchLogOut())}
-                            className={`${styles.navList_item} ${styles.fakeButton}
-                        text text_type_main-medium text_color_inactive`}>
-                            Выход
-                        </li>
-                    </ul>
+                    <ProfileMenu/>
                     <p className={'text text_type_main-default text_color_inactive pt-20'}>В этом разделе вы можете
                         изменить свои персональные данные</p>
                 </div>
@@ -124,8 +106,7 @@ const Profile = () => {
                         size={'default'}
                     />
                     <div className={styles.buttonsWrapper}>
-                        <p className={`text text_type_main-default text_color_accent mr-7 ${styles.fakeButton}`}
-                           onClick={resetInputValues}>Отмена</p>
+                        <Button type="secondary" size="medium" onClick={resetInputValues}>Отмена</Button>
                         <Button type="primary" size="medium">Сохранить</Button>
                     </div>
                 </fieldset>
