@@ -13,10 +13,7 @@ export const requestPasswordReset = async (email) => {
             email: email
         })
     });
-    if (!response.ok) {
-        throw new Error('Ошибка при получении данных с сервера!')
-    }
-    const data = await response.json();
+    const data = await checkResponse(response);
     // enter you logic when the fetch is successful
     return data;
 }
@@ -33,10 +30,7 @@ export const resetUsrPassword = async (password, code) => {
             token: code
         })
     });
-    if (!response.ok) {
-        throw new Error('Ошибка при получении данных с сервера!')
-    }
-    const data = await response.json();
+    const data = await checkResponse(response);
     // enter you logic when the fetch is successful
     return data;
 }

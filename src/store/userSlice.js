@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {baseUrl} from "../utils/constants";
 import {getCookie, setCookie} from "../utils/storage";
-import {fetchWithRefresh} from "../utils/api";
+import {checkResponse, fetchWithRefresh} from "../utils/api";
 import {cookiesLifeTime} from "../utils/constants";
 
 export const fetchRegUser = createAsyncThunk(
@@ -19,10 +19,7 @@ export const fetchRegUser = createAsyncThunk(
                     name: data.username
                 })
             });
-            if (!response.ok) {
-                return rejectWithValue(response.status)
-            }
-            const actualData = await response.json();
+            const actualData = await checkResponse(response);
             return actualData;
         } catch (error) {
             return rejectWithValue(error.status)
@@ -44,10 +41,7 @@ export const fetchLogIn = createAsyncThunk(
                     password: data.password
                 })
             });
-            if (!response.ok) {
-                return rejectWithValue(response.status)
-            }
-            const actualData = await response.json();
+            const actualData = await checkResponse(response);
             // enter you logic when the fetch is successful
             return actualData;
         } catch (error) {
@@ -70,10 +64,7 @@ export const fetchLogOut = createAsyncThunk(
                     token: localStorage.getItem('refreshToken')
                 })
             });
-            if (!response.ok) {
-                return rejectWithValue(response.status)
-            }
-            const actualData = await response.json();
+            const actualData = await checkResponse(response);
             return actualData;
         } catch (error) {
             return rejectWithValue(error.status)

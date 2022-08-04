@@ -9,16 +9,16 @@ import {useCallback} from "react";
 
 const modalRoot = document.getElementById("modals");
 
-const Modal = ({children, title, backRedirect}) => {
+const Modal = ({children, title}) => {
 
     const history = useHistory();
 
     //возвращаем пользователя на предыдущую страницу при закрытии модалки
     const handleCloseAction = useCallback(
         () => {
-            history.replace({ pathname: backRedirect || '/' });
+            history.goBack();
         },
-        [history, backRedirect],
+        [history],
     );
 
     //закрываем модалку при нажатии клавиши
@@ -50,8 +50,7 @@ const Modal = ({children, title, backRedirect}) => {
 
 Modal.propTypes = {
     children: PropTypes.node.isRequired,
-    title: PropTypes.string.isRequired,
-    backRedirect: PropTypes.string
+    title: PropTypes.string.isRequired
 };
 
 export default Modal;

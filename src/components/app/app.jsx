@@ -77,12 +77,12 @@ function App() {
             {background && (
                 <>
                     <Route path="/ingredients/:id">
-                        <Modal title={'Детали ингредиента'} backRedirect={background.pathname}>
+                        <Modal title={'Детали ингредиента'} >
                             <IngredientDetails/>
                         </Modal>
                     </Route>
                     <Route path="/order">
-                        <Modal title={''} backRedirect={background.pathname}>
+                        <Modal title={''} >
                             <OrderDetails/>
                         </Modal>
                     </Route>
