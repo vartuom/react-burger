@@ -23,11 +23,6 @@ const Register = () => {
     const [passwordInputValue, setPasswordInputValue] = React.useState('')
     const passwordInputRef = React.useRef(null)
 
-    const onIconClick = () => {
-        setTimeout(() => passwordInputRef.current.focus(), 0)
-        alert('Icon Click Callback')
-    }
-
     return isAuthPending ? <PlanetLoader/> : (
         <section className={styles.formSection} onSubmit={(e) => {
             e.preventDefault()
@@ -71,7 +66,6 @@ const Register = () => {
                         name={'passwordInput'}
                         error={false}
                         ref={passwordInputRef}
-                        onIconClick={onIconClick}
                         errorText={'Ошибка'}
                         size={'default'}
                     />

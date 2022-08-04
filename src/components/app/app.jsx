@@ -4,7 +4,7 @@ import AppHeader from "../appHeader/appHeader";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchIngredients} from "../../store/ingredientsSlice";
-import {BrowserRouter, Switch, Route, useLocation} from 'react-router-dom';
+import {Switch, Route, useLocation} from 'react-router-dom';
 import Login from "../../pages/login";
 import Register from "../../pages/register";
 import ForgotPassword from "../../pages/forgotPassword";
@@ -19,6 +19,7 @@ import IngredientDetails from "../IngredientDetails/ingredientDetails";
 import Ingredient from "../../pages/ingredient";
 import OrderDetails from "../orderDetails/orderDetails";
 import Orders from "../../pages/orders";
+import {getCookie} from "../../utils/storage";
 
 
 function App() {
@@ -26,14 +27,19 @@ function App() {
     const dispatch = useDispatch();
     const isLoading = useSelector(store => store.ingredients.ingredientsRequest);
     const location = useLocation();
+    //достаем из стейта адрес главной страницы "/" для ее рендера под модальным окном
+    //адрес закидывается в стейт в компоненте Card
     const background = location.state?.background;
-    console.log(location);
-    console.log('background ' + background);
+
+    //пытаемся авторизовать пользователя при наличии токенов
+    useEffect(() => {
+        if (getCookie('accessToken') || localStorage.getItem('refreshToken'))
+            dispatch(fetchGetUserData())
+    }, [dispatch])
 
     //загружаем ингредиенты с сервера при монтировании компонента
     useEffect(() => {
         dispatch(fetchIngredients())
-        dispatch(fetchGetUserData())
     }, [dispatch])
 
     return (

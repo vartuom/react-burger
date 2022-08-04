@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './pages.module.css'
-import {Link, useHistory, Redirect, useLocation} from "react-router-dom";
+import {Link, useHistory, useLocation} from "react-router-dom";
 import {fetchLogIn} from "../store/userSlice";
 import {useDispatch, useSelector} from "react-redux";
 import PlanetLoader from "../components/planetLoader/planetLoader";
@@ -12,33 +12,27 @@ const Login = () => {
     const location = useLocation();
     const history = useHistory();
 
+    //пока не пройдет проверка авторизации показываем лоадер
     const {isAuthPending} = useSelector(store => ({
         isAuthPending: store.user.isAuthPending
     }))
 
-    const [emailInputValue, setEmailInputValue] = React.useState('')
-    const emailInputRef = React.useRef(null)
-
-    const [passwordInputValue, setPasswordInputValue] = React.useState('')
-    const passwordInputRef = React.useRef(null)
-
-    const {isLoggedIn, user} = useSelector(store => ({
-        isLoggedIn: store.user.isLoggedIn,
-        user: store.user.user
+    //возвращаем авторизованых пользователей назад с роута
+    const {isLoggedIn} = useSelector(store => ({
+        isLoggedIn: store.user.isLoggedIn
     }))
-
     useEffect(() => {
         if (isLoggedIn) {
-            console.log(location);
             // Если объект state не является undefined, вернём пользователя назад.
             history.replace({pathname: location.state?.from.pathname || '/'})
         }
-    }, [isLoggedIn]);
+    }, [history, location, isLoggedIn]);
 
-    const onIconClick = () => {
-        setTimeout(() => passwordInputRef.current.focus(), 0)
-        alert('Icon Click Callback')
-    }
+    //стейты и рефы для работы инпутов
+    const [emailInputValue, setEmailInputValue] = React.useState('')
+    const emailInputRef = React.useRef(null)
+    const [passwordInputValue, setPasswordInputValue] = React.useState('')
+    const passwordInputRef = React.useRef(null)
 
     return isAuthPending ? <PlanetLoader/> : (
         <section className={styles.formSection}>
@@ -71,7 +65,6 @@ const Login = () => {
                         name={'passwordInput'}
                         error={false}
                         ref={passwordInputRef}
-                        onIconClick={onIconClick}
                         errorText={'Ошибка'}
                         size={'default'}
                     />

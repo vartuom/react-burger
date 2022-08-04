@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import ingredientDetailsStyles from "./ingredientDetails.module.css"
-import ingredientPropTypes from "../../utils/propTypesConfig";
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import PlanetLoader from "../planetLoader/planetLoader";
@@ -9,23 +8,20 @@ import {fetchIngredient} from "../../store/ingredientSlice";
 const IngredientDetails = () => {
 
     const dispatch = useDispatch();
+    //достаем id игредиента из параметра url "/ingredients/:id"
     const {id} = useParams();
 
+    //забираем актуальные данные ингредиента с сервера
+    useEffect(() => {
+        dispatch(fetchIngredient(id))
+    }, [dispatch, id])
+
+    //следим за стором, пока не вернется ингредиент показываем лоадер
     const {ingredient, isLoading, isFailed} = useSelector(store => ({
         ingredient: store.ingredient.data,
         isLoading: store.ingredient.isLoading,
         isFailed: store.ingredient.isFailed
     }))
-
-    useEffect(() => {
-        dispatch(fetchIngredient(id))
-    }, [])
-
-  /* useEffect(() => {
-       setIngredient(ingredientsArr.find((item) => {
-            return item._id === id;
-        }) || 'err')
-    }, [ingredientsArr])*/
 
 
     return isLoading ? <PlanetLoader/> : isFailed ? 'Ошибка' : (
@@ -54,6 +50,5 @@ const IngredientDetails = () => {
     );
 };
 
-IngredientDetails.propTypes = {ingredient: ingredientPropTypes};
 
 export default IngredientDetails;

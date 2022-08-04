@@ -1,5 +1,6 @@
 import {baseUrl} from "./constants";
 import {setCookie} from "./storage";
+import {cookiesLifeTime} from "./constants";
 
 export const requestPasswordReset = async (email) => {
     const response = await fetch(`${baseUrl}/password-reset`, {
@@ -63,14 +64,12 @@ export const fetchWithRefresh = async (url, options) => {
         return data
     } catch (err) {
         if (err.message === "jwt expired" || "jwt malformed") {
-            console.log(err.message);
             const refreshedData = await refreshToken();
             if (!refreshedData.success) {
                 return Promise.reject(refreshedData)
             }
             localStorage.setItem('refreshToken', refreshedData.refreshToken)
-            setCookie('accessToken', refreshedData.accessToken.split('Bearer ')[1], {expires: 3});
-            console.log('new token ' + refreshedData.accessToken);
+            setCookie('accessToken', refreshedData.accessToken.split('Bearer ')[1], {expires: cookiesLifeTime});
             const res = await fetch(url, {
                 ...options,
                 headers: {

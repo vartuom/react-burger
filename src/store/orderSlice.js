@@ -59,18 +59,6 @@ const orderSlice = createSlice({
                 state.isFailed = true;
             })
     }
-    /*extraReducers: {
-        [fetchOrder.fulfilled]: (state, action) => {
-            state.orderNumber = action.payload.order.number;
-            state.name = action.payload.name;
-            state.isOpened = true;
-        },
-        [fetchOrder.rejected]: state => {
-            state.name = '';
-            state.orderNumber = 0;
-            state.data = [];
-        }
-    }*/
 })
 
 export const {closeDetailsModal} = orderSlice.actions;

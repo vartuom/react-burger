@@ -1,12 +1,11 @@
 import React from 'react';
 import orderDetailsStyles from "./orderDetails.module.css"
-import PropTypes from "prop-types";
-import {useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import PlanetLoader from "../planetLoader/planetLoader";
 
 const OrderDetails = () => {
 
+    //следим за стором, пока не пришел номер заказа показываем лоадер
     const {isPending, isFailed, orderNumber} = useSelector(store => ({
         isPending: store.order.isPending,
         isFailed: store.order.isFailed,
@@ -24,10 +23,6 @@ const OrderDetails = () => {
             </p>
         </div>
     );
-};
-
-OrderDetails.propTypes = {
-    orderNumber: PropTypes.number.isRequired,
 };
 
 export default OrderDetails;

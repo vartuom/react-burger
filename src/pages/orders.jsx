@@ -1,19 +1,13 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import styles from './profile.module.css'
-import {Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch, useSelector} from "react-redux";
-import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import {fetchPathUserData} from "../store/userSlice";
-import {useHistory, useLocation} from "react-router-dom";
-import {fetchLogOut} from "../store/userSlice";
+import {useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
 import PlanetLoader from "../components/planetLoader/planetLoader";
 import ProfileMenu from "../components/profileMenu/profileMenu";
 
 const Orders = () => {
 
-    const {userName, userEmail, isLoggedIn, isAuthPending} = useSelector(store => ({
-        userName: store.user.user.name,
-        userEmail: store.user.user.email,
+    const {isLoggedIn, isAuthPending} = useSelector(store => ({
         isLoggedIn: store.user.isLoggedIn,
         isAuthPending: store.user.isAuthPending
     }))
@@ -23,7 +17,7 @@ const Orders = () => {
         if (!isLoggedIn) {
             history.replace({pathname: '/login'})
         }
-    }, [isLoggedIn])
+    }, [history, isLoggedIn])
 
 
     return isAuthPending ? <PlanetLoader/> : (

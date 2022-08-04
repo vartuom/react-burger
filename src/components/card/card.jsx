@@ -1,16 +1,17 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import Price from "../price/price";
 import cardStyle from "./card.module.css"
 import {Counter} from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientPropTypes from "../../utils/propTypesConfig";
-import PropTypes from "prop-types";
 import {useDrag} from "react-dnd";
 import {useSelector} from "react-redux";
 import {Link, useLocation} from "react-router-dom";
 
 //в action приходит колбэк обработки модального окна
-const Card = ({ingredient, action}) => {
+const Card = ({ingredient}) => {
 
+    //подключаем стейт, что бы потом в линке закинуть туда урл главной страницы
+    // для рендера главной страницы под модальным окном
     const location = useLocation();
 
     //обработка перетаскивания
@@ -35,7 +36,7 @@ const Card = ({ingredient, action}) => {
             }
             return counter
         }, 0)
-    }, [bun, mains])
+    }, [bun, mains, ingredient])
 
     return (
         <Link className={cardStyle.link} to={{pathname: `/ingredients/${ingredient._id}`, state: {background: location}}}>
@@ -50,8 +51,7 @@ const Card = ({ingredient, action}) => {
 };
 
 Card.propTypes = {
-    ingredient: ingredientPropTypes,
-    action: PropTypes.func
+    ingredient: ingredientPropTypes
 };
 
 export default Card;

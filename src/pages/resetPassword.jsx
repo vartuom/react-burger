@@ -10,7 +10,6 @@ const Register = () => {
 
     const location = useLocation();
     const history = useHistory();
-    console.log(location)
     if (!location.state?.isForgotPageVisited) {
         history.replace({pathname: "/forgot-password"})
     }
@@ -24,11 +23,6 @@ const Register = () => {
 
     const [codeInputValue, setCodeInputValue] = React.useState('')
     const codeInputRef = React.useRef(null)
-
-    const onIconClick = () => {
-        setTimeout(() => passwordInputRef.current.focus(), 0)
-        alert('Icon Click Callback')
-    }
 
     return isAuthPending ? <PlanetLoader/> : (
         <section className={styles.formSection}>
@@ -49,7 +43,6 @@ const Register = () => {
                         name={'passwordInput'}
                         error={false}
                         ref={passwordInputRef}
-                        onIconClick={onIconClick}
                         errorText={'Ошибка'}
                         size={'default'}
                     />

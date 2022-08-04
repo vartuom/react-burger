@@ -3,29 +3,23 @@ import {Redirect, Route} from "react-router-dom";
 import {useSelector} from "react-redux";
 
 export default function ProtectedRoute({isAnonOnly = false, children, ...rest}) {
-    // Если разрешен только неавторизованный доступ, а пользователь авторизован...
 
+    // Если разрешен только неавторизованный доступ, а пользователь авторизован...
     const {isLoggedIn} = useSelector(store => ({
         isLoggedIn: store.user.isLoggedIn
     }));
 
     if (isAnonOnly && isLoggedIn) {
-        // ...то отправляем его, например, на главную
+        // ...то отправляем его на главную
         return <Redirect to="/"/>;
     }
-
-    // Если требуется авторизация, а пользователь не авторизован...
-   /* if (!isAnonOnly && !isLoggedIn) {
-        // ...то отправляем его, например, на форму входа
-        return <Redirect to="/login"/>;
-    }*/
 
     // Если все ок, то рендерим внутреннее содержимое.
     return <Route
         {...rest}
         // Получим текущий маршрут, с которого произойдёт переадресация
         // для неавторизованного пользователя
-        render={({ location }) =>
+        render={({location}) =>
             isLoggedIn || isAnonOnly ? (
                 children
             ) : (
@@ -36,14 +30,10 @@ export default function ProtectedRoute({isAnonOnly = false, children, ...rest}) 
                         pathname: '/login',
                         // В from сохраним текущий маршрут
                         //The state object can be accessed via this.props.location.state in the redirected-to component.
-                        state: { from: location }
+                        state: {from: location}
                     }}
                 />
             )
         }
     />;
-
-    // Кстати, в rest содержится в том числе и пропс-компонент children,
-    // поэтому такая запись равносильна явному указанию children внутри Route:
-    // return <Route {...rest}>{children}</Route>;
 }

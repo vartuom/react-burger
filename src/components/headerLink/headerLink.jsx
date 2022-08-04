@@ -1,14 +1,18 @@
 import React, {useCallback} from 'react';
 import headerLink from "./headerLink.module.css"
 import PropTypes from "prop-types";
-import {useHistory, useLocation, useRouteMatch} from "react-router-dom";
+import {useHistory, useRouteMatch} from "react-router-dom";
 
 const HeaderLink = ({children, to, match, caption}) => {
 
     const history = useHistory();
+    //если не передан объект с опциями для расширенного сравнения, просто матчим ссылку для линка
+    //объект match вида {
+    //         path: ["/", "/ingredients/:id", "/order"],
+    //         exact: true
+    //     }
+    // нужен для того, что не дать главной странице "/" матчиться по любым линкам
     const isLinkActive = useRouteMatch(match || to);
-
-    console.log('match '+ match, ' to ' + to)
 
     const onClick = useCallback(() => {
         history.push({pathname: to});
@@ -26,7 +30,10 @@ const HeaderLink = ({children, to, match, caption}) => {
 };
 
 HeaderLink.propTypes = {
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
+    to: PropTypes.string.isRequired,
+    match: PropTypes.object,
+    caption: PropTypes.string.isRequired
 };
 
 export default HeaderLink;

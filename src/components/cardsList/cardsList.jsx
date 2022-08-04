@@ -5,13 +5,11 @@ import PropTypes from "prop-types";
 import ingredientPropTypes from "../../utils/propTypesConfig";
 import Modal from "../modal/modal";
 import IngredientDetails from "../IngredientDetails/ingredientDetails";
-import {useDispatch, useSelector} from "react-redux";
-import {closeModal, openModal} from "../../store/ingredientSlice";
+import {useSelector} from "react-redux";
 
 //получаем ссылку на заголовок (для скрола)
 const CardsList = React.forwardRef((props, ref) => {
     const { ingredients, title, id } = props;
-    const dispatch = useDispatch();
 
     //состояние модального окна с описанием ингредиента
     const {ingredient, isOpened} = useSelector(store => ({
@@ -19,26 +17,16 @@ const CardsList = React.forwardRef((props, ref) => {
         isOpened: store.ingredient.isOpened
     }))
 
-    //закрытие модального окна кликом оверлей
-    const closeDetailsModal = () => {
-        dispatch(closeModal())
-    }
-
-    //обработка клика на карточку ингредиента
-    const openDetailsModal = (ingredient) => {
-        dispatch(openModal({ingredient}))
-    }
-
     return (
         <div>
             <h2 className="text text_type_main-medium pt-10 pb-6" id={id}>{title}</h2>
             <ul className={`${cardListStyle.cardList} pl-4 pr-4`} ref={ref}>
                 {ingredients.map(ingredient =>
-                    <Card ingredient={ingredient} key={ingredient._id} action={openDetailsModal}/>
+                    <Card ingredient={ingredient} key={ingredient._id} />
                 )}
             </ul>
             {isOpened &&
-                <Modal title="Детали ингредиента" handleCloseAction={closeDetailsModal}>
+                <Modal title="Детали ингредиента" >
                     <IngredientDetails ingredient={ingredient}/>
                 </Modal>
             }

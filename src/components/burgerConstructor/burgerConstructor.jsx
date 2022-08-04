@@ -60,6 +60,7 @@ const BurgerConstructor = () => {
 
     //обработка нажатия кнопки "Оформить заказ"
     const postOrder = useCallback(() => {
+        //перекидываем не авторизованных посетителей на логин при попытке заказа
         if (!isLoggedIn) {
             history.push({ pathname: '/login' })
             return
@@ -69,7 +70,7 @@ const BurgerConstructor = () => {
             dispatch(fetchOrder([...mains, bun, bun]));
             history.push('/order', {background: {pathname: '/'}})
         }
-    }, [mains, bun, dispatch])
+    }, [mains, bun, dispatch, history, isLoggedIn])
 
     //DnD сортировка перетаскиванием
     const moveRow = useCallback((dragIndex, hoverIndex) => {

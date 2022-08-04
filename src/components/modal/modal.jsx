@@ -5,6 +5,7 @@ import modalStyles from "./modal.module.css";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import {useHistory} from "react-router-dom";
+import {useCallback} from "react";
 
 const modalRoot = document.getElementById("modals");
 
@@ -12,10 +13,15 @@ const Modal = ({children, title, backRedirect}) => {
 
     const history = useHistory();
 
-    const handleCloseAction = () => {
-        history.replace({ pathname: backRedirect || '/' })
-    }
+    //возвращаем пользователя на предыдущую страницу при закрытии модалки
+    const handleCloseAction = useCallback(
+        () => {
+            history.replace({ pathname: backRedirect || '/' });
+        },
+        [history, backRedirect],
+    );
 
+    //закрываем модалку при нажатии клавиши
     React.useEffect(() => {
         document.addEventListener('keydown', handleCloseAction);
 
@@ -23,7 +29,7 @@ const Modal = ({children, title, backRedirect}) => {
         return () => {
             document.removeEventListener('keydown', handleCloseAction);
         };
-    }, []);
+    }, [handleCloseAction]);
 
     return ReactDOM.createPortal(
         <div className={modalStyles.root}>
@@ -45,7 +51,7 @@ const Modal = ({children, title, backRedirect}) => {
 Modal.propTypes = {
     children: PropTypes.node.isRequired,
     title: PropTypes.string.isRequired,
-    handleCloseAction: PropTypes.func.isRequired,
+    backRedirect: PropTypes.string
 };
 
 export default Modal;

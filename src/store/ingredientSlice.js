@@ -10,7 +10,6 @@ export const fetchIngredient = createAsyncThunk(
                 throw new Error('Ошибка при получении данных с сервера!')
             }
             const actualData = await response.json();
-            console.log(actualData, id)
             const ingredient = actualData.data.find((item) => {
                 return item._id === id;
             })
@@ -29,13 +28,6 @@ const ingredientSlice = createSlice({
         data: {}
     },
     reducers: {
-        openModal(state, action) {
-            state.isOpened = true;
-            state.data = action.payload.ingredient
-        },
-        closeModal(state) {
-            state.isOpened = false
-        }
     },
     extraReducers: (builder) => {
         builder
@@ -55,5 +47,4 @@ const ingredientSlice = createSlice({
     }
 })
 
-export const {openModal, closeModal} = ingredientSlice.actions;
 export default ingredientSlice.reducer;

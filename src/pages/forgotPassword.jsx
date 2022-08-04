@@ -8,15 +8,19 @@ import PlanetLoader from "../components/planetLoader/planetLoader";
 
 const Register = () => {
 
+    //стейт и реф для работы компонента инпута
     const [emailInputValue, setEmailInputValue] = React.useState('')
     const emailInputRef = React.useRef(null)
 
     const history = useHistory();
 
+    //пока не пройдет проверка авторизации показываем лоадер
     const {isAuthPending} = useSelector(store => ({
         isAuthPending: store.user.isAuthPending
     }))
 
+    //если все ОК, то закидываем в стейт локации "isForgotPageVisited: true"
+    // что бы разрешить переход на восстановление пароля
     return isAuthPending ? <PlanetLoader/> : (
         <section className={styles.formSection}>
             <form className={styles.form} onSubmit={(e) => {
