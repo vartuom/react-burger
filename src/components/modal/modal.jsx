@@ -4,32 +4,20 @@ import ModalOverlay from "../modalOverlay/modalOverlay";
 import modalStyles from "./modal.module.css";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import {useHistory} from "react-router-dom";
-import {useCallback} from "react";
 
 const modalRoot = document.getElementById("modals");
 
-const Modal = ({children, title}) => {
-
-    const history = useHistory();
-
-    //возвращаем пользователя на предыдущую страницу при закрытии модалки
-    const handleCloseAction = useCallback(
-        () => {
-            history.goBack();
-        },
-        [history],
-    );
+const Modal = ({children, title, onClose}) => {
 
     //закрываем модалку при нажатии клавиши
     React.useEffect(() => {
-        document.addEventListener('keydown', handleCloseAction);
+        document.addEventListener('keydown', onClose);
 
         //снятие слушателя при размонтировании компонента
         return () => {
-            document.removeEventListener('keydown', handleCloseAction);
+            document.removeEventListener('keydown', onClose);
         };
-    }, [handleCloseAction]);
+    }, [onClose]);
 
     return ReactDOM.createPortal(
         <div className={modalStyles.root}>
@@ -37,12 +25,12 @@ const Modal = ({children, title}) => {
                 <div className={`${modalStyles.modalHeader} pt-10 pl-10 pr-10`}>
                     <h2 className="text text_type_main-large">{title}</h2>
                     <div className={modalStyles.closeIcon}>
-                    <CloseIcon type="primary" onClick={handleCloseAction}/>
+                    <CloseIcon type="primary" onClick={onClose}/>
                     </div>
                 </div>
                 {children}
             </div>
-            <ModalOverlay handleCloseAction={handleCloseAction} />
+            <ModalOverlay handleCloseAction={onClose} />
         </div>,
         modalRoot
     );
@@ -50,7 +38,8 @@ const Modal = ({children, title}) => {
 
 Modal.propTypes = {
     children: PropTypes.node.isRequired,
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    onClose: PropTypes.func.isRequired
 };
 
 export default Modal;

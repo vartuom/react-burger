@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {baseUrl} from "../utils/constants";
+import {checkResponse} from "../utils/api";
 
 export const fetchOrder = createAsyncThunk(
     'order/fetchOrder',
@@ -15,10 +16,7 @@ export const fetchOrder = createAsyncThunk(
                     ingredients: data.map((component) => component._id)
                 })
             });
-            if (!response.ok) {
-                throw new Error('Ошибка при получении данных с сервера!')
-            }
-            const actualData = await response.json();
+            const actualData = await checkResponse(response)
             return actualData;
         } catch (error) {
             return rejectWithValue(error.message)
@@ -48,11 +46,11 @@ const orderSlice = createSlice({
                 state.name = action.payload.name;
                 state.isPending = false;
             })
-            .addCase(fetchOrder.pending, (state, action) => {
+            .addCase(fetchOrder.pending, (state) => {
                 state.isPending = true;
                 state.isFailed = false;
             })
-            .addCase(fetchOrder.rejected, (state, action) => {
+            .addCase(fetchOrder.rejected, (state) => {
                 state.orderNumber = 0;
                 state.name = '';
                 state.isPending = false;

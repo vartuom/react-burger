@@ -42,7 +42,6 @@ export const fetchLogIn = createAsyncThunk(
                 })
             });
             const actualData = await checkResponse(response);
-            // enter you logic when the fetch is successful
             return actualData;
         } catch (error) {
             return rejectWithValue(error.status)

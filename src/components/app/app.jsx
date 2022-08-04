@@ -4,7 +4,7 @@ import AppHeader from "../appHeader/appHeader";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchIngredients} from "../../store/ingredientsSlice";
-import {Switch, Route, useLocation} from 'react-router-dom';
+import {Switch, Route, useLocation, useHistory} from 'react-router-dom';
 import Login from "../../pages/login";
 import Register from "../../pages/register";
 import ForgotPassword from "../../pages/forgotPassword";
@@ -27,6 +27,7 @@ function App() {
     const dispatch = useDispatch();
     const isLoading = useSelector(store => store.ingredients.ingredientsRequest);
     const location = useLocation();
+    const history = useHistory();
     //достаем из стейта адрес главной страницы "/" для ее рендера под модальным окном
     //адрес закидывается в стейт в компоненте Card
     const background = location.state?.background;
@@ -41,6 +42,10 @@ function App() {
     useEffect(() => {
         dispatch(fetchIngredients())
     }, [dispatch])
+
+    const onClose = () => {
+        history.goBack();
+    }
 
     return (
         <div className={appStyles.app}>
@@ -77,12 +82,12 @@ function App() {
             {background && (
                 <>
                     <Route path="/ingredients/:id">
-                        <Modal title={'Детали ингредиента'} >
+                        <Modal title={'Детали ингредиента'} onClose={onClose}>
                             <IngredientDetails/>
                         </Modal>
                     </Route>
-                    <Route path="/order">
-                        <Modal title={''} >
+                    <Route path="/order" >
+                        <Modal title={''} onClose={onClose}>
                             <OrderDetails/>
                         </Modal>
                     </Route>
