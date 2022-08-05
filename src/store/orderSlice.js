@@ -35,7 +35,10 @@ const orderSlice = createSlice({
         data: []
     },
     reducers: {
-        closeDetailsModal(state){
+        setOrderDetailsOpened(state){
+            state.isOpened = true;
+        },
+        setOrderDetailsClosed(state){
             state.isOpened = false;
         }
     },
@@ -59,5 +62,5 @@ const orderSlice = createSlice({
     }
 })
 
-export const {closeDetailsModal} = orderSlice.actions;
+export const {setOrderDetailsClosed, setOrderDetailsOpened} = orderSlice.actions;
 export default orderSlice.reducer;

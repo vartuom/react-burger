@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import ingredientDetailsStyles from "./ingredientDetails.module.css"
 import {useDispatch, useSelector} from "react-redux";
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import PlanetLoader from "../planetLoader/planetLoader";
-import {fetchIngredient} from "../../store/ingredientSlice";
+import {fetchIngredient, setIngredientModalClosed, setIngredientModalOpened} from "../../store/ingredientSlice";
 
 const IngredientDetails = () => {
 
@@ -15,6 +15,17 @@ const IngredientDetails = () => {
     useEffect(() => {
         dispatch(fetchIngredient(id))
     }, [dispatch, id])
+
+    //проверяем где находится компонент с деталями....
+    const location = useLocation();
+    const background = location.state?.background;
+    useEffect(() => {
+        //...если компонент не в модальном окне, то не меняем стейт
+        background && dispatch(setIngredientModalOpened())
+        return () => {
+            background && dispatch(setIngredientModalClosed())
+        }
+    }, [background, dispatch])
 
     //следим за стором, пока не вернется ингредиент показываем лоадер
     const {ingredient, isLoading, isFailed} = useSelector(store => ({

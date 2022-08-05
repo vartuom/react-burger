@@ -20,6 +20,7 @@ import Ingredient from "../../pages/ingredient";
 import OrderDetails from "../orderDetails/orderDetails";
 import Orders from "../../pages/orders";
 import {getCookie} from "../../utils/storage";
+import {useCallback} from "react";
 
 
 function App() {
@@ -43,9 +44,37 @@ function App() {
         dispatch(fetchIngredients())
     }, [dispatch])
 
-    const onClose = () => {
-        history.goBack();
-    }
+    const onClose = useCallback(
+        () => {
+            history.goBack();
+        },
+        [history],
+    );
+
+    /*
+    Создаем переменную isOpen снаружи useEffect, в которой следим за всеми состояниями попапов.
+    Если хоть одно состояние true или не null, то какой-то попап открыт, значит, навешивать нужно обработчик.
+    Объявляем функцию внутри useEffect, чтобы она не теряла свою ссылку при обновлении компонента.
+    И не забываем удалять обработчик в clean up функции через return
+    А также массив зависимостей c isOpen, чтобы отслеживать изменение этого показателя открытости.
+    Как только он становится true, то навешивается обработчик, когда в false, тогда удаляется обработчик.
+    */
+    const {isModalOpened} = useSelector(store => ({
+        isModalOpened: store.ingredient.isOpened || store.order.isOpened
+    }))
+    useEffect(() => {
+        function closeByEscape(evt) {
+            if (evt.key === 'Escape') {
+                onClose();
+            }
+        }
+        if (isModalOpened) {
+            document.addEventListener('keydown', closeByEscape);
+            return () => {
+                document.removeEventListener('keydown', closeByEscape);
+            }
+        }
+    }, [isModalOpened, onClose])
 
     return (
         <div className={appStyles.app}>
@@ -86,7 +115,7 @@ function App() {
                             <IngredientDetails/>
                         </Modal>
                     </Route>
-                    <Route path="/order" >
+                    <Route path="/order">
                         <Modal title={''} onClose={onClose}>
                             <OrderDetails/>
                         </Modal>

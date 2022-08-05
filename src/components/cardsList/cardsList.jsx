@@ -3,19 +3,10 @@ import Card from "../card/card";
 import cardListStyle from "./cardsList.module.css"
 import PropTypes from "prop-types";
 import ingredientPropTypes from "../../utils/propTypesConfig";
-import Modal from "../modal/modal";
-import IngredientDetails from "../IngredientDetails/ingredientDetails";
-import {useSelector} from "react-redux";
 
 //получаем ссылку на заголовок (для скрола)
 const CardsList = React.forwardRef((props, ref) => {
     const { ingredients, title, id } = props;
-
-    //состояние модального окна с описанием ингредиента
-    const {ingredient, isOpened} = useSelector(store => ({
-        ingredient: store.ingredient.data,
-        isOpened: store.ingredient.isOpened
-    }))
 
     return (
         <div>
@@ -25,11 +16,6 @@ const CardsList = React.forwardRef((props, ref) => {
                     <Card ingredient={ingredient} key={ingredient._id} />
                 )}
             </ul>
-            {isOpened &&
-                <Modal title="Детали ингредиента" >
-                    <IngredientDetails ingredient={ingredient}/>
-                </Modal>
-            }
         </div>
     );
 })

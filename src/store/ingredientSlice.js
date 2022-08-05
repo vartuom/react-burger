@@ -21,11 +21,18 @@ export const fetchIngredient = createAsyncThunk(
 const ingredientSlice = createSlice({
     name: 'ingredient',
     initialState: {
+        isOpened: false,
         isFailed: false,
         isLoading: true,
         data: {}
     },
     reducers: {
+        setIngredientModalOpened(state) {
+            state.isOpened = true;
+        },
+        setIngredientModalClosed(state) {
+            state.isOpened = false;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -45,4 +52,5 @@ const ingredientSlice = createSlice({
     }
 })
 
+export const {setIngredientModalOpened, setIngredientModalClosed} = ingredientSlice.actions;
 export default ingredientSlice.reducer;

@@ -9,16 +9,6 @@ const modalRoot = document.getElementById("modals");
 
 const Modal = ({children, title, onClose}) => {
 
-    //закрываем модалку при нажатии клавиши
-    React.useEffect(() => {
-        document.addEventListener('keydown', onClose);
-
-        //снятие слушателя при размонтировании компонента
-        return () => {
-            document.removeEventListener('keydown', onClose);
-        };
-    }, [onClose]);
-
     return ReactDOM.createPortal(
         <div className={modalStyles.root}>
             <div className={modalStyles.container}>
