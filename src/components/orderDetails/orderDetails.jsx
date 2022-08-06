@@ -1,9 +1,27 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import orderDetailsStyles from "./orderDetails.module.css"
-import PropTypes from "prop-types";
+import {useDispatch, useSelector} from "react-redux";
+import PlanetLoader from "../planetLoader/planetLoader";
+import {setOrderDetailsClosed, setOrderDetailsOpened} from "../../store/orderSlice";
 
-const OrderDetails = ({orderNumber}) => {
-    return (
+const OrderDetails = () => {
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(setOrderDetailsOpened());
+        return () => {
+            dispatch(setOrderDetailsClosed())
+        }
+    }, [dispatch])
+
+    //следим за стором, пока не пришел номер заказа показываем лоадер
+    const {isPending, isFailed, orderNumber} = useSelector(store => ({
+        isPending: store.order.isPending,
+        isFailed: store.order.isFailed,
+        orderNumber: store.order.orderNumber,
+    }))
+
+    return isPending ? <PlanetLoader/> : isFailed ? 'Ошибка' : (
         <div className={orderDetailsStyles.container}>
             <h2 className="text text_type_digits-large pt-15">{orderNumber}</h2>
             <p className="text text_type_main-medium pt-8">идентификатор заказа</p>
@@ -14,10 +32,6 @@ const OrderDetails = ({orderNumber}) => {
             </p>
         </div>
     );
-};
-
-OrderDetails.propTypes = {
-    orderNumber: PropTypes.number.isRequired,
 };
 
 export default OrderDetails;

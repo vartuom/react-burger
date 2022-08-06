@@ -4,6 +4,7 @@ import './index.css';
 import App from './components/app/app';
 import {Provider} from "react-redux";
 import store from "./store";
+import {BrowserRouter} from "react-router-dom";
 
 //const enhancer = composeEnhancers(applyMiddleware(thunk));
 //const store = createStore(rootReducer, enhancer);
@@ -13,9 +14,9 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-    <React.StrictMode>
-        <Provider store={store}>
+    <Provider store={store}>
+        <BrowserRouter>
             <App/>
-        </Provider>
-    </React.StrictMode>
+        </BrowserRouter>
+    </Provider>
 );

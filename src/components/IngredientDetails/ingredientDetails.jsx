@@ -1,9 +1,41 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ingredientDetailsStyles from "./ingredientDetails.module.css"
-import ingredientPropTypes from "../../utils/propTypesConfig";
+import {useDispatch, useSelector} from "react-redux";
+import {useLocation, useParams} from "react-router-dom";
+import PlanetLoader from "../planetLoader/planetLoader";
+import {fetchIngredient, setIngredientModalClosed, setIngredientModalOpened} from "../../store/ingredientSlice";
 
-const IngredientDetails = ({ingredient}) => {
-    return (
+const IngredientDetails = () => {
+
+    const dispatch = useDispatch();
+    //достаем id игредиента из параметра url "/ingredients/:id"
+    const {id} = useParams();
+
+    //забираем актуальные данные ингредиента с сервера
+    useEffect(() => {
+        dispatch(fetchIngredient(id))
+    }, [dispatch, id])
+
+    //проверяем где находится компонент с деталями....
+    const location = useLocation();
+    const background = location.state?.background;
+    useEffect(() => {
+        //...если компонент не в модальном окне, то не меняем стейт
+        background && dispatch(setIngredientModalOpened())
+        return () => {
+            background && dispatch(setIngredientModalClosed())
+        }
+    }, [background, dispatch])
+
+    //следим за стором, пока не вернется ингредиент показываем лоадер
+    const {ingredient, isLoading, isFailed} = useSelector(store => ({
+        ingredient: store.ingredient.data,
+        isLoading: store.ingredient.isLoading,
+        isFailed: store.ingredient.isFailed
+    }))
+
+
+    return isLoading ? <PlanetLoader/> : isFailed ? 'Ошибка' : (
         <div className={`${ingredientDetailsStyles.container} pb-15`}>
             <img className={ingredientDetailsStyles.preview} src={ingredient.image} alt=""/>
             <p className="text text_type_main-medium pb-8">{ingredient.name}</p>
@@ -29,6 +61,5 @@ const IngredientDetails = ({ingredient}) => {
     );
 };
 
-IngredientDetails.propTypes = {ingredient: ingredientPropTypes};
 
 export default IngredientDetails;

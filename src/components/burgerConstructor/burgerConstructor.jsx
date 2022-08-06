@@ -3,30 +3,27 @@ import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-compon
 import burgerConstructorStyles from "./burgerConstructor.module.css";
 import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Price from "../price/price";
-import Modal from "../modal/modal";
-import OrderDetails from "../orderDetails/orderDetails";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrop} from "react-dnd";
 import DraggableRow from "../draggableRow/draggableRow";
 import { v4 as uuidv4 } from 'uuid';
 import {addIngredient, moveIngredient} from "../../store/burgerConstructorSlice";
 import {fetchOrder} from "../../store/orderSlice";
-import {closeDetailsModal} from "../../store/orderSlice";
+import {useHistory} from "react-router-dom";
 
 const BurgerConstructor = () => {
 
     const dispatch = useDispatch();
+    const history = useHistory();
+
+    const {isLoggedIn} = useSelector(store => ({
+        isLoggedIn: store.user.isLoggedIn
+    }))
 
     //следим за булкой и ингредиентами в конструкторе
     const {bun, mains} = useSelector(store => ({
         bun: store.burgerConstructor.bun,
         mains: store.burgerConstructor.mains
-    }))
-
-    //параметры модального окна с номером заказа
-    const {isDetailsOpened, orderNumber} = useSelector(store => ({
-        isDetailsOpened: store.order.isOpened,
-        orderNumber: store.order.orderNumber
     }))
 
     //обработка перетаскиваемых объектов в контейнер
@@ -37,11 +34,6 @@ const BurgerConstructor = () => {
             dispatch(addIngredient({...ingredient, uuid: uuidv4()}))
         },
     });
-
-    //закрытие модального окна кликом на оверлей
-    const closeModal = useCallback(() => {
-        dispatch(closeDetailsModal());
-    }, [dispatch])
 
     //мемоизированное вычисление цены бургера
     const calcPrice = useMemo(() => {
@@ -54,10 +46,17 @@ const BurgerConstructor = () => {
 
     //обработка нажатия кнопки "Оформить заказ"
     const postOrder = useCallback(() => {
+        //перекидываем не авторизованных посетителей на логин при попытке заказа
+        if (!isLoggedIn) {
+            history.push({ pathname: '/login' })
+            return
+        }
         //если в конструкторе нет булок или ингредиентов то не отправляем заказ
-        if (bun.price && mains.length > 0)
-            dispatch(fetchOrder([...mains, bun, bun]))
-    }, [mains, bun, dispatch])
+        if (bun.price && mains.length > 0) {
+            dispatch(fetchOrder([...mains, bun, bun]));
+            history.push('/order', {background: {pathname: '/'}})
+        }
+    }, [mains, bun, dispatch, history, isLoggedIn])
 
     //DnD сортировка перетаскиванием
     const moveRow = useCallback((dragIndex, hoverIndex) => {
@@ -99,11 +98,6 @@ const BurgerConstructor = () => {
                     <Price value={calcPrice ? calcPrice : 0} isLarge={true}/>
                     <Button type="primary" size="large" onClick={postOrder}>Оформить заказ</Button>
                 </div>
-                {isDetailsOpened &&
-                    <Modal title="" handleCloseAction={closeModal}>
-                        <OrderDetails orderNumber={orderNumber}/>
-                    </Modal>
-                }
             </div>
         </div>
     );

@@ -3,16 +3,25 @@ import headerStyles from "../appHeader/appHeader.module.css"
 import {ProfileIcon, Logo} from "@ya.praktikum/react-developer-burger-ui-components";
 import HeaderNavList from "../headerNavList/headerNavList";
 import HeaderLink from "../headerLink/headerLink";
+import {useRouteMatch} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const AppHeader = () => {
+
+    const isProfilePageActive = useRouteMatch('/profile');
+
+    //добавляем имя пользователя к линку на профиль
+    const {userName} = useSelector(store => ({
+        userName: store.user.user.name
+    }))
+
     return (
         <header className={headerStyles.header}>
             <div className={headerStyles.content}>
                 <HeaderNavList />
                 <Logo />
-                <HeaderLink>
-                    <ProfileIcon type="secondary" />
-                    <p className="text text_type_main-default text_color_inactive">Личный кабинет</p>
+                <HeaderLink to={`/profile`} caption={`Личный кабинет ${userName ? `(${userName})` : ''}`}>
+                    <ProfileIcon type={isProfilePageActive ? 'primary' : 'secondary'}/>
                 </HeaderLink>
             </div>
         </header>
