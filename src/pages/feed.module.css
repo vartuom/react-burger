@@ -1,0 +1,7 @@
+.main {
+    composes: main from "./main.module.css";
+}
+
+.title {
+    composes: title from "./main.module.css"
+}

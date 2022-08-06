@@ -1,0 +1,21 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--offset-base-variable)*6);
+    border-radius: 40px;
+    padding: 24px;
+    box-sizing: border-box;
+    background-color: var(--background-element);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: calc(var(--offset-base-variable)*6)
+}

@@ -21,6 +21,7 @@ import OrderDetails from "../orderDetails/orderDetails";
 import Orders from "../../pages/orders";
 import {getCookie} from "../../utils/storage";
 import {useCallback} from "react";
+import Feed from "../../pages/feed";
 
 
 function App() {
@@ -107,6 +108,9 @@ function App() {
                 <Route path="/ingredients/:id" exact={true}>
                     <Ingredient/>
                 </Route>)
+                <Route path="/feed" exact={true}>
+                    <Feed/>
+                </Route>
             </Switch>
             {background && (
                 <>
