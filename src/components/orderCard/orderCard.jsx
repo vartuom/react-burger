@@ -5,7 +5,9 @@ import {useSelector} from "react-redux";
 import {useMemo} from "react";
 import ImageStack from "../imageStack/imageStack";
 
-const OrderCard = () => {
+const OrderCard = ({order}) => {
+
+    const {ingredients, name, number, createdAt} = order;
 
     const {ingredientsArr} = useSelector(store => ({
         ingredientsArr: store.ingredients.data
@@ -29,14 +31,14 @@ const OrderCard = () => {
             return []
         }
         //для каждого id из заказа находим объект ингредиента в сторе, формируем отфильтрованный массив
-        const filteredArr = orderIngredientsArr.map((item) => {
+        const filteredArr = ingredients.map((item) => {
             return ingredientsArr.find((ingredient) => {
                 return item === ingredient._id;
             })
         })
         //вытаскиваем из отфильтрованного массива картинки ингредиентов
         //если нет элементов в отфильтрованом массиве, то возвращаем пустой массив
-        return filteredArr.length > 0 ? filteredArr.map(item => item.image) : []
+        return filteredArr.length > 0 ? filteredArr.map(item => item?.image) : []
     }, [ingredientsArr]);
 
     /*
@@ -54,10 +56,10 @@ const OrderCard = () => {
     return (
         <div className={styles.card}>
             <div className={styles.cardHeader}>
-                <p className="text text_type_digits-default">#034535</p>
-                <p className="text text_type_main-default text_color_inactive">Сегодня, 16:20 i-GMT+3</p>
+                <p className="text text_type_digits-default">{`#${number}`}</p>
+                <p className="text text_type_main-default text_color_inactive">{createdAt}</p>
             </div>
-            <p className="text text_type_main-medium">Death Star Starship Main бургер</p>
+            <p className="text text_type_main-medium">{name}</p>
             <div className={styles.info}>
                 <ImageStack imagesArr={memoImagesArr}/>
                 <Price value={480}/>
