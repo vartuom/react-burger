@@ -9,26 +9,26 @@ const ImageStack = ({imagesArr}) => {
     const restImages = imagesArr.slice(5);
 
     return (
-        <div className={styles.imageRow}>
+        <ul className={styles.imageRow}>
             {restImages.length > 0 ?
-                <div className={styles.restWrapper}>
+                <li className={styles.restWrapper}>
                     <div className={`${styles.gradientBackground} ${styles.restImage}`}>
                         <span className={styles.imageBackground}>
-                            <img src={restImages[0]}/>
+                            <img src={restImages[0].url}/>
                         </span>
                     </div>
                     <p className={`text ${styles.restNumber}`}>{`+${restImages.length}`}</p>
-                </div> : ''}
+                </li> : ''}
             {
-                renderedImages.reverse().map((imageUrl) => (
-                    <div className={styles.gradientBackground}>
+                renderedImages.reverse().map((image) => (
+                    <li className={styles.gradientBackground} key={image.id}>
                         <span className={styles.imageBackground}>
-                            <img src={imageUrl}/>
+                            <img src={image.url}/>
                         </span>
-                    </div>)
+                    </li>)
                 )
             }
-        </div>
+        </ul>
     );
 };
 

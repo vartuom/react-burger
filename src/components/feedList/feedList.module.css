@@ -9,7 +9,9 @@
     display: flex;
     flex-direction: column;
     gap: calc(var(--offset-base-variable)*14);
-    padding-right: calc(var(--offset-base-variable)*2);
+    padding: 0 calc(var(--offset-base-variable)*2) 0 0;
+    list-style: none;
+    margin: 0;
 }
 
 .list::-webkit-scrollbar-track {

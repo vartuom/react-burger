@@ -1,6 +1,9 @@
 .imageRow {
     display: flex;
     flex-direction: row-reverse;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .imageBackground {

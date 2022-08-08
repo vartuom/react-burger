@@ -27,8 +27,6 @@ import {wsActions} from "../../store/feedSlice";
 
 function App() {
 
-    console.log(wsActions)
-
     const dispatch = useDispatch();
     const isLoading = useSelector(store => store.ingredients.ingredientsRequest);
     const location = useLocation();
@@ -121,6 +119,10 @@ function App() {
                     <Route path="/ingredients/:id">
                         <Modal title={'Детали ингредиента'} onClose={onClose}>
                             <IngredientDetails/>
+                        </Modal>
+                    </Route>
+                    <Route path="/feed/:id">
+                        <Modal title={''} onClose={onClose}>
                         </Modal>
                     </Route>
                     <Route path="/order">

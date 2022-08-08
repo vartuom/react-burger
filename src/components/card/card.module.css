@@ -5,10 +5,12 @@
     align-items: center;
     text-align: center;
     gap: var(--offset-base-size);
+    cursor: pointer;
 }
 
 .link {
     color: white;
+    cursor: pointer;
 }
 
 .link a {
