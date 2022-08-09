@@ -23,6 +23,7 @@ import {getCookie} from "../../utils/storage";
 import {useCallback} from "react";
 import Feed from "../../pages/feed";
 import {wsActions} from "../../store/feedSlice";
+import OrderInfo from "../orderInfo/orderInfo";
 
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
                 onClose();
             }
         }
+
         if (isModalOpened) {
             document.addEventListener('keydown', closeByEscape);
             return () => {
@@ -123,6 +125,7 @@ function App() {
                     </Route>
                     <Route path="/feed/:id">
                         <Modal title={''} onClose={onClose}>
+                            <OrderInfo/>
                         </Modal>
                     </Route>
                     <Route path="/order">

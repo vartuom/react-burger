@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './imageStack.module.css'
+import IngredientIcon from "../ingredientIcon/ingredientIcon";
 
 const ImageStack = ({imagesArr}) => {
 
@@ -12,19 +13,15 @@ const ImageStack = ({imagesArr}) => {
         <ul className={styles.imageRow}>
             {restImages.length > 0 ?
                 <li className={styles.restWrapper}>
-                    <div className={`${styles.gradientBackground} ${styles.restImage}`}>
-                        <span className={styles.imageBackground}>
-                            <img src={restImages[0].url}/>
-                        </span>
+                    <div className={`${styles.restImage} ${styles.stackedImage}`}>
+                        <IngredientIcon src={restImages[0].url}/>
                     </div>
                     <p className={`text ${styles.restNumber}`}>{`+${restImages.length}`}</p>
                 </li> : ''}
             {
                 renderedImages.reverse().map((image) => (
-                    <li className={styles.gradientBackground} key={image.id}>
-                        <span className={styles.imageBackground}>
-                            <img src={image.url}/>
-                        </span>
+                    <li className={styles.stackedImage} key={image.id}>
+                        <IngredientIcon src={image.url}/>
                     </li>)
                 )
             }
