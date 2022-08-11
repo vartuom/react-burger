@@ -26,3 +26,9 @@
     display: flex;
     gap: 6px;
 }
+
+.containerFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

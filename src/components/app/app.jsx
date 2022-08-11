@@ -24,6 +24,7 @@ import {useCallback} from "react";
 import Feed from "../../pages/feed";
 import {wsActions} from "../../store/feedSlice";
 import OrderInfo from "../orderInfo/orderInfo";
+import Order from "../../pages/order";
 
 
 function App() {
@@ -111,7 +112,10 @@ function App() {
                 </ProtectedRoute>
                 <Route path="/ingredients/:id" exact={true}>
                     <Ingredient/>
-                </Route>)
+                </Route>
+                <Route path="/feed/:id" exact={true}>
+                    <Order/>
+                </Route>
                 <Route path="/feed" exact={true}>
                     <Feed/>
                 </Route>

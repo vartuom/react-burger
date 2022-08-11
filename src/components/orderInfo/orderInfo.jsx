@@ -19,8 +19,6 @@ const OrderInfo = () => {
 
     //находим содержимое нужного заказа
     const thisOrder = useMemo(() => {
-        if (!orders)
-            return
         return orders.find((order) => {
             return order._id === id
         })
@@ -63,6 +61,11 @@ const OrderInfo = () => {
     }, [reducedIngredientsList, ingredientsStoreArr])
 
     console.log(thisOrderIngredientsData);
+    const totalPrice = useMemo(() => {
+        return thisOrderIngredientsData.reduce((prevVal, ingredient) => {
+            return prevVal + ingredient.price*ingredient.quantity
+        }, 0)
+    }, [thisOrderIngredientsData] );
 
     return (
         <div className={styles.container}>
@@ -85,10 +88,13 @@ const OrderInfo = () => {
                                 <Price value={ingredient.price}/>
                             </div>
                         </div>
-
                     })}
                 </ul>
             </ScrollBox>
+            <div className={`${styles.containerFooter} pt-10 pb-10`}>
+                <p className="text text_type_main-default text_color_inactive">{thisOrder.createdAt}</p>
+                <Price value={totalPrice}/>
+            </div>
         </div>
     );
 };
