@@ -1,9 +1,11 @@
 import React, {useEffect} from 'react';
 import styles from './profile.module.css'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import PlanetLoader from "../components/planetLoader/planetLoader";
 import ProfileMenu from "../components/profileMenu/profileMenu";
+import {wsActions} from "../store/feedSlice";
+import {getCookie} from "../utils/storage";
 
 const Orders = () => {
 
@@ -13,11 +15,19 @@ const Orders = () => {
     }))
 
     const history = useHistory();
+
+    const dispatch = useDispatch();
     useEffect(() => {
         if (!isLoggedIn) {
             history.replace({pathname: '/login'})
+        } else {
+            const token = getCookie('accessToken')
+            dispatch(wsActions.wsConnectionInit(`wss://norma.nomoreparties.space/orders?token=${token}`))
+            return () => {
+                dispatch(wsActions.wsConnectionClose())
+            }
         }
-    }, [history, isLoggedIn])
+    }, [history, isLoggedIn, dispatch])
 
 
     return isAuthPending ? <PlanetLoader/> : (

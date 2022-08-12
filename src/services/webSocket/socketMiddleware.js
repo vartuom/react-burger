@@ -1,21 +1,19 @@
 export const socketMiddleware = (wsActions) => {
     return store => {
         let socket = null;
-        let isConnected = false;
-        let reconnectTimer = 0;
         let url = '';
 
         return next => action => {
-            const { dispatch, getState } = store;
-            const { type, payload } = action;
+            const {dispatch, getState} = store;
+            const {type, payload} = action;
             //const { wsConnect, wsDisconnect, wsSendMessage, onConnect, onOpen, onClose, onError, onMessage, wsConnecting } = wsActions;
 
+            //type - сгенерированая строка action creator'а
             if (type === wsActions.wsConnectionInit.type) {
                 console.log('connecting');
                 url = action.payload;
                 socket = new WebSocket(url);
-                //isConnected = true;
-                //dispatch(wsConnecting());
+                //dispatch(wsActions.wsConnectionInit());
             }
 
             if (socket) {
@@ -24,51 +22,27 @@ export const socketMiddleware = (wsActions) => {
                     dispatch(wsActions.wsConnectionOK());
                     //dispatch(onOpen());
                 };
-
                 socket.onerror = event => {
-                    console.log('ws ERROR')
+                    console.log(event)
                     //dispatch(onError(event.code.toString()));
                 };
-
                 socket.onmessage = event => {
-                    const { data } = event;
+                    const {data} = event;
                     const parsedData = JSON.parse(data);
                     dispatch(wsActions.wsOnMessage(parsedData));
                 };
-                /*
-                                socket.onclose = event => {
-                                    if (event.code !== 1000) {
-                                        console.log('error')
-                                        dispatch(onError(event.code.toString()));
-                                    }
-                                    console.log('close')
-                                    dispatch(onClose());
+                socket.onclose = event => {
+                    if (event.code !== 1000) {
+                        console.log('Connection err ' + event.code.toString())
+                        dispatch(wsActions.wsConnectionError(event.code.toString()));
+                    }
+                };
 
-                                    if (isConnected) {
-                                        console.log('isConnected');
-                                        dispatch(wsConnecting())
-                                        reconnectTimer = window.setTimeout(() => {
-                                            dispatch(onConnect(url));
-                                        }, 3000)
-                                    };
-                                };
-
-                                if (type === wsSendMessage) {
-                                    console.log('send');
-                                    socket.send(JSON.stringify(action.payload));
-                                }
-
-                                if (type === wsDisconnect) {
-                                    console.log('disconnect')
-                                    clearTimeout(reconnectTimer)
-                                    isConnected = false;
-                                    reconnectTimer = 0;
-                                    socket.close();
-                                    dispatch(onClose());
-                                }*/
-
-            }
-
+                if (type === wsActions.wsConnectionClose.type) {
+                    socket.close(1000);
+                    console.log('ws closed OK')
+                }
+            };
             next(action);
         };
     };

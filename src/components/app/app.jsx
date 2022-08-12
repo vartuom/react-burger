@@ -22,7 +22,6 @@ import Orders from "../../pages/orders";
 import {getCookie} from "../../utils/storage";
 import {useCallback} from "react";
 import Feed from "../../pages/feed";
-import {wsActions} from "../../store/feedSlice";
 import OrderInfo from "../orderInfo/orderInfo";
 import Order from "../../pages/order";
 
@@ -46,7 +45,6 @@ function App() {
     //загружаем ингредиенты с сервера при монтировании компонента
     useEffect(() => {
         dispatch(fetchIngredients())
-        dispatch(wsActions.wsConnectionInit('wss://norma.nomoreparties.space/orders/all'))
     }, [dispatch])
 
     const onClose = useCallback(

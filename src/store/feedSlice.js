@@ -25,7 +25,7 @@ const feedSlice = createSlice({
             state.data = [];
             state.isPending = false;
         },
-        wsConnectionClosed(state) {
+        wsConnectionClose(state) {
             state.connected = false;
             state.hasError = false;
         },
@@ -33,6 +33,7 @@ const feedSlice = createSlice({
             state.data = action.payload.orders;
             state.total = action.payload.total;
             state.totalToday = action.payload.totalToday;
+            console.log(action.payload)
         }
     }
 })
