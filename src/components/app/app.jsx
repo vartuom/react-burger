@@ -102,11 +102,14 @@ function App() {
                 <ProtectedRoute path="/profile" exact={true}>
                     <Profile/>
                 </ProtectedRoute>
-                <ProtectedRoute path="/profile/orders">
+                <ProtectedRoute path="/profile/orders" exact={true}>
                     <Orders/>
                 </ProtectedRoute>
-                <ProtectedRoute path="/orders">
+                <ProtectedRoute path="/orders" exact={true}>
                     <Orders/>
+                </ProtectedRoute>
+                <ProtectedRoute path="/profile/orders/:id" exact={true}>
+                    <Order personal={true}/>
                 </ProtectedRoute>
                 <Route path="/ingredients/:id" exact={true}>
                     <Ingredient/>
@@ -120,7 +123,7 @@ function App() {
             </Switch>
             {background && (
                 <>
-                    <ProtectedRoute path="/orders/:id">
+                    <ProtectedRoute path="/profile/orders/:id">
                         <Modal title={''} onClose={onClose}>
                             <OrderInfo/>
                         </Modal>

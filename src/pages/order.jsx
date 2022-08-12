@@ -1,10 +1,30 @@
 import React from 'react';
 import styles from './order.module.css'
 import OrderInfo from "../components/orderInfo/orderInfo";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import PlanetLoader from "../components/planetLoader/planetLoader";
+import {useEffect} from "react";
+import {wsActions} from "../store/feedSlice";
+import {getCookie} from "../utils/storage";
 
-const Order = () => {
+const Order = ({personal = false}) => {
+
+    const dispatch = useDispatch();
+
+    //устаналиваем соединение
+    useEffect(() => {
+        //если нужен заказ из персональной ленты, то отправляем токен
+        if (personal) {
+            const token = getCookie('accessToken')
+            dispatch(wsActions.wsConnectionInit(`wss://norma.nomoreparties.space/orders?token=${token}`))
+        } else {
+            dispatch(wsActions.wsConnectionInit('wss://norma.nomoreparties.space/orders/all'))
+        }
+
+        return () => {
+            dispatch(wsActions.wsConnectionClose())
+        }
+    }, [dispatch])
 
     //ждем готовности стора прежде чем рисовать компонент с информацией
     const {isIngredientsLoading, isIngredientsFailed, orders, isOrdersFailed} = useSelector(store => ({

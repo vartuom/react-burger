@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import styles from './orderInfo.module.css'
 import IngredientIcon from "../ingredientIcon/ingredientIcon";
@@ -8,7 +8,10 @@ import ScrollBox from "../scrollBox/scrollBox";
 
 const OrderInfo = () => {
 
-    //достаем id заказа из параметра url "/feed/:id"
+    const location = useLocation();
+    const background = location.state?.background;
+
+    //достаем id заказа из параметра url "/:id"
     const {id} = useParams();
 
     //забираем заказы из стора
@@ -69,7 +72,12 @@ const OrderInfo = () => {
 
     return (
         <div className={styles.container}>
-            <p className="text text_type_digits-default pt-2">{`#${thisOrder.number}`}</p>
+            {
+                !background
+                    ? <p className={`text text_type_digits-default pt-2 ${styles.orderNumber}`}>{`#${thisOrder.number}`}</p>
+                    : <p className="text text_type_digits-default pt-2">{`#${thisOrder.number}`}</p>
+            }
+
             <h2 className="text text_type_main-medium pb-2 pt-10">{thisOrder.name}</h2>
             {
                 thisOrder.status === 'done' ? <p className="text text_type_main-default text_color_success">Выполнен</p>

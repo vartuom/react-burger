@@ -3,6 +3,13 @@
     margin: 0 auto;
 }
 
+.orderNumber {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding-top: calc(var(--offset-base-size)*30)
+}
+
 .ingredientsList {
     display: flex;
     flex-direction: column;
