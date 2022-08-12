@@ -120,6 +120,11 @@ function App() {
             </Switch>
             {background && (
                 <>
+                    <ProtectedRoute path="/orders/:id">
+                        <Modal title={''} onClose={onClose}>
+                            <OrderInfo/>
+                        </Modal>
+                    </ProtectedRoute>
                     <Route path="/ingredients/:id">
                         <Modal title={'Детали ингредиента'} onClose={onClose}>
                             <IngredientDetails/>

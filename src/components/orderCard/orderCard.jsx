@@ -7,7 +7,7 @@ import ImageStack from "../imageStack/imageStack";
 import {v4 as uuidv4} from 'uuid';
 import {Link, useLocation} from "react-router-dom";
 
-const OrderCard = ({order}) => {
+const OrderCard = ({order, showStatus = false, linkTo}) => {
 
     const location = useLocation();
 
@@ -51,13 +51,18 @@ const OrderCard = ({order}) => {
 
     return (
         <Link className={styles.link}
-              to={{pathname: `/feed/${order._id}`, state: {background: location}}}>
+              to={{pathname: `${linkTo}/${order._id}`, state: {background: location}}}>
             <div className={styles.card}>
                 <div className={styles.cardHeader}>
                     <p className="text text_type_digits-default">{`#${number}`}</p>
                     <p className="text text_type_main-default text_color_inactive">{createdAt}</p>
                 </div>
                 <p className="text text_type_main-medium">{name}</p>
+                {
+                    showStatus && (order.status === 'done' ? <p className="text text_type_main-default text_color_success">Выполнен</p>
+                        : order.status === 'pending' ? <p className="text text_type_main-default">Готовится</p>
+                            : <p className="text text_type_main-default">В очереди</p>)
+                }
                 <div className={styles.info}>
                     <ImageStack imagesArr={memoImagesArr}/>
                     <Price value={memoPrice ? memoPrice : 0}/>

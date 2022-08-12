@@ -3,7 +3,7 @@ import styles from "./feedList.module.css";
 import OrderCard from "../orderCard/orderCard";
 import ScrollBox from "../scrollBox/scrollBox";
 
-const FeedList = ({orders}) => {
+const FeedList = ({orders, linksTo, showStatus = false}) => {
 
     return (
         <section className={styles.feedWrapper}>
@@ -11,7 +11,7 @@ const FeedList = ({orders}) => {
                 <ul className={styles.list}>
                     {orders.map(order =>
                         <li key={order.number}>
-                            <OrderCard order={order}/>
+                            <OrderCard order={order} linkTo={linksTo} showStatus={showStatus}/>
                         </li>
                     )}
                 </ul>

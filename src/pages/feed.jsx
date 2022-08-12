@@ -25,7 +25,7 @@ const Feed = () => {
     return (
         <section className={styles.main}>
             <h1 className={`${styles.title} text text_type_main-large pt-10 pb-5`}>Лента заказов</h1>
-            <FeedList orders={orders}/>
+            <FeedList orders={orders} linksTo={'/feed'}/>
             <FeedInfo orders={orders} total={total} totalToday={totalToday}/>
         </section>
     );

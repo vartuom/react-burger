@@ -1,0 +1,12 @@
+.container {
+    composes: formSection from "./pages.module.css";
+    padding-top: 40px;
+
+}
+
+.wrapper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    column-gap: 60px;
+}
