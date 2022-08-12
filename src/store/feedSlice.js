@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 
 const feedSlice = createSlice({
     name: 'feed',
@@ -34,6 +34,12 @@ const feedSlice = createSlice({
             state.total = action.payload.total;
             state.totalToday = action.payload.totalToday;
             console.log(action.payload)
+        },
+        setOrdersModalOpened(state) {
+            state.isOpened = true;
+        },
+        setOrdersModalClosed(state) {
+            state.isOpened = false;
         }
     }
 })

@@ -1,15 +1,30 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {useLocation, useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import styles from './orderInfo.module.css'
 import IngredientIcon from "../ingredientIcon/ingredientIcon";
 import Price from "../price/price";
 import ScrollBox from "../scrollBox/scrollBox";
+import {wsActions} from "../../store/feedSlice";
 
 const OrderInfo = () => {
 
+    const {setOrdersModalOpened, setOrdersModalClosed} = wsActions;
+
+    //проверяем где находится компонент...
     const location = useLocation();
     const background = location.state?.background;
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        //...если в модальном окне, то отправляем в стор событие открытия модалки
+        if (background)
+            dispatch(setOrdersModalOpened())
+        return () => {
+            if (background)
+                dispatch(setOrdersModalClosed())
+        }
+    }, [dispatch, background, setOrdersModalOpened, setOrdersModalClosed])
 
     //достаем id заказа из параметра url "/:id"
     const {id} = useParams();
@@ -66,15 +81,16 @@ const OrderInfo = () => {
     console.log(thisOrderIngredientsData);
     const totalPrice = useMemo(() => {
         return thisOrderIngredientsData.reduce((prevVal, ingredient) => {
-            return prevVal + ingredient.price*ingredient.quantity
+            return prevVal + ingredient.price * ingredient.quantity
         }, 0)
-    }, [thisOrderIngredientsData] );
+    }, [thisOrderIngredientsData]);
 
     return (
         <div className={styles.container}>
             {
                 !background
-                    ? <p className={`text text_type_digits-default pt-2 ${styles.orderNumber}`}>{`#${thisOrder.number}`}</p>
+                    ?
+                    <p className={`text text_type_digits-default pt-2 ${styles.orderNumber}`}>{`#${thisOrder.number}`}</p>
                     : <p className="text text_type_digits-default pt-2">{`#${thisOrder.number}`}</p>
             }
 
@@ -82,7 +98,7 @@ const OrderInfo = () => {
             {
                 thisOrder.status === 'done' ? <p className="text text_type_main-default text_color_success">Выполнен</p>
                     : thisOrder.status === 'pending' ? <p className="text text_type_main-default">Готовится</p>
-                    : <p className="text text_type_main-default">В очереди</p>
+                        : <p className="text text_type_main-default">В очереди</p>
             }
             <p className="text text_type_main-medium pb-6 pt-15">Состав:</p>
             <ScrollBox>

@@ -63,22 +63,9 @@ function App() {
     Как только он становится true, то навешивается обработчик, когда в false, тогда удаляется обработчик.
     */
     const {isModalOpened} = useSelector(store => ({
-        isModalOpened: store.ingredient.isOpened || store.order.isOpened
+        isModalOpened: store.ingredient.isOpened || store.order.isOpened || store.feed.isOpened
     }))
-    useEffect(() => {
-        function closeByEscape(evt) {
-            if (evt.key === 'Escape') {
-                onClose();
-            }
-        }
 
-        if (isModalOpened) {
-            document.addEventListener('keydown', closeByEscape);
-            return () => {
-                document.removeEventListener('keydown', closeByEscape);
-            }
-        }
-    }, [isModalOpened, onClose])
 
     return (
         <div className={appStyles.app}>
@@ -124,22 +111,22 @@ function App() {
             {background && (
                 <>
                     <ProtectedRoute path="/profile/orders/:id">
-                        <Modal title={''} onClose={onClose}>
+                        <Modal title={''} onClose={onClose} isModalOpened={isModalOpened}>
                             <OrderInfo/>
                         </Modal>
                     </ProtectedRoute>
                     <Route path="/ingredients/:id">
-                        <Modal title={'Детали ингредиента'} onClose={onClose}>
+                        <Modal title={'Детали ингредиента'} onClose={onClose} isModalOpened={isModalOpened}>
                             <IngredientDetails/>
                         </Modal>
                     </Route>
                     <Route path="/feed/:id">
-                        <Modal title={''} onClose={onClose}>
+                        <Modal title={''} onClose={onClose} isModalOpened={isModalOpened}>
                             <OrderInfo/>
                         </Modal>
                     </Route>
                     <Route path="/order">
-                        <Modal title={''} onClose={onClose}>
+                        <Modal title={''} onClose={onClose} isModalOpened={isModalOpened}>
                             <OrderDetails/>
                         </Modal>
                     </Route>
