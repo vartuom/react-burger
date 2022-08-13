@@ -11,14 +11,14 @@
 
 .flowList {
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: repeat(10, 1fr);
     grid-auto-flow: column;
     column-gap: 16px;
     justify-content: start;
     list-style: none;
     padding: 0;
     margin: 0;
-    max-height: 152px;
+    max-height: 300px;
 }
 
 .title {

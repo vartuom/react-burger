@@ -6,6 +6,7 @@ import IngredientIcon from "../ingredientIcon/ingredientIcon";
 import Price from "../price/price";
 import ScrollBox from "../scrollBox/scrollBox";
 import {wsActions} from "../../store/feedSlice";
+import dayjs from "dayjs";
 
 const OrderInfo = () => {
 
@@ -115,7 +116,9 @@ const OrderInfo = () => {
                 </ul>
             </ScrollBox>
             <div className={`${styles.containerFooter} pt-10 pb-10`}>
-                <p className="text text_type_main-default text_color_inactive">{thisOrder.createdAt}</p>
+                <p className="text text_type_main-default text_color_inactive">
+                    {dayjs(thisOrder.createdAt).locale('ru').format('DD MMM YYYY, HH:mm')}
+                </p>
                 <Price value={totalPrice}/>
             </div>
         </div>

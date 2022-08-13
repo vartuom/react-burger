@@ -6,6 +6,7 @@ import PlanetLoader from "../components/planetLoader/planetLoader";
 import {useEffect} from "react";
 import {wsActions} from "../store/feedSlice";
 import {getCookie} from "../utils/storage";
+import {wssFeedUrl, wssOrdersUrl} from "../utils/constants";
 
 const Order = ({personal = false}) => {
 
@@ -16,9 +17,9 @@ const Order = ({personal = false}) => {
         //если нужен заказ из персональной ленты, то отправляем токен
         if (personal) {
             const token = getCookie('accessToken')
-            dispatch(wsActions.wsConnectionInit(`wss://norma.nomoreparties.space/orders?token=${token}`))
+            dispatch(wsActions.wsConnectionInit(`${wssOrdersUrl}?token=${token}`))
         } else {
-            dispatch(wsActions.wsConnectionInit('wss://norma.nomoreparties.space/orders/all'))
+            dispatch(wsActions.wsConnectionInit(wssFeedUrl))
         }
 
         return () => {

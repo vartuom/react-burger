@@ -4,25 +4,19 @@ export const socketMiddleware = (wsActions) => {
         let url = '';
 
         return next => action => {
-            const {dispatch, getState} = store;
-            const {type, payload} = action;
-            //const { wsConnect, wsDisconnect, wsSendMessage, onConnect, onOpen, onClose, onError, onMessage, wsConnecting } = wsActions;
-
-            //type - сгенерированая строка action creator'а
+            const {dispatch} = store;
+            const {type} = action;
             if (type === wsActions.wsConnectionInit.type) {
                 url = action.payload;
                 socket = new WebSocket(url);
-                //dispatch(wsActions.wsConnectionInit());
             }
 
             if (socket) {
                 socket.onopen = () => {
                     dispatch(wsActions.wsConnectionOK());
-                    //dispatch(onOpen());
                 };
                 socket.onerror = event => {
-                    console.log(event)
-                    //dispatch(onError(event.code.toString()));
+                    dispatch(wsActions.wsConnectionError(event.code.toString()));
                 };
                 socket.onmessage = event => {
                     const {data} = event;

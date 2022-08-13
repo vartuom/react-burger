@@ -6,6 +6,9 @@ import {useMemo} from "react";
 import ImageStack from "../imageStack/imageStack";
 import {v4 as uuidv4} from 'uuid';
 import {Link, useLocation} from "react-router-dom";
+import dayjs from "dayjs";
+import 'dayjs/locale/ru'
+
 
 const OrderCard = ({order, showStatus = false, linkTo}) => {
 
@@ -55,7 +58,9 @@ const OrderCard = ({order, showStatus = false, linkTo}) => {
             <div className={styles.card}>
                 <div className={styles.cardHeader}>
                     <p className="text text_type_digits-default">{`#${number}`}</p>
-                    <p className="text text_type_main-default text_color_inactive">{createdAt}</p>
+                    <p className="text text_type_main-default text_color_inactive">
+                        {dayjs(createdAt).locale('ru').format('DD MMM YYYY, HH:mm')}
+                    </p>
                 </div>
                 <p className="text text_type_main-medium">{name}</p>
                 {

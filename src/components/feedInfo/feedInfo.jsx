@@ -7,14 +7,14 @@ const FeedInfo = ({orders, total, totalToday}) => {
     const readyOrders = useMemo(() => {
         return orders.filter((order) => {
             return order.status === 'done';
-        }).slice(0, 15)
+        }).slice(0, 30)
     }, [orders])
 
     //...тоже самое для не готовых
     const pendingOrders = useMemo(() => {
         return orders.filter((order) => {
             return order.status !== 'done';
-        }).slice(0, 15)
+        }).slice(0, 30)
     }, [orders])
 
     return (
