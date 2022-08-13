@@ -7,6 +7,7 @@ import {wsActions} from "../store/feedSlice";
 import {getCookie} from "../utils/storage";
 import FeedList from "../components/feedList/feedList";
 import styles from './orders.module.css'
+import {wssOrdersUrl} from "../utils/constants";
 
 const Orders = () => {
 
@@ -16,19 +17,18 @@ const Orders = () => {
     }))
 
     const history = useHistory();
-
     const dispatch = useDispatch();
-
     const {orders} = useSelector(store => ({
         orders: store.feed.data,
     }));
 
+    //если пользователь авторизован, устаналиваем соединение с сервером и заполняем хранилище
     useEffect(() => {
         if (!isLoggedIn) {
             history.replace({pathname: '/login'})
         } else {
             const token = getCookie('accessToken')
-            dispatch(wsActions.wsConnectionInit(`wss://norma.nomoreparties.space/orders?token=${token}`))
+            dispatch(wsActions.wsConnectionInit(`${wssOrdersUrl}?token=${token}`))
             return () => {
                 dispatch(wsActions.wsConnectionClose())
             }

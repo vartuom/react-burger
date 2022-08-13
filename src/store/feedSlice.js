@@ -8,7 +8,8 @@ const feedSlice = createSlice({
         totalToday: 0,
         hasError: false,
         connected: false,
-        isPending: false
+        isPending: false,
+        isOpened: false
     },
     reducers: {
         wsConnectionInit(state) {
@@ -33,7 +34,6 @@ const feedSlice = createSlice({
             state.data = action.payload.orders;
             state.total = action.payload.total;
             state.totalToday = action.payload.totalToday;
-            console.log(action.payload)
         },
         setOrdersModalOpened(state) {
             state.isOpened = true;

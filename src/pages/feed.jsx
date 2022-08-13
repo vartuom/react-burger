@@ -4,6 +4,7 @@ import FeedList from "../components/feedList/feedList";
 import FeedInfo from "../components/feedInfo/feedInfo";
 import {useDispatch, useSelector} from "react-redux";
 import {wsActions} from "../store/feedSlice";
+import {wssFeedUrl} from "../utils/constants";
 
 const Feed = () => {
 
@@ -16,7 +17,7 @@ const Feed = () => {
     }));
 
     useEffect(() => {
-        dispatch(wsActions.wsConnectionInit('wss://norma.nomoreparties.space/orders/all'))
+        dispatch(wsActions.wsConnectionInit(wssFeedUrl))
         return () => {
             dispatch(wsActions.wsConnectionClose())
         }

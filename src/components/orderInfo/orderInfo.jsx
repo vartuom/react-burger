@@ -78,7 +78,6 @@ const OrderInfo = () => {
         });
     }, [reducedIngredientsList, ingredientsStoreArr])
 
-    console.log(thisOrderIngredientsData);
     const totalPrice = useMemo(() => {
         return thisOrderIngredientsData.reduce((prevVal, ingredient) => {
             return prevVal + ingredient.price * ingredient.quantity
@@ -104,14 +103,14 @@ const OrderInfo = () => {
             <ScrollBox>
                 <ul className={styles.ingredientsList}>
                     {thisOrderIngredientsData.map((ingredient) => {
-                        return <div className={styles.ingredientRow}>
+                        return <li className={styles.ingredientRow} key={ingredient._id}>
                             <IngredientIcon src={ingredient.image}/>
                             <p className="text text_type_main-default">{ingredient.name}</p>
                             <div className={styles.priceColumn}>
                                 <p className="text text_type_digits-default">{`${ingredient.quantity} x`}</p>
                                 <Price value={ingredient.price}/>
                             </div>
-                        </div>
+                        </li>
                     })}
                 </ul>
             </ScrollBox>
