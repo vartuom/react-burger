@@ -1,0 +1,15 @@
+.scrollBox {
+    overflow-y: scroll;
+}
+
+.scrollBox::-webkit-scrollbar-track {
+    background-color: #2F2F37;
+}
+
+.scrollBox::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scrollBox::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+}

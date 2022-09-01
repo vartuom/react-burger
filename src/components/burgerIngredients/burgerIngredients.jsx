@@ -4,6 +4,7 @@ import burgerIngredientsStyles from "./burgerIngredients.module.css";
 import CardsList from "../cardsList/cardsList";
 import {useSelector} from "react-redux";
 import {useInView} from "react-intersection-observer";
+import ScrollBox from "../scrollBox/scrollBox";
 
 const BurgerIngredients = () => {
 
@@ -27,7 +28,7 @@ const BurgerIngredients = () => {
     });
 
     //переключение активного таба при скроле
-    useEffect(()=> {
+    useEffect(() => {
         if (inViewBuns) {
             setCurrentTab('buns')
         } else if (inViewMains) {
@@ -83,11 +84,13 @@ const BurgerIngredients = () => {
                 </Tab>
             </div>
             {/* пробрасываем рефы на табы внутрь списков */}
-            <div className={burgerIngredientsStyles.list}>
-                <CardsList ingredients={sortedIngredients.buns} title="Булки" id='buns' ref={bunsListRef}/>
-                <CardsList ingredients={sortedIngredients.sauces} title="Соусы" id='sauces' ref={saucesListRef}/>
-                <CardsList ingredients={sortedIngredients.mains} title="Начинка" id='mains' ref={mainsListRef}/>
-            </div>
+            <ScrollBox>
+                <div className={burgerIngredientsStyles.list}>
+                    <CardsList ingredients={sortedIngredients.buns} title="Булки" id='buns' ref={bunsListRef}/>
+                    <CardsList ingredients={sortedIngredients.sauces} title="Соусы" id='sauces' ref={saucesListRef}/>
+                    <CardsList ingredients={sortedIngredients.mains} title="Начинка" id='mains' ref={mainsListRef}/>
+                </div>
+            </ScrollBox>
         </section>
     );
 };

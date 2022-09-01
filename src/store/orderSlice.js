@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {baseUrl} from "../utils/constants";
 import {checkResponse} from "../utils/api";
+import {getCookie} from "../utils/storage";
 
 export const fetchOrder = createAsyncThunk(
     'order/fetchOrder',
@@ -10,6 +11,7 @@ export const fetchOrder = createAsyncThunk(
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + getCookie('accessToken')
                 },
                 body: JSON.stringify({
                     //раскладываем бургер на компоненты и выбираем id компонентов

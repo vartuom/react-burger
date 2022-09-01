@@ -12,7 +12,7 @@ const HeaderNavList = () => {
         path: ["/", "/ingredients/:id", "/order"],
         exact: true
     });
-    const isListPageActive = useRouteMatch('/list');
+    const isFeedPageActive = useRouteMatch('/feed');
 
     return (
         <nav className={headerNavStyle.nav}>
@@ -26,8 +26,8 @@ const HeaderNavList = () => {
                     </HeaderLink>
                 </li>
                 <li>
-                    <HeaderLink to={`/list`} caption={'Лента заказов'}>
-                        <ListIcon type={isListPageActive ? 'primary' : 'secondary'}/>
+                    <HeaderLink to={`/feed`} caption={'Лента заказов'}>
+                        <ListIcon type={isFeedPageActive ? 'primary' : 'secondary'}/>
                     </HeaderLink>
                 </li>
             </ul>

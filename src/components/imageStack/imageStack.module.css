@@ -1,0 +1,26 @@
+.imageRow {
+    display: flex;
+    flex-direction: row-reverse;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.stackedImage:not(:last-child) {
+    margin-left: -16px;
+}
+
+.restImage {
+    opacity: 0.6;
+}
+
+.restWrapper {
+    position: relative;
+}
+
+.restNumber {
+    position: absolute;
+    top: 33%;
+    left: 10%;
+    opacity: 1;
+}

@@ -1,0 +1,26 @@
+.imageBackground {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    background-color: var(--background-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.imageBackground img {
+    display: block;
+    width: 100px;
+}
+
+.gradientBackground {
+    position: relative;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(to right, #801AB2, #4C4CFF);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

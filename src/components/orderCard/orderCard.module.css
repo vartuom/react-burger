@@ -1,0 +1,30 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--offset-base-variable)*6);
+    border-radius: 40px;
+    padding: 24px;
+    box-sizing: border-box;
+    background-color: #1C1C21;
+    cursor: pointer;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: calc(var(--offset-base-variable)*6)
+}
+
+.link {
+    color: white;
+}
+
+.link a {
+    text-decoration: none;
+}

@@ -18,7 +18,7 @@ const PlanetLoader = () => {
                         <span></span>
                     </div>
                 </div>
-                <p>Загрузка</p>
+                <p className={'text text_color_inactive'}>Обработка...</p>
             </div>
         </div>
     );
