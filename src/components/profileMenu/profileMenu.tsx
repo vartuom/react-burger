@@ -2,13 +2,13 @@ import React from 'react';
 import {fetchLogOut} from "../../store/userSlice";
 import styles from "./profileMenu.module.css"
 import {useHistory, useLocation} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useAppDispatch} from "../../services/hooks";
 
 const ProfileMenu = () => {
 
     const location = useLocation();
     const history = useHistory();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     return (
         <ul className={styles.navList}>

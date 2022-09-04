@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {Redirect, Route} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useAppSelector} from "../../services/hooks";
 
-export default function ProtectedRoute({isAnonOnly = false, children, ...rest}) {
+interface IPropsProtectedRoute {
+    isAnonOnly?: boolean,
+    children: ReactNode
+}
 
+export default function ProtectedRoute(props: IPropsProtectedRoute) {
+    const {isAnonOnly, children, ...rest} = props;
     // Если разрешен только неавторизованный доступ, а пользователь авторизован...
-    const {isLoggedIn} = useSelector(store => ({
+    const {isLoggedIn} = useAppSelector(store => ({
         isLoggedIn: store.user.isLoggedIn
     }));
 

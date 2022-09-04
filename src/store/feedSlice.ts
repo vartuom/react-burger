@@ -1,16 +1,29 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {TOrder} from "../types/types";
+
+interface IInitialState {
+    data: Array<TOrder>,
+    total: number,
+    totalToday: number,
+    hasError: boolean,
+    connected: boolean,
+    isPending: boolean,
+    isOpened: boolean
+}
+
+const initialState: IInitialState = {
+    data: [],
+    total: 0,
+    totalToday: 0,
+    hasError: false,
+    connected: false,
+    isPending: false,
+    isOpened: false
+}
 
 const feedSlice = createSlice({
     name: 'feed',
-    initialState: {
-        data: [],
-        total: 0,
-        totalToday: 0,
-        hasError: false,
-        connected: false,
-        isPending: false,
-        isOpened: false
-    },
+    initialState: initialState,
     reducers: {
         wsConnectionInit(state) {
             state.isPending = true;

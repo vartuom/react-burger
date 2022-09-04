@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import orderDetailsStyles from "./orderDetails.module.css"
-import {useDispatch, useSelector} from "react-redux";
 import PlanetLoader from "../planetLoader/planetLoader";
 import {setOrderDetailsClosed, setOrderDetailsOpened} from "../../store/orderSlice";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
 
 const OrderDetails = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(setOrderDetailsOpened());
         return () => {
@@ -15,7 +15,7 @@ const OrderDetails = () => {
     }, [dispatch])
 
     //следим за стором, пока не пришел номер заказа показываем лоадер
-    const {isPending, isFailed, orderNumber} = useSelector(store => ({
+    const {isPending, isFailed, orderNumber} = useAppSelector(store => ({
         isPending: store.order.isPending,
         isFailed: store.order.isFailed,
         orderNumber: store.order.orderNumber,

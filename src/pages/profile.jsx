@@ -66,7 +66,7 @@ const Profile = () => {
                 dispatch(fetchPatchUserData({
                     email: emailInputValue,
                     password: passwordInputValue,
-                    name: nameInputValue
+                    username: nameInputValue
                 }))
             }}>
                 <div>

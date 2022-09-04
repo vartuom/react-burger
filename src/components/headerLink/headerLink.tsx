@@ -1,10 +1,19 @@
-import React, {useCallback} from 'react';
+import React, {ReactNode, useCallback} from 'react';
 import headerLink from "./headerLink.module.css"
-import PropTypes from "prop-types";
 import {useHistory, useRouteMatch} from "react-router-dom";
 
-const HeaderLink = ({children, to, match, caption}) => {
+interface IPropsHeaderLink {
+    children: ReactNode,
+    to: string,
+    caption: string,
+    match?: {
+        path: Array<string>,
+        exact: boolean
+    }
+}
 
+const HeaderLink = (props: IPropsHeaderLink) => {
+    const {children, to, match, caption} = props;
     const history = useHistory();
     //если не передан объект с опциями для расширенного сравнения, просто матчим ссылку для линка
     //объект match вида {
@@ -27,13 +36,6 @@ const HeaderLink = ({children, to, match, caption}) => {
             </p>
         </div>
     );
-};
-
-HeaderLink.propTypes = {
-    children: PropTypes.node.isRequired,
-    to: PropTypes.string.isRequired,
-    match: PropTypes.object,
-    caption: PropTypes.string.isRequired
 };
 
 export default HeaderLink;

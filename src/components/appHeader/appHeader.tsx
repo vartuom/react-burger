@@ -4,14 +4,14 @@ import {ProfileIcon, Logo} from "@ya.praktikum/react-developer-burger-ui-compone
 import HeaderNavList from "../headerNavList/headerNavList";
 import HeaderLink from "../headerLink/headerLink";
 import {useRouteMatch} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useAppSelector} from "../../services/hooks";
 
 const AppHeader = () => {
 
     const isProfilePageActive = useRouteMatch('/profile');
 
     //добавляем имя пользователя к линку на профиль
-    const {userName} = useSelector(store => ({
+    const {userName} = useAppSelector(store => ({
         userName: store.user.user.name
     }))
 

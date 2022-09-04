@@ -25,7 +25,6 @@ import Feed from "../../pages/feed";
 import OrderInfo from "../orderInfo/orderInfo";
 import Order from "../../pages/order";
 
-
 function App() {
 
     const dispatch = useDispatch();

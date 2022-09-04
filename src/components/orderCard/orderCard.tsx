@@ -8,15 +8,23 @@ import {v4 as uuidv4} from 'uuid';
 import {Link, useLocation} from "react-router-dom";
 import dayjs from "dayjs";
 import 'dayjs/locale/ru'
+import {TOrder} from "../../types/types";
+import {useAppSelector} from "../../services/hooks";
 
+interface IOrderCardProps {
+    order: TOrder,
+    showStatus?: boolean,
+    linkTo: string
+}
 
-const OrderCard = ({order, showStatus = false, linkTo}) => {
+const OrderCard = (props: IOrderCardProps) => {
 
+    const {order, showStatus, linkTo} = props;
     const location = useLocation();
 
     const {ingredients, name, number, createdAt} = order;
 
-    const {ingredientsArr} = useSelector(store => ({
+    const {ingredientsArr} = useAppSelector(store => ({
         ingredientsArr: store.ingredients.data
     }))
 
@@ -48,7 +56,7 @@ const OrderCard = ({order, showStatus = false, linkTo}) => {
         //вытаскиваем из отфильтрованного массива картинки ингредиентов
         //если нет элементов в отфильтрованом массиве, то возвращаем пустой массив
         return filteredArr.length > 0 ? filteredArr.map(item => {
-            return {url: item?.image, id: item?.uuid}
+            return {url: item.image as string, id: item.uuid as string}
         }) : []
     }, [filteredArr]);
 

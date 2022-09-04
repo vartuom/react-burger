@@ -1,13 +1,17 @@
-import React from 'react';
+import React, {ForwardedRef, LegacyRef} from 'react';
 import Card from "../card/card";
 import cardListStyle from "./cardsList.module.css"
-import PropTypes from "prop-types";
-import ingredientPropTypes from "../../utils/propTypesConfig";
+import {TIngredient} from "../../types/types";
+
+interface ICardListProps {
+    ingredients: Array<TIngredient>,
+    title: string,
+    id: string
+}
 
 //получаем ссылку на заголовок (для скрола)
-const CardsList = React.forwardRef((props, ref) => {
+const CardsList = React.forwardRef((props: ICardListProps, ref: LegacyRef<HTMLUListElement>) => {
     const { ingredients, title, id } = props;
-
     return (
         <div>
             <h2 className="text text_type_main-medium pt-10 pb-6" id={id}>{title}</h2>
@@ -20,9 +24,5 @@ const CardsList = React.forwardRef((props, ref) => {
     );
 })
 
-CardsList.propTypes = {
-    title: PropTypes.string.isRequired,
-    ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired
-};
 
 export default CardsList;

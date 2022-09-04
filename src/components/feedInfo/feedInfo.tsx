@@ -1,8 +1,15 @@
 import React, {useMemo} from 'react';
 import styles from './feedInfo.module.css'
+import {TOrder} from "../../types/types";
 
-const FeedInfo = ({orders, total, totalToday}) => {
+interface IFeedInfoProps {
+    orders: Array<TOrder>,
+    total: number,
+    totalToday: number
+}
 
+const FeedInfo = (props: IFeedInfoProps) => {
+    const {orders, total, totalToday} = props;
     //достаем первые 15 готовых заказов...
     const readyOrders = useMemo(() => {
         return orders.filter((order) => {

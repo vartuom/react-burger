@@ -2,7 +2,12 @@ import React from 'react';
 import styles from './imageStack.module.css'
 import IngredientIcon from "../ingredientIcon/ingredientIcon";
 
-const ImageStack = ({imagesArr}) => {
+type TImage = {
+    url: string
+    id: string
+}
+
+const ImageStack = ({imagesArr}: {imagesArr: Array<TImage>}) => {
 
     //первые 5 элементов отрисовываем
     const renderedImages = imagesArr.slice(0, 5)

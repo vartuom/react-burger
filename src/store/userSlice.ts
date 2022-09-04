@@ -4,9 +4,14 @@ import {getCookie, setCookie} from "../utils/storage";
 import {checkResponse, fetchWithRefresh} from "../utils/api";
 import {cookiesLifeTime} from "../utils/constants";
 
+type TAuthData = {
+    email: string,
+    username: string,
+    password?: string
+}
 export const fetchRegUser = createAsyncThunk(
     'user/fetchRegUser',
-    async function (data, {rejectWithValue}) {
+    async function (data:TAuthData, {rejectWithValue}) {
         try {
             const response = await fetch(`${baseUrl}/auth/register`, {
                 method: 'POST',
@@ -22,14 +27,14 @@ export const fetchRegUser = createAsyncThunk(
             const actualData = await checkResponse(response);
             return actualData;
         } catch (error) {
-            return rejectWithValue(error.status)
+            return rejectWithValue(error)
         }
     }
 );
 
 export const fetchLogIn = createAsyncThunk(
     'user/fetchLogIn',
-    async function (data, {rejectWithValue}) {
+    async function (data: TAuthData, {rejectWithValue}) {
         try {
             const response = await fetch(`${baseUrl}/auth/login`, {
                 method: 'POST',
@@ -44,7 +49,7 @@ export const fetchLogIn = createAsyncThunk(
             const actualData = await checkResponse(response);
             return actualData;
         } catch (error) {
-            return rejectWithValue(error.status)
+            return rejectWithValue(error)
         }
     }
 );
@@ -66,7 +71,7 @@ export const fetchLogOut = createAsyncThunk(
             const actualData = await checkResponse(response);
             return actualData;
         } catch (error) {
-            return rejectWithValue(error.status)
+            return rejectWithValue(error)
         }
     }
 );
@@ -83,14 +88,14 @@ export const fetchGetUserData = createAsyncThunk(
             });
             return userData;
         } catch (err) {
-            return rejectWithValue(err.status);
+            return rejectWithValue(err);
         }
     }
 )
 
 export const fetchPatchUserData = createAsyncThunk(
     'user/fetchPatchUserData',
-    async function (data, {rejectWithValue}) {
+    async function (data: TAuthData, {rejectWithValue}) {
         try {
             const userData = await fetchWithRefresh(`${baseUrl}/auth/user`, {
                 method: 'PATCH',
@@ -101,26 +106,37 @@ export const fetchPatchUserData = createAsyncThunk(
                 body: JSON.stringify({
                     email: data.email,
                     password: data.password,
-                    name: data.name
+                    name: data.username
                 })
             });
             return userData;
         } catch (err) {
-            return rejectWithValue(err.status);
+            return rejectWithValue(err);
         }
     }
 )
 
+interface IInitialState {
+    isAuthPending: boolean,
+    isLoggedIn: boolean,
+    user: {
+        email: string,
+        name: string
+    }
+}
+
+const initialState: IInitialState = {
+    isAuthPending: false,
+    isLoggedIn: false,
+    user: {
+        email: '',
+        name: ''
+    }
+}
+
 const userSlice = createSlice({
     name: 'user',
-    initialState: {
-        isAuthPending: false,
-        isLoggedIn: false,
-        user: {
-            email: '',
-            name: ''
-        }
-    },
+    initialState: initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder

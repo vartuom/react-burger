@@ -2,13 +2,15 @@ import React, {useMemo} from 'react';
 import Price from "../price/price";
 import cardStyle from "./card.module.css"
 import {Counter} from "@ya.praktikum/react-developer-burger-ui-components";
-import ingredientPropTypes from "../../utils/propTypesConfig";
 import {useDrag} from "react-dnd";
-import {useSelector} from "react-redux";
 import {Link, useLocation} from "react-router-dom";
+import {TIngredient} from "../../types/types";
+import {useAppSelector} from "../../services/hooks";
+
 
 //в action приходит колбэк обработки модального окна
-const Card = ({ingredient}) => {
+const Card = (props: {ingredient: TIngredient}) => {
+    const {ingredient} = props;
 
     //подключаем стейт, что бы потом в линке закинуть туда урл главной страницы
     // для рендера главной страницы под модальным окном
@@ -21,7 +23,7 @@ const Card = ({ingredient}) => {
     })
 
     //следим за изменением списка ингредиентов в конструкторе
-    const {bun, mains} = useSelector(store => ({
+    const {bun, mains} = useAppSelector(store => ({
         bun: store.burgerConstructor.bun,
         mains: store.burgerConstructor.mains
     }))
@@ -48,10 +50,6 @@ const Card = ({ingredient}) => {
             </li>
         </Link>
     );
-};
-
-Card.propTypes = {
-    ingredient: ingredientPropTypes
 };
 
 export default Card;

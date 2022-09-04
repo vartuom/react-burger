@@ -1,11 +1,19 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {TIngredient} from "../types/types";
+
+interface IInitialState {
+    bun: TIngredient,
+    mains: Array<TIngredient>
+}
+
+const InitialState: IInitialState = {
+    bun: {} as TIngredient,
+    mains: []
+}
 
 const burgerConstructorSlice = createSlice({
     name: 'burgerConstructor',
-    initialState: {
-        bun: {},
-        mains: []
-    },
+    initialState: InitialState,
     reducers: {
         addIngredient(state, action) {
             if (action.payload.type === 'bun') {

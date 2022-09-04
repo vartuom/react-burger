@@ -2,9 +2,16 @@ import React from 'react';
 import styles from "./feedList.module.css";
 import OrderCard from "../orderCard/orderCard";
 import ScrollBox from "../scrollBox/scrollBox";
+import {TOrder} from "../../types/types";
 
-const FeedList = ({orders, linksTo, showStatus = false}) => {
+interface IFeedListProps {
+    orders: Array<TOrder>,
+    linksTo: string;
+    showStatus?: boolean
+}
 
+const FeedList = (props: IFeedListProps) => {
+    const {orders, linksTo, showStatus} = props;
     return (
         <section className={styles.feedWrapper}>
             <ScrollBox>
