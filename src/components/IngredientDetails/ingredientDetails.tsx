@@ -1,15 +1,16 @@
 import React, {useEffect} from 'react';
 import ingredientDetailsStyles from "./ingredientDetails.module.css"
-import {useDispatch, useSelector} from "react-redux";
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import PlanetLoader from "../planetLoader/planetLoader";
 import {fetchIngredient, setIngredientModalClosed, setIngredientModalOpened} from "../../store/ingredientSlice";
+import {useAppDispatch, useAppParams, useAppSelector} from "../../services/hooks";
+import {IAppLocation} from "../../types/types";
 
 const IngredientDetails = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     //достаем id игредиента из параметра url "/ingredients/:id"
-    const {id} = useParams();
+    const {id} = useAppParams();
 
     //забираем актуальные данные ингредиента с сервера
     useEffect(() => {
@@ -17,7 +18,7 @@ const IngredientDetails = () => {
     }, [dispatch, id])
 
     //проверяем где находится компонент с деталями....
-    const location = useLocation();
+    const location = useLocation() as IAppLocation;
     const background = location.state?.background;
     useEffect(() => {
         //...если компонент не в модальном окне, то не меняем стейт
@@ -28,7 +29,7 @@ const IngredientDetails = () => {
     }, [background, dispatch])
 
     //следим за стором, пока не вернется ингредиент показываем лоадер
-    const {ingredient, isLoading, isFailed} = useSelector(store => ({
+    const {ingredient, isLoading, isFailed} = useAppSelector(store => ({
         ingredient: store.ingredient.data,
         isLoading: store.ingredient.isLoading,
         isFailed: store.ingredient.isFailed

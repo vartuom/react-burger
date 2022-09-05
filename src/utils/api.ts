@@ -2,7 +2,7 @@ import {baseUrl} from "./constants";
 import {setCookie} from "./storage";
 import {cookiesLifeTime} from "./constants";
 
-export const requestPasswordReset = async (email) => {
+export const requestPasswordReset = async (email: string) => {
     const response = await fetch(`${baseUrl}/password-reset`, {
         method: 'POST',
         headers: {
@@ -18,7 +18,7 @@ export const requestPasswordReset = async (email) => {
     return data;
 }
 
-export const resetUsrPassword = async (password, code) => {
+export const resetUsrPassword = async (password: string, code: string) => {
     const response = await fetch(`${baseUrl}/password-reset/reset`, {
         method: 'POST',
         headers: {
@@ -35,7 +35,7 @@ export const resetUsrPassword = async (password, code) => {
     return data;
 }
 
-export const checkResponse = (res) => {
+export const checkResponse = (res: Response) => {
     return res.ok ? res.json() : Promise.reject(res);
 }
 
@@ -51,13 +51,13 @@ export const refreshToken = () => {
     }).then(checkResponse)
 }
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url: string, options: Record<string, any>) => {
     try {
         const res = await fetch(url, options);
         const data = await checkResponse(res);
         return data
     } catch (err) {
-        if (err.message === "jwt expired" || "jwt malformed") {
+        if (err instanceof Error && err.message === "jwt expired" || "jwt malformed") {
             const refreshedData = await refreshToken();
             if (!refreshedData.success) {
                 return Promise.reject(refreshedData)

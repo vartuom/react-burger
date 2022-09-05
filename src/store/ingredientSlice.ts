@@ -1,31 +1,41 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {baseUrl} from "../utils/constants";
 import {checkResponse} from "../utils/api";
+import {TIngredient} from "../types/types";
 
 export const fetchIngredient = createAsyncThunk(
     'ingredient/fetchIngredient',
-    async function (id, {rejectWithValue}) {
+    async function (id: string, {rejectWithValue}) {
         try {
             const response = await fetch(`${baseUrl}/ingredients`);
-            const actualData = await checkResponse(response)
+            const actualData = await checkResponse(response) as {data: TIngredient[]}
             const ingredient = actualData.data.find((item) => {
                 return item._id === id;
             })
             return ingredient;
         } catch (error) {
-            return rejectWithValue(error.message)
+            return rejectWithValue(error)
         }
     }
 )
 
+interface IInitialState {
+    isOpened: boolean,
+    isFailed: boolean,
+    isLoading: boolean,
+    data: TIngredient
+}
+
+const initialState: IInitialState = {
+    isOpened: false,
+    isFailed: false,
+    isLoading: true,
+    data: {} as TIngredient
+}
+
 const ingredientSlice = createSlice({
     name: 'ingredient',
-    initialState: {
-        isOpened: false,
-        isFailed: false,
-        isLoading: true,
-        data: {}
-    },
+    initialState: initialState,
     reducers: {
         setIngredientModalOpened(state) {
             state.isOpened = true;
@@ -39,7 +49,7 @@ const ingredientSlice = createSlice({
             .addCase(fetchIngredient.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isFailed = false;
-                state.data = action.payload
+                state.data = action.payload as TIngredient
             })
             .addCase(fetchIngredient.pending, (state) => {
                 state.isLoading = true;
@@ -47,7 +57,7 @@ const ingredientSlice = createSlice({
             .addCase(fetchIngredient.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isFailed = true;
-                state.data = {};
+                state.data = {} as TIngredient;
             })
     }
 })

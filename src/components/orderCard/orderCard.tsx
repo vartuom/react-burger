@@ -48,7 +48,7 @@ const OrderCard = (props: IOrderCardProps) => {
 
     //считаем цену бургера
     const memoPrice = useMemo(() => {
-        return filteredArr.length > 0 ? filteredArr.reduce((prevVal, item) => prevVal + item?.price, 0) : 0
+        return filteredArr.length > 0 ? filteredArr.reduce((prevVal, item) => item.price ? prevVal + item.price : prevVal, 0) : 0
     }, [filteredArr]);
 
     //извлекаем из стора картинки имеющихся в заказе ингредиентов
