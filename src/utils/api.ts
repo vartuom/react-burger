@@ -51,13 +51,16 @@ export const refreshToken = () => {
     }).then(checkResponse)
 }
 
-export const fetchWithRefresh = async (url: string, options: Record<string, any>) => {
+type TOptions = {
+    [key: string]: string | TOptions
+}
+export const fetchWithRefresh = async (url: string, options: Record<string, TOptions | string>) => {
     try {
         const res = await fetch(url, options);
         const data = await checkResponse(res);
         return data
     } catch (err) {
-        if (err instanceof Error && err.message === "jwt expired" || "jwt malformed") {
+        if (err instanceof Error && (err.message === "jwt expired" || "jwt malformed")) {
             const refreshedData = await refreshToken();
             if (!refreshedData.success) {
                 return Promise.reject(refreshedData)
@@ -67,7 +70,7 @@ export const fetchWithRefresh = async (url: string, options: Record<string, any>
             const res = await fetch(url, {
                 ...options,
                 headers: {
-                    ...options.headers,
+                    ...options.headers as TOptions,
                     Authorization: refreshedData.accessToken
                 }
             })

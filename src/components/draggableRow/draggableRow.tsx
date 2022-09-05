@@ -1,25 +1,40 @@
 import React from 'react';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch} from "react-redux";
 import draggableRowStyles from "./draggableRow.module.css";
-import {useDrop, useDrag} from "react-dnd";
+import {useDrop, useDrag, DropTargetMonitor} from "react-dnd";
 import {useRef} from "react";
 import {removeIngredient} from "../../store/burgerConstructorSlice";
+import {TIngredient} from "../../types/types";
+import {useAppDispatch} from "../../services/hooks";
 
-const DraggableRow = ({slice, index, moveIngredient}) => {
-    const dispatch = useDispatch();
+interface IDraggableRow {
+    slice: TIngredient,
+    index: number,
+    moveIngredient: (dragIndex: number, hoverIndex: number) => void
+}
+
+interface IDragItem {
+    index: number;
+    id: string;
+    type: string;
+}
+
+const DraggableRow = (props: IDraggableRow) => {
+    const {slice, index, moveIngredient} = props;
+
+    const dispatch = useAppDispatch();
 
     // компонент и дроп-айтем и драг-айтем одновременно
     const [, dropRef] = useDrop({
         accept: 'constructor',
-        hover: (item, monitor) => {
+        hover: (item: IDragItem, monitor: DropTargetMonitor) => {
             const dragIndex = item.index
             const hoverIndex = index
 
             //настройки под место срабатывания перетаскивания
-            const hoverBoundingRect = ref.current?.getBoundingClientRect()
+            const hoverBoundingRect = ref.current?.getBoundingClientRect()!
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-            const hoverActualY = monitor.getClientOffset().y - hoverBoundingRect.top
+            const hoverActualY = monitor.getClientOffset()!.y - hoverBoundingRect.top
             // если тащим вниз, то ждем момента пока перетаскиваемый элемент
             // окажется ниже середины лежащего под ним
             if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return
@@ -48,11 +63,11 @@ const DraggableRow = ({slice, index, moveIngredient}) => {
 
     const opacity = isDragging ? 0 : 1
 
-    const ref = useRef(null)
-    const dragDropRef = dragRef(dropRef(ref));
+    const ref = useRef<HTMLDivElement>(null)
+    dragRef(dropRef(ref));
 
     return (
-        <div ref={dragDropRef} className={draggableRowStyles.row} style={{opacity: opacity}}>
+        <div ref={ref} className={draggableRowStyles.row} style={{opacity: opacity}}>
             <DragIcon type="primary"/>
             <ConstructorElement
                 text={slice.name}

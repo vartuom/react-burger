@@ -3,25 +3,26 @@ import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-compon
 import burgerConstructorStyles from "./burgerConstructor.module.css";
 import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Price from "../price/price";
-import {useDispatch, useSelector} from "react-redux";
 import {useDrop} from "react-dnd";
 import DraggableRow from "../draggableRow/draggableRow";
 import { v4 as uuidv4 } from 'uuid';
 import {addIngredient, moveIngredient} from "../../store/burgerConstructorSlice";
 import {fetchOrder} from "../../store/orderSlice";
 import {useHistory} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
+import {TIngredient} from "../../types/types";
 
 const BurgerConstructor = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const history = useHistory();
 
-    const {isLoggedIn} = useSelector(store => ({
+    const {isLoggedIn} = useAppSelector(store => ({
         isLoggedIn: store.user.isLoggedIn
     }))
 
     //следим за булкой и ингредиентами в конструкторе
-    const {bun, mains} = useSelector(store => ({
+    const {bun, mains} = useAppSelector(store => ({
         bun: store.burgerConstructor.bun,
         mains: store.burgerConstructor.mains
     }))
@@ -29,9 +30,9 @@ const BurgerConstructor = () => {
     //обработка перетаскиваемых объектов в контейнер
     const [, dropTarget] = useDrop({
         accept: "ingredient",
-        drop({ingredient}) {
+        drop(dragItem: {ingredient: TIngredient}) {
             //добавляем уникальный идентифкатор (uuid) для объекта ингредиента в конструкторе
-            dispatch(addIngredient({...ingredient, uuid: uuidv4()}))
+            dispatch(addIngredient({...dragItem.ingredient, uuid: uuidv4()}))
         },
     });
 
@@ -59,7 +60,7 @@ const BurgerConstructor = () => {
     }, [mains, bun, dispatch, history, isLoggedIn])
 
     //DnD сортировка перетаскиванием
-    const moveRow = useCallback((dragIndex, hoverIndex) => {
+    const moveRow = useCallback((dragIndex: number, hoverIndex: number) => {
         dispatch(moveIngredient({
             dragIndex: dragIndex,
             hoverIndex: hoverIndex}))
@@ -67,7 +68,7 @@ const BurgerConstructor = () => {
 
     return (
         <div ref={dropTarget}>
-            <div className={burgerConstructorStyles.constructor}>
+            <div className={burgerConstructorStyles.construct}>
                 <div className={`${burgerConstructorStyles.buns} pl-8 pt-1`}>
                     {bun.type && <ConstructorElement
                         type="top"

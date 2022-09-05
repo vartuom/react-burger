@@ -1,13 +1,14 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {TIngredient} from "../types/types";
 
+type TIngredientWithUuid = TIngredient & {uuid: string};
 interface IInitialState {
-    bun: TIngredient,
-    mains: Array<TIngredient>
+    bun: TIngredientWithUuid,
+    mains: Array<TIngredientWithUuid>
 }
 
 const InitialState: IInitialState = {
-    bun: {} as TIngredient,
+    bun: {} as TIngredientWithUuid,
     mains: []
 }
 

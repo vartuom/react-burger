@@ -2,10 +2,11 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {baseUrl} from "../utils/constants";
 import {checkResponse} from "../utils/api";
 import {getCookie} from "../utils/storage";
+import {TIngredient} from "../types/types";
 
 export const fetchOrder = createAsyncThunk(
     'order/fetchOrder',
-    async function(data, {rejectWithValue}) {
+    async function(data:Array<TIngredient>, {rejectWithValue}) {
         try {
             const response = await fetch(`${baseUrl}/orders`, {
                 method: 'POST',
@@ -15,27 +16,38 @@ export const fetchOrder = createAsyncThunk(
                 },
                 body: JSON.stringify({
                     //раскладываем бургер на компоненты и выбираем id компонентов
-                    ingredients: data.map((component) => component._id)
+                    ingredients: data.map((component: TIngredient) => component._id)
                 })
             });
             const actualData = await checkResponse(response)
             return actualData;
         } catch (error) {
-            return rejectWithValue(error.message)
+            return rejectWithValue(error)
         }
     }
 )
 
+interface IInitialState {
+    isOpened: boolean,
+    isFailed: boolean,
+    isPending: boolean,
+    name: string,
+    orderNumber: number,
+    data: Array<TIngredient>
+}
+
+const initialState: IInitialState = {
+    isOpened: false,
+    isFailed: false,
+    isPending: true,
+    name: '',
+    orderNumber: 0,
+    data: []
+}
+
 const orderSlice = createSlice({
     name: 'order',
-    initialState: {
-        isOpened: false,
-        isFailed: false,
-        isPending: true,
-        name: '',
-        orderNumber: 0,
-        data: []
-    },
+    initialState: initialState,
     reducers: {
         setOrderDetailsOpened(state){
             state.isOpened = true;
