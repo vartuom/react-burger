@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import PlanetLoader from "../components/planetLoader/planetLoader";
 import ProfileMenu from "../components/profileMenu/profileMenu";
@@ -8,17 +7,18 @@ import {getCookie} from "../utils/storage";
 import FeedList from "../components/feedList/feedList";
 import styles from './orders.module.css'
 import {wssOrdersUrl} from "../utils/constants";
+import {useAppDispatch, useAppSelector} from "../services/hooks";
 
 const Orders = () => {
 
-    const {isLoggedIn, isAuthPending} = useSelector(store => ({
+    const {isLoggedIn, isAuthPending} = useAppSelector(store => ({
         isLoggedIn: store.user.isLoggedIn,
         isAuthPending: store.user.isAuthPending
     }))
 
     const history = useHistory();
-    const dispatch = useDispatch();
-    const {orders} = useSelector(store => ({
+    const dispatch = useAppDispatch();
+    const {orders} = useAppSelector(store => ({
         orders: store.feed.data,
     }));
 

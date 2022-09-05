@@ -5,12 +5,13 @@ import FeedInfo from "../components/feedInfo/feedInfo";
 import {useDispatch, useSelector} from "react-redux";
 import {wsActions} from "../store/feedSlice";
 import {wssFeedUrl} from "../utils/constants";
+import {useAppSelector} from "../services/hooks";
 
 const Feed = () => {
 
     const dispatch = useDispatch();
 
-    const {orders, total, totalToday} = useSelector(store => ({
+    const {orders, total, totalToday} = useAppSelector(store => ({
         orders: store.feed.data,
         total: store.feed.total,
         totalToday: store.feed.totalToday

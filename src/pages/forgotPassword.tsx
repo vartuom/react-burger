@@ -3,8 +3,8 @@ import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components"
 import styles from './pages.module.css'
 import {Link, useHistory} from "react-router-dom";
 import {requestPasswordReset} from "../utils/api";
-import {useSelector} from "react-redux";
 import PlanetLoader from "../components/planetLoader/planetLoader";
+import {useAppSelector} from "../services/hooks";
 
 const Register = () => {
 
@@ -15,7 +15,7 @@ const Register = () => {
     const history = useHistory();
 
     //пока не пройдет проверка авторизации показываем лоадер
-    const {isAuthPending} = useSelector(store => ({
+    const {isAuthPending} = useAppSelector(store => ({
         isAuthPending: store.user.isAuthPending
     }))
 
@@ -26,7 +26,7 @@ const Register = () => {
             <form className={styles.form} onSubmit={(e) => {
                 e.preventDefault();
                 emailInputValue && requestPasswordReset(emailInputValue)
-                    .then(history.push({pathname: '/reset-password', state: {isForgotPageVisited: true}}))
+                    .then(history.push({pathname: '/reset-password', state: {isForgotPageVisited: true}}) as undefined)
                     .catch((err) => console.log(err));
             }}>
                 <h2 className={`${styles.formTitle} text text_type_main-medium`}>Восстановление пароля</h2>

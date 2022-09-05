@@ -36,7 +36,7 @@ const IngredientDetails = () => {
     }))
 
 
-    return isLoading ? <PlanetLoader/> : isFailed ? 'Ошибка' : (
+    return isLoading ? <PlanetLoader/> : isFailed ? <span>'Ошибка'</span> : (
         <div className={`${ingredientDetailsStyles.container} pb-15`}>
             <img className={ingredientDetailsStyles.preview} src={ingredient.image} alt=""/>
             <p className="text text_type_main-medium pb-8">{ingredient.name}</p>

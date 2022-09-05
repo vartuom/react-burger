@@ -31,7 +31,11 @@ export type TOrder = {
 export interface IAppLocation extends Location {
     from: string;
     state: {
-        background?: string
+        background?: string,
+        isForgotPageVisited?: boolean
+        from: {
+            pathname: string
+        }
     }
 }
 

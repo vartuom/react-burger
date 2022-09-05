@@ -1,16 +1,16 @@
 import React from 'react';
 import styles from './order.module.css'
 import OrderInfo from "../components/orderInfo/orderInfo";
-import {useDispatch, useSelector} from "react-redux";
 import PlanetLoader from "../components/planetLoader/planetLoader";
 import {useEffect} from "react";
 import {wsActions} from "../store/feedSlice";
 import {getCookie} from "../utils/storage";
 import {wssFeedUrl, wssOrdersUrl} from "../utils/constants";
+import {useAppDispatch, useAppSelector} from "../services/hooks";
 
 const Order = ({personal = false}) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     //устаналиваем соединение
     useEffect(() => {
@@ -25,10 +25,10 @@ const Order = ({personal = false}) => {
         return () => {
             dispatch(wsActions.wsConnectionClose())
         }
-    }, [dispatch])
+    }, [dispatch, personal])
 
     //ждем готовности стора прежде чем рисовать компонент с информацией
-    const {isIngredientsLoading, isIngredientsFailed, orders, isOrdersFailed} = useSelector(store => ({
+    const {isIngredientsLoading, isIngredientsFailed, orders, isOrdersFailed} = useAppSelector(store => ({
         isIngredientsLoading: store.ingredients.ingredientsRequest,
         isIngredientsFailed: store.ingredients.ingredientsFailed,
         orders: store.feed.data,

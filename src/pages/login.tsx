@@ -3,22 +3,23 @@ import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components"
 import styles from './pages.module.css'
 import {Link, useHistory, useLocation} from "react-router-dom";
 import {fetchLogIn} from "../store/userSlice";
-import {useDispatch, useSelector} from "react-redux";
 import PlanetLoader from "../components/planetLoader/planetLoader";
+import {useAppDispatch, useAppSelector} from "../services/hooks";
+import {IAppLocation} from "../types/types";
 
 const Login = () => {
 
-    const dispatch = useDispatch();
-    const location = useLocation();
+    const dispatch = useAppDispatch();
+    const location = useLocation() as IAppLocation;
     const history = useHistory();
 
     //пока не пройдет проверка авторизации показываем лоадер
-    const {isAuthPending} = useSelector(store => ({
+    const {isAuthPending} = useAppSelector(store => ({
         isAuthPending: store.user.isAuthPending
     }))
 
     //возвращаем авторизованых пользователей назад с роута
-    const {isLoggedIn} = useSelector(store => ({
+    const {isLoggedIn} = useAppSelector(store => ({
         isLoggedIn: store.user.isLoggedIn
     }))
     useEffect(() => {

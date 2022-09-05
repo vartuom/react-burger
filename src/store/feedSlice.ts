@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {ActionCreatorWithoutPayload, ActionCreatorWithPayload, createSlice} from "@reduxjs/toolkit";
 import {TOrder} from "../types/types";
 
 interface IInitialState {
@@ -25,7 +25,7 @@ const feedSlice = createSlice({
     name: 'feed',
     initialState: initialState,
     reducers: {
-        wsConnectionInit(state) {
+        wsConnectionInit(state, payload) {
             state.isPending = true;
         },
         wsConnectionOK(state) {
@@ -33,7 +33,7 @@ const feedSlice = createSlice({
             state.hasError = false;
             state.isPending = false;
         },
-        wsConnectionError(state) {
+        wsConnectionError(state, payload) {
             state.connected = false;
             state.hasError = true;
             state.data = [];
@@ -56,6 +56,14 @@ const feedSlice = createSlice({
         }
     }
 })
+
+export interface IwsActions {
+    wsConnectionInit: ActionCreatorWithPayload<any, any>,
+    wsConnectionOK: ActionCreatorWithoutPayload<string>,
+    wsConnectionError: ActionCreatorWithPayload<any, any>,
+    wsConnectionClose: ActionCreatorWithoutPayload<string>,
+    wsOnMessage: ActionCreatorWithPayload<any, any>
+}
 
 export const wsActions = feedSlice.actions;
 export default feedSlice.reducer;

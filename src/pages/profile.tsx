@@ -7,10 +7,11 @@ import {fetchPatchUserData} from "../store/userSlice";
 import {useHistory} from "react-router-dom";
 import PlanetLoader from "../components/planetLoader/planetLoader";
 import ProfileMenu from "../components/profileMenu/profileMenu";
+import {useAppDispatch, useAppSelector} from "../services/hooks";
 
 const Profile = () => {
 
-    const {userName, userEmail, isLoggedIn, isAuthPending} = useSelector(store => ({
+    const {userName, userEmail, isLoggedIn, isAuthPending} = useAppSelector(store => ({
         userName: store.user.user.name,
         userEmail: store.user.user.email,
         isLoggedIn: store.user.isLoggedIn,
@@ -50,7 +51,7 @@ const Profile = () => {
         }
     }, [nameInputValue, emailInputValue, userName, userEmail, passwordInputValue])
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     //при клике на "Отмена" возвращаем в инпуты данные из стора
     const resetInputValues = useCallback(() => {

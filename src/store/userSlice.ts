@@ -6,7 +6,7 @@ import {cookiesLifeTime} from "../utils/constants";
 
 type TAuthData = {
     email: string,
-    username: string,
+    username?: string,
     password?: string
 }
 export const fetchRegUser = createAsyncThunk(

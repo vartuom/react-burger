@@ -1,9 +1,12 @@
-export const socketMiddleware = (wsActions) => {
-    return store => {
-        let socket = null;
+import {IwsActions} from "../../store/feedSlice";
+import {MiddlewareAPI, AnyAction} from '@reduxjs/toolkit'
+
+export const socketMiddleware = (wsActions: IwsActions) => {
+    return (store: MiddlewareAPI) => {
+        let socket: WebSocket | null = null;
         let url = '';
 
-        return next => action => {
+        return (next: (arg: AnyAction) => void ) => (action: AnyAction) => {
             const {dispatch} = store;
             const {type} = action;
             if (type === wsActions.wsConnectionInit.type) {
@@ -16,7 +19,7 @@ export const socketMiddleware = (wsActions) => {
                     dispatch(wsActions.wsConnectionOK());
                 };
                 socket.onerror = event => {
-                    dispatch(wsActions.wsConnectionError(event.code.toString()));
+                    dispatch(wsActions.wsConnectionError('connection error'))
                 };
                 socket.onmessage = event => {
                     const {data} = event;

@@ -3,14 +3,14 @@ import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components"
 import styles from './pages.module.css'
 import {Link} from "react-router-dom";
 import {fetchRegUser} from "../store/userSlice";
-import {useDispatch, useSelector} from "react-redux";
 import PlanetLoader from "../components/planetLoader/planetLoader";
+import {useAppDispatch, useAppSelector} from "../services/hooks";
 
 const Register = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const {isAuthPending} = useSelector(store => ({
+    const {isAuthPending} = useAppSelector(store => ({
         isAuthPending: store.user.isAuthPending
     }))
 

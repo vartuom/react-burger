@@ -4,17 +4,18 @@ import styles from './pages.module.css'
 import {Link, useHistory, useLocation} from "react-router-dom";
 import {resetUsrPassword} from "../utils/api";
 import PlanetLoader from "../components/planetLoader/planetLoader";
-import {useSelector} from "react-redux";
+import {IAppLocation} from "../types/types";
+import {useAppSelector} from "../services/hooks";
 
 const Register = () => {
 
-    const location = useLocation();
+    const location = useLocation() as IAppLocation;
     const history = useHistory();
     if (!location.state?.isForgotPageVisited) {
         history.replace({pathname: "/forgot-password"})
     }
 
-    const {isAuthPending} = useSelector(store => ({
+    const {isAuthPending} = useAppSelector(store => ({
         isAuthPending: store.user.isAuthPending
     }))
 
@@ -29,7 +30,7 @@ const Register = () => {
             <form className={styles.form} onSubmit={(e) => {
                 e.preventDefault();
                 resetUsrPassword(passwordInputValue, codeInputValue)
-                    .then(history.replace({pathname: '/login'}))
+                    .then(history.replace({pathname: '/login'}) as undefined)
                     .catch((err) => console.log(err));
             }}>
                 <h2 className={`${styles.formTitle} text text_type_main-medium`}>Восстановление пароля</h2>
