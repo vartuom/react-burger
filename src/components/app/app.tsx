@@ -2,7 +2,6 @@ import React from 'react';
 import appStyles from './app.module.css';
 import AppHeader from "../appHeader/appHeader";
 import {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {fetchIngredients} from "../../store/ingredientsSlice";
 import {Switch, Route, useLocation, useHistory} from 'react-router-dom';
 import Login from "../../pages/login";
@@ -24,12 +23,15 @@ import {useCallback} from "react";
 import Feed from "../../pages/feed";
 import OrderInfo from "../orderInfo/orderInfo";
 import Order from "../../pages/order";
+import {useAppDispatch, useAppSelector} from "../../services/hooks";
+import {IAppLocation} from "../../types/types";
+import {Location} from "history";
 
 function App() {
 
-    const dispatch = useDispatch();
-    const isLoading = useSelector(store => store.ingredients.ingredientsRequest);
-    const location = useLocation();
+    const dispatch = useAppDispatch();
+    const isLoading = useAppSelector(store => store.ingredients.ingredientsRequest);
+    const location = useLocation() as IAppLocation;
     const history = useHistory();
     //достаем из стейта адрес главной страницы "/" для ее рендера под модальным окном
     //адрес закидывается в стейт в компоненте Card
@@ -61,15 +63,14 @@ function App() {
     А также массив зависимостей c isOpen, чтобы отслеживать изменение этого показателя открытости.
     Как только он становится true, то навешивается обработчик, когда в false, тогда удаляется обработчик.
     */
-    const {isModalOpened} = useSelector(store => ({
+    const {isModalOpened} = useAppSelector(store => ({
         isModalOpened: store.ingredient.isOpened || store.order.isOpened || store.feed.isOpened
     }))
-
 
     return (
         <div className={appStyles.app}>
             <AppHeader/>
-            <Switch location={background || location}>
+            <Switch location={(background || location) as Location}>
                 <Route path="/" exact={true}>
                     {isLoading ? <PlanetLoader/> : <Main/>}
                 </Route>

@@ -21,7 +21,7 @@ const OrderDetails = () => {
         orderNumber: store.order.orderNumber,
     }))
 
-    return isPending ? <PlanetLoader/> : isFailed ? 'Ошибка' : (
+    return isPending ? <PlanetLoader/> : isFailed ? <span>'Ошибка'</span> : (
         <div className={orderDetailsStyles.container}>
             <h2 className="text text_type_digits-large pt-15">{orderNumber}</h2>
             <p className="text text_type_main-medium pt-8">идентификатор заказа</p>

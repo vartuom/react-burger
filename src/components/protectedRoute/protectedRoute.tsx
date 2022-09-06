@@ -4,6 +4,8 @@ import {useAppSelector} from "../../services/hooks";
 
 interface IPropsProtectedRoute {
     isAnonOnly?: boolean,
+    exact?: boolean,
+    path: string,
     children: ReactNode
 }
 

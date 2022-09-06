@@ -207,7 +207,7 @@ const userSlice = createSlice({
                 state.isLoggedIn = false;
                 state.user.email = '';
                 state.user.name = '';
-                setCookie('accessToken', null, {expires: -1});
+                setCookie('accessToken', '', {expires: -1});
                 localStorage.removeItem('refreshToken');
             })
             .addCase(fetchLogOut.pending, (state) => {

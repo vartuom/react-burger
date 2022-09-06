@@ -37,7 +37,7 @@ const Order = ({personal = false}) => {
     const isError = isOrdersFailed || isIngredientsFailed;
     const isReady = !isIngredientsLoading && orders.length > 0;
 
-    return isError ? 'Ошибка при получении данных с сервера' : !isReady ? <PlanetLoader/> :(
+    return isError ? <span>'Ошибка при получении данных с сервера'</span> : !isReady ? <PlanetLoader/> :(
         <div className={styles.wrapper}>
             <OrderInfo/>
         </div>

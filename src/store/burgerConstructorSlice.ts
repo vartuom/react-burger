@@ -7,14 +7,14 @@ interface IInitialState {
     mains: Array<TIngredientWithUuid>
 }
 
-const InitialState: IInitialState = {
+const initialState: IInitialState = {
     bun: {} as TIngredientWithUuid,
     mains: []
 }
 
 const burgerConstructorSlice = createSlice({
     name: 'burgerConstructor',
-    initialState: InitialState,
+    initialState: initialState,
     reducers: {
         addIngredient(state, action) {
             if (action.payload.type === 'bun') {

@@ -27,6 +27,7 @@ const BurgerConstructor = () => {
         mains: store.burgerConstructor.mains
     }))
 
+
     //обработка перетаскиваемых объектов в контейнер
     const [, dropTarget] = useDrop({
         accept: "ingredient",
