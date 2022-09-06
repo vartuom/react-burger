@@ -58,11 +58,11 @@ const feedSlice = createSlice({
 })
 
 export interface IwsActions {
-    wsConnectionInit: ActionCreatorWithPayload<any, any>,
+    wsConnectionInit: ActionCreatorWithPayload<string, string>,
     wsConnectionOK: ActionCreatorWithoutPayload<string>,
-    wsConnectionError: ActionCreatorWithPayload<any, any>,
+    wsConnectionError: ActionCreatorWithPayload<string, string>,
     wsConnectionClose: ActionCreatorWithoutPayload<string>,
-    wsOnMessage: ActionCreatorWithPayload<any, any>
+    wsOnMessage: ActionCreatorWithPayload<unknown, string>
 }
 
 export const wsActions = feedSlice.actions;
